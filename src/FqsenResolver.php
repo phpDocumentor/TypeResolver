@@ -14,7 +14,7 @@ namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\Types\Context;
 
-class FqsenFactory
+class FqsenResolver
 {
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';

@@ -10,15 +10,18 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection;
 
 use Mockery as m;
-use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Object_;
 
 /**
- * @coversDefaultClass phpDocumentor\Reflection\Types\Resolver
+ * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
  */
-class ResolverTest extends \PHPUnit_Framework_TestCase
+class TypeResolverTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param string $keyword
@@ -35,7 +38,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingKeywords($keyword, $expectedClass)
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         $resolvedType = $fixture->resolveType($keyword, new Context(''));
 
@@ -56,7 +59,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingFQSENs($fqsen)
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Object_ $resolvedType */
         $resolvedType = $fixture->resolveType($fqsen, new Context(''));
@@ -77,7 +80,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingRelativeQSENsBasedOnNamespace()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Object_ $resolvedType */
         $resolvedType = $fixture->resolveType('DocBlock', new Context('phpDocumentor\Reflection'));
@@ -97,7 +100,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingRelativeQSENsBasedOnNamespaceAlias()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Object_ $resolvedType */
         $resolvedType = $fixture->resolveType(
@@ -120,7 +123,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingTypedArrays()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Array_ $resolvedType */
         $resolvedType = $fixture->resolveType('string[]', new Context(''));
@@ -141,7 +144,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingNestedTypedArrays()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Array_ $resolvedType */
         $resolvedType = $fixture->resolveType('string[][]', new Context(''));
@@ -172,7 +175,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingCompoundTypes()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Compound $resolvedType */
         $resolvedType = $fixture->resolveType('string|Reflection\DocBlock', new Context('phpDocumentor'));
@@ -210,7 +213,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolvingCompoundTypesWithTwoArrays()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
 
         /** @var Compound $resolvedType */
         $resolvedType = $fixture->resolveType('integer[]|string[]', new Context(''));
@@ -242,7 +245,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
         $typeMock = m::mock(Type::class);
 
         // Act
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
         $fixture->addKeyword('mock', get_class($typeMock));
 
         // Assert
@@ -258,7 +261,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
         $fixture->addKeyword('mock', 'IDoNotExist');
     }
 
@@ -269,7 +272,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
         $fixture->addKeyword('mock', 'stdClass');
     }
 
@@ -281,7 +284,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownIfTypeIsEmpty()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
         $fixture->resolveType(' ', new Context(''));
     }
 
@@ -293,7 +296,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownIfTypeIsNotAString()
     {
-        $fixture = new Resolver();
+        $fixture = new TypeResolver();
         $fixture->resolveType(['a'], new Context(''));
     }
 

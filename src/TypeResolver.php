@@ -10,12 +10,14 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection;
 
-use phpDocumentor\Reflection\FqsenFactory;
-use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Object_;
 
-final class Resolver
+final class TypeResolver
 {
     /** @var string Definition of the ARRAY operator for types */
     const OPERATOR_ARRAY = '[]';
@@ -48,17 +50,17 @@ final class Resolver
         'static' => 'phpDocumentor\Reflection\Types\Static_'
     );
 
-    /** @var FqsenFactory */
-    private $fqsenFactory;
+    /** @var FqsenResolver */
+    private $fqsenResolver;
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
      *
-     * @param FqsenFactory $fqsenFactory
+     * @param FqsenResolver $fqsenResolver
      */
-    public function __construct(FqsenFactory $fqsenFactory = null)
+    public function __construct(FqsenResolver $fqsenResolver = null)
     {
-        $this->fqsenFactory = $fqsenFactory ?: new FqsenFactory();
+        $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver();
     }
 
     /**
@@ -136,7 +138,7 @@ final class Resolver
             throw new \InvalidArgumentException('Attempted to resolve "' . $fqsen . '" but it appears to be empty');
         }
 
-        return $this->fqsenFactory->create($fqsen, $context);
+        return $this->fqsenResolver->create($fqsen, $context);
     }
     /**
      * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
@@ -260,7 +262,7 @@ final class Resolver
      */
     private function resolveTypedObject($type, Context $context = null)
     {
-        return new Object_($this->fqsenFactory->create($type, $context));
+        return new Object_($this->fqsenResolver->create($type, $context));
     }
 
     /**
@@ -274,7 +276,7 @@ final class Resolver
      */
     private function resolvePartialStructuralElementName($type, Context $context = null)
     {
-        return new Object_($this->fqsenFactory->create($type, $context));
+        return new Object_($this->fqsenResolver->create($type, $context));
     }
 
     /**
