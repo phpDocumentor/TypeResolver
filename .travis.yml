@@ -12,10 +12,14 @@ matrix:
     - php: hhvm-nightly
 
 script:
- - vendor/bin/phpunit
+ - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 before_script:
  - composer install --no-interaction --prefer-source --dev
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
