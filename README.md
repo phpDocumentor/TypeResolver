@@ -16,7 +16,7 @@ This package provides two Resolvers that are capable of
 
 ## Installing
 
-The easiest way to install this library is with [Composer](http://getcomposer.org) using the following command:
+The easiest way to install this library is with [Composer](https://getcomposer.org) using the following command:
 
     $ composer require phpdocumentor/type-resolver
 
@@ -146,7 +146,7 @@ class as second argument and the Resolvers will take this into account when reso
 To obtain the resolved class name for the `@var` tag in the example above you can do:
 
     $typeResolver = new \phpDocumentor\Reflection\TypeResolver();
-    $type = $typeResolver->resolve('Types\Context');
+    $type = $typeResolver->resolve('Types\Context', $context);
 
 When you do this you will receive an object of class `\phpDocumentor\Reflection\Types\Object_` for which you can call 
 the `getFqsen` method to receive a Value Object that represents the complete FQSEN. So that would be 
@@ -162,7 +162,7 @@ Another example is on how to resolve the FQSEN of a method as can be seen with t
 resolve that you can do the following:
 
     $fqsenResolver = new \phpDocumentor\Reflection\FqsenResolver();
-    $type = $fqsenResolver->resolve('Classy::otherFunction()');
+    $type = $fqsenResolver->resolve('Classy::otherFunction()', $context);
 
 Because Classy is a Class in the current namespace its FQSEN will have the `My\Example` namespace and by calling the 
 `resolve` method of the FQSEN Resolver you will receive an `Fqsen` object that refers to 
