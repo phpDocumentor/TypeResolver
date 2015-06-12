@@ -15,7 +15,7 @@ namespace phpDocumentor\Reflection\Types;
 use Mockery as m;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Context
+ * @coversDefaultClass \phpDocumentor\Reflection\Types\Context
  */
 class ContextTest extends \PHPUnit_Framework_TestCase
 {
