@@ -10,12 +10,16 @@ matrix:
   allow_failures:
     - php: hhvm
     - php: hhvm-nightly
+    
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 script:
  - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 before_script:
- - composer install --no-interaction --prefer-source --dev
+ - composer install --no-interaction
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
