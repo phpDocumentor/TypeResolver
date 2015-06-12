@@ -12,7 +12,7 @@ matrix:
     - php: hhvm-nightly
 
 script:
- - vendor/bin/phpunit --coverage-clover=coverage.clover
+ - vendor/bin/phpunit --coverage-clover=coverage.clover -v
 
 before_script:
  - composer install --no-interaction --prefer-source --dev
