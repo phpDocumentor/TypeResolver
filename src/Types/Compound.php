@@ -31,7 +31,7 @@ final class Compound implements Type
      *
      * @param Type[] $types
      */
-    public function __construct($types)
+    public function __construct(array $types)
     {
         foreach ($types as $type) {
             if (!$type instanceof Type) {
