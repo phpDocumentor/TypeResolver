@@ -41,7 +41,7 @@ final class Array_ implements Type
     public function __construct(Type $valueType = null, Type $keyType = null)
     {
         if ($keyType === null) {
-            $keyType = new Mixed();
+            $keyType = new Compound([ new String_(), new Integer() ]);
         }
         if ($valueType === null) {
             $valueType = new Mixed();

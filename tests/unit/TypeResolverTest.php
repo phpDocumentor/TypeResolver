@@ -137,7 +137,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $resolvedType);
         $this->assertSame('string[]', (string)$resolvedType);
-        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Mixed', $resolvedType->getKeyType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Compound', $resolvedType->getKeyType());
         $this->assertInstanceOf('phpDocumentor\Reflection\Types\String_', $resolvedType->getValueType());
     }
 
@@ -163,11 +163,11 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $resolvedType);
 
         $this->assertSame('string[][]', (string)$resolvedType);
-        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Mixed', $resolvedType->getKeyType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Compound', $resolvedType->getKeyType());
         $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $childValueType);
 
         $this->assertSame('string[]', (string)$childValueType);
-        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Mixed', $childValueType->getKeyType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Compound', $childValueType->getKeyType());
         $this->assertInstanceOf('phpDocumentor\Reflection\Types\String_', $childValueType->getValueType());
     }
 
