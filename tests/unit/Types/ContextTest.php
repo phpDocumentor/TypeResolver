@@ -10,7 +10,7 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\DocBlock;
+namespace phpDocumentor\Reflection\Types;
 
 use Mockery as m;
 

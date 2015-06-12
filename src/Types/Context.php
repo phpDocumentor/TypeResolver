@@ -48,8 +48,17 @@ final class Context
             : '';
 
         foreach ($namespaceAliases as $alias => $fqnn) {
-            $this->namespaceAliases[$alias] = trim((string)$fqnn, '\\');
+            if ($fqnn[0] === '\\') {
+                $fqnn = substr($fqnn, 1);
+            }
+            if ($fqnn[count($fqnn)-1] === '\\') {
+                $fqnn = substr($fqnn, 0, -1);
+            }
+
+            $namespaceAliases[$alias] = $fqnn;
         }
+
+        $this->namespaceAliases = $namespaceAliases;
     }
 
     /**
