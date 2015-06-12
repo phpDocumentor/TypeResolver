@@ -19,7 +19,7 @@ class FqsenResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
-    public function create($fqsen, Context $context = null)
+    public function resolve($fqsen, Context $context = null)
     {
         if ($context === null) {
             $context = new Context('');

@@ -11,7 +11,7 @@ $typeResolver = new TypeResolver();
 $fqsenResolver = new FqsenResolver();
 
 $contextFactory = new ContextFactory();
-$context = $contextFactory->createFromReflector(new ReflectionClass('My\\Example\\Classy'));
+$context = $contextFactory->createFromReflector(new ReflectionMethod('My\\Example\\Classy', '__construct'));
 
 // Class named: \phpDocumentor\Reflection\Types\Resolver
 var_dump((string)$typeResolver->resolve('Types\Resolver', $context));

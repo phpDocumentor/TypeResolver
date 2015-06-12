@@ -19,28 +19,28 @@ namespace phpDocumentor\Reflection\Types {
     use \ReflectionClass; // yes, the slash is part of the test
 
     /**
-     * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\ContextFactory
+     * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
      * @covers ::<private>
      */
     class ContextFactoryTest extends \PHPUnit_Framework_TestCase
     {
         /**
-         * @covers ::createFromClassReflector
+         * @covers ::createFromReflector
          * @covers ::createForNamespace
-         * @uses phpDocumentor\Reflection\DocBlock\Context
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsNamespaceFromClassReflection()
         {
             $fixture = new ContextFactory();
-            $context = $fixture->createFromClassReflector(new ReflectionClass($this));
+            $context = $fixture->createFromReflector(new ReflectionClass($this));
 
             $this->assertSame(__NAMESPACE__, $context->getNamespace());
         }
 
         /**
-         * @covers ::createFromClassReflector
+         * @covers ::createFromReflector
          * @covers ::createForNamespace
-         * @uses phpDocumentor\Reflection\DocBlock\Context
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsAliasesFromClassReflection()
         {
@@ -51,14 +51,14 @@ namespace phpDocumentor\Reflection\Types {
                 'Tag' => 'phpDocumentor\Reflection\DocBlock\Tag',
                 'ReflectionClass' => 'ReflectionClass'
             ];
-            $context = $fixture->createFromClassReflector(new ReflectionClass($this));
+            $context = $fixture->createFromReflector(new ReflectionClass($this));
 
             $this->assertSame($expected, $context->getNamespaceAliases());
         }
 
         /**
          * @covers ::createForNamespace
-         * @uses phpDocumentor\Reflection\DocBlock\Context
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsNamespaceFromProvidedNamespaceAndContent()
         {
@@ -70,7 +70,7 @@ namespace phpDocumentor\Reflection\Types {
 
         /**
          * @covers ::createForNamespace
-         * @uses phpDocumentor\Reflection\DocBlock\Context
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsAliasesFromProvidedNamespaceAndContent()
         {

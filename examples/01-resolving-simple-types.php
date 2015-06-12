@@ -1,13 +1,13 @@
 <?php
 
-use phpDocumentor\Reflection\Types\Resolver;
+use phpDocumentor\Reflection\TypeResolver;
 
 require '../vendor/autoload.php';
 
-$typeResolver = new Resolver();
+$typeResolver = new TypeResolver();
 
 // Will yield an object of type phpDocumentor\Types\Compound
-var_export($typeResolver->resolveType('string|integer'));
+var_export($typeResolver->resolve('string|integer'));
 
 // Will return the string "string|int"
-var_dump((string)$typeResolver->resolveType('string|integer'));
+var_dump((string)$typeResolver->resolve('string|integer'));

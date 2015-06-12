@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Type;
 /**
  * Value Object representing the type 'string'.
  */
-final class String implements Type
+final class String_ implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.

@@ -32,18 +32,20 @@ final class ContextFactory
     /**
      * Build a Context given a Class Reflection.
      *
-     * @param \ReflectionClass $class
+     * @param \ReflectionClass $reflector
      *
      * @see Context for more information on Contexts.
      *
      * @return Context
      */
-    public function createFromClassReflector(\ReflectionClass $class)
+    public function createFromReflector(\Reflector $reflector)
     {
-        return $this->createForNamespace(
-            $class->getNamespaceName(),
-            file_get_contents($class->getFileName())
-        );
+        if (method_exists($reflector, 'getDeclaringClass')) {
+            $reflector = $reflector->getDeclaringClass();
+        }
+        $fileName = $reflector->getFileName();
+
+        return $this->createForNamespace($reflector->getNamespaceName(), file_get_contents($fileName));
     }
 
     /**

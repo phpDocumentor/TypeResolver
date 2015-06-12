@@ -2,8 +2,8 @@
 
 <phpunit colors="true" strict="true" bootstrap="vendor/autoload.php">
   <testsuites>
-    <testsuite name="phpDocumentor\Reflection\DocBlock">
-      <directory>./tests/</directory>
+    <testsuite name="unit">
+      <directory>./tests/unit</directory>
     </testsuite>
   </testsuites>
   <filter>
@@ -11,6 +11,7 @@
         <directory suffix=".php">./src/</directory>
     </whitelist>
     <blacklist>
+      <directory>./examples/</directory>
         <directory>./vendor/</directory>
     </blacklist>
   </filter>

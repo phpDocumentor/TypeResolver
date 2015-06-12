@@ -7,8 +7,10 @@ use phpDocumentor\Reflection\Types;
 
 class Classy
 {
-    public function __construct()
+    /**
+     * @var Types\Context
+     */
+    public function __construct($context)
     {
-
     }
 }

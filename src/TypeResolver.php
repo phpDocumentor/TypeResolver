@@ -27,7 +27,7 @@ final class TypeResolver
 
     /** @var string[] List of recognized keywords and unto which Value Object they map */
     private $keywords = array(
-        'string' => 'phpDocumentor\Reflection\Types\String',
+        'string' => 'phpDocumentor\Reflection\Types\String_',
         'int' => 'phpDocumentor\Reflection\Types\Integer',
         'integer' => 'phpDocumentor\Reflection\Types\Integer',
         'bool' => 'phpDocumentor\Reflection\Types\Boolean',
@@ -82,7 +82,7 @@ final class TypeResolver
      *
      * @return Type|null
      */
-    public function resolveType($type, Context $context = null)
+    public function resolve($type, Context $context = null)
     {
         if (!is_string($type)) {
             throw new \InvalidArgumentException(
@@ -109,7 +109,7 @@ final class TypeResolver
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
             case $this->isPartialStructuralElementName($type):
-                return $this->resolvePartialStructuralElementName($type, $context);
+                return $this->resolveTypedObject($type, $context);
             // @codeCoverageIgnoreStart
             default:
                 // I haven't got the foggiest how the logic would come here but added this as a defense.
@@ -120,26 +120,6 @@ final class TypeResolver
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @param $fqsen
-     * @param Context $context
-     * @return Object_
-     */
-    public function resolveFqsen($fqsen, Context $context = null)
-    {
-        if (!is_string($fqsen)) {
-            throw new \InvalidArgumentException(
-                'Attempted to resolve type but it appeared not to be a string, received: ' . var_export($fqsen, true)
-            );
-        }
-
-        $fqsen = trim($fqsen);
-        if (! $fqsen) {
-            throw new \InvalidArgumentException('Attempted to resolve "' . $fqsen . '" but it appears to be empty');
-        }
-
-        return $this->fqsenResolver->create($fqsen, $context);
-    }
     /**
      * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
      *
@@ -236,7 +216,7 @@ final class TypeResolver
      */
     private function resolveTypedArray($type, Context $context)
     {
-        return new Array_($this->resolveType(substr($type, 0, -2), $context));
+        return new Array_($this->resolve(substr($type, 0, -2), $context));
     }
 
     /**
@@ -262,21 +242,7 @@ final class TypeResolver
      */
     private function resolveTypedObject($type, Context $context = null)
     {
-        return new Object_($this->fqsenResolver->create($type, $context));
-    }
-
-    /**
-     * Resolves a partial Structural Element Name (i.e. `Reflection\DocBlock`) to its FQSEN representation
-     * (i.e. `\phpDocumentor\Reflection\DocBlock`) based on the Namespace and aliases mentioned in the Context.
-     *
-     * @param string $type
-     * @param Context $context
-     *
-     * @return Object_
-     */
-    private function resolvePartialStructuralElementName($type, Context $context = null)
-    {
-        return new Object_($this->fqsenResolver->create($type, $context));
+        return new Object_($this->fqsenResolver->resolve($type, $context));
     }
 
     /**
@@ -292,7 +258,7 @@ final class TypeResolver
         $types = [];
 
         foreach (explode('|', $type) as $part) {
-            $types[] = $this->resolveType($part, $context);
+            $types[] = $this->resolve($part, $context);
         }
 
         return new Compound($types);
