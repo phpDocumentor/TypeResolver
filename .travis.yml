@@ -15,9 +15,6 @@ script:
  - vendor/bin/phpunit
 
 before_script:
- - sudo apt-get -qq update > /dev/null
- - phpenv rehash > /dev/null
- - composer selfupdate --quiet
  - composer install --no-interaction --prefer-source --dev
 
 notifications:
