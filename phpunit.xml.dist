@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<phpunit colors="true" strict="true" bootstrap="vendor/autoload.php">
+<phpunit 
+    colors="true" 
+    checkForUnintentionallyCoveredCode="true"
+    beStrictAboutOutputDuringTests="true"
+    forceCoversAnnotation="true"
+    verbose="true"
+    bootstrap="vendor/autoload.php"
+>
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/unit</directory>
@@ -12,7 +19,13 @@
     </whitelist>
     <blacklist>
       <directory>./examples/</directory>
-        <directory>./vendor/</directory>
+      <directory>./vendor/</directory>
     </blacklist>
   </filter>
+  <listeners>
+    <listener
+            class="Mockery\Adapter\Phpunit\TestListener"
+            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"
+            />
+  </listeners>
 </phpunit>
