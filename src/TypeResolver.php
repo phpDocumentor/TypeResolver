@@ -104,10 +104,10 @@ final class TypeResolver
                 return $this->resolveKeyword($type);
             case ($this->isCompoundType($type)):
                 return $this->resolveCompoundType($type, $context);
-            case $this->isFqsen($type):
-                return $this->resolveTypedObject($type);
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
+            case $this->isFqsen($type):
+                return $this->resolveTypedObject($type);
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
             // @codeCoverageIgnoreStart

@@ -205,6 +205,40 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses phpDocumentor\Reflection\Types\Context
+     * @uses phpDocumentor\Reflection\Types\Compound
+     * @uses phpDocumentor\Reflection\Types\Array_
+     * @uses phpDocumentor\Reflection\Types\Object_
+     * @uses phpDocumentor\Reflection\Fqsen
+     * @uses phpDocumentor\Reflection\FqsenResolver
+     */
+    public function testResolvingCompoundTypedArrayTypes()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Compound $resolvedType */
+        $resolvedType = $fixture->resolve('\stdClass[]|Reflection\DocBlock[]', new Context('phpDocumentor'));
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Compound', $resolvedType);
+        $this->assertSame('\stdClass[]|\phpDocumentor\Reflection\DocBlock[]', (string)$resolvedType);
+
+        /** @var Array_ $secondType */
+        $firstType = $resolvedType->get(0);
+
+        /** @var Array_ $secondType */
+        $secondType = $resolvedType->get(1);
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $firstType);
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $secondType);
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Object_', $firstType->getValueType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Object_', $secondType->getValueType());
+    }
+
+    /**
      * This test asserts that the parameter order is correct.
      *
      * When you pass two arrays separated by the compound operator (i.e. 'integer[]|string[]') then we always split the
