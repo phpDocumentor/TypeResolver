@@ -16,7 +16,9 @@ cache:
     - $HOME/.composer/cache
 
 script:
- - vendor/bin/phpunit --coverage-clover=coverage.clover -v
+  - vendor/bin/phpunit --coverage-clover=coverage.clover -v
+  - composer update --no-interaction --prefer-source --dev
+  - vendor/bin/phpunit -v
 
 before_script:
  - composer install --no-interaction
