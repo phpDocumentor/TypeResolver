@@ -168,7 +168,13 @@ final class ContextFactory
         }
 
         if (count($result) == 1) {
-            $result[] = substr($result[0], strrpos($result[0], '\\') + 1);
+            $backslashPos = strrpos($result[0], '\\');
+
+            if (false !== $backslashPos) {
+                $result[] = substr($result[0], $backslashPos + 1);
+            } else {
+                $result[] = $result[0];
+            }
         }
 
         return array_reverse($result);
