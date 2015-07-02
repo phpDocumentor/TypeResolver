@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection\Types {
     use Mockery as m;
     use phpDocumentor\Reflection\DocBlock,
         phpDocumentor\Reflection\DocBlock\Tag;
+    use phpDocumentor;
     use \ReflectionClass; // yes, the slash is part of the test
 
     /**
@@ -49,6 +50,7 @@ namespace phpDocumentor\Reflection\Types {
                 'm' => 'Mockery',
                 'DocBlock' => 'phpDocumentor\Reflection\DocBlock',
                 'Tag' => 'phpDocumentor\Reflection\DocBlock\Tag',
+                'phpDocumentor' => 'phpDocumentor',
                 'ReflectionClass' => 'ReflectionClass'
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
@@ -79,6 +81,7 @@ namespace phpDocumentor\Reflection\Types {
                 'm'               => 'Mockery',
                 'DocBlock'        => 'phpDocumentor\Reflection\DocBlock',
                 'Tag'             => 'phpDocumentor\Reflection\DocBlock\Tag',
+                'phpDocumentor' => 'phpDocumentor',
                 'ReflectionClass' => 'ReflectionClass'
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
