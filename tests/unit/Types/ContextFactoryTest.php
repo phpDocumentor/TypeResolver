@@ -88,6 +88,26 @@ namespace phpDocumentor\Reflection\Types {
 
             $this->assertSame($expected, $context->getNamespaceAliases());
         }
+
+        public function testTraitUseIsNotDetectedAsNamespaceUse()
+        {
+            $fixture = new ContextFactory();
+
+            $php = "<?php
+                namespace Foo;
+
+                trait FooTrait {}
+
+                class FooClass {
+                    use FooTrait;
+                }
+            ";
+
+            $fixture = new ContextFactory();
+            $context = $fixture->createForNamespace('Foo', $php);
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
     }
 }
 

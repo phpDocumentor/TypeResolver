@@ -70,6 +70,26 @@ final class ContextFactory
                 case T_NAMESPACE:
                     $currentNamespace = $this->parseNamespace($tokens);
                     break;
+                case T_CLASS:
+                    // Fast-forward the iterator through the class so that any
+                    // T_USE tokens found within are skipped - these are not
+                    // valid namespace use statements so should be ignored.
+                    $braceLevel = 0;
+                    $firstBraceFound = false;
+                    while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
+                        if ($tokens->current() === '{') {
+                            if (!$firstBraceFound) {
+                                $firstBraceFound = true;
+                            }
+                            $braceLevel++;
+                        }
+
+                        if ($tokens->current() === '}') {
+                            $braceLevel--;
+                        }
+                        $tokens->next();
+                    }
+                    break;
                 case T_USE:
                     if ($currentNamespace === $namespace) {
                         $useStatements = array_merge($useStatements, $this->parseUseStatement($tokens));
