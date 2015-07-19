@@ -95,8 +95,6 @@ namespace phpDocumentor\Reflection\Types {
          */
         public function testTraitUseIsNotDetectedAsNamespaceUse()
         {
-            $fixture = new ContextFactory();
-
             $php = "<?php
                 namespace Foo;
 
