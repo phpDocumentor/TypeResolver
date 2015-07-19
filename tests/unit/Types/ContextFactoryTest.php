@@ -89,6 +89,10 @@ namespace phpDocumentor\Reflection\Types {
             $this->assertSame($expected, $context->getNamespaceAliases());
         }
 
+        /**
+         * @covers ::createForNamespace
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
         public function testTraitUseIsNotDetectedAsNamespaceUse()
         {
             $fixture = new ContextFactory();
