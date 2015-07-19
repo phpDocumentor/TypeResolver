@@ -110,6 +110,45 @@ namespace phpDocumentor\Reflection\Types {
 
             $this->assertSame([], $context->getNamespaceAliases());
         }
+
+        /**
+         * @covers ::createForNamespace
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
+        public function testAllOpeningBracesAreCheckedWhenSearchingForEndOfClass()
+        {
+            $php = '<?php
+                namespace Foo;
+
+                trait FooTrait {}
+                trait BarTrait {}
+
+                class FooClass {
+                    use FooTrait;
+
+                    public function bar()
+                    {
+                        echo "{$baz}";
+                        echo "${baz}";
+                    }
+                }
+
+                class BarClass {
+                    use BarTrait;
+
+                    public function bar()
+                    {
+                        echo "{$baz}";
+                        echo "${baz}";
+                    }
+                }
+            ';
+
+            $fixture = new ContextFactory();
+            $context = $fixture->createForNamespace('Foo', $php);
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
     }
 }
 
