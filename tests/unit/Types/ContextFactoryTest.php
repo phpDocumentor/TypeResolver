@@ -151,13 +151,33 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @expectedException \InvalidArgumentException
          * @covers ::createFromReflector
          */
-        public function testThrowExceptionWhenEmptyFileName()
+        public function testEmptyFileName()
         {
             $fixture = new ContextFactory();
-            $fixture->createFromReflector(new \ReflectionClass('stdClass'));
+            $context = $fixture->createFromReflector(new \ReflectionClass('stdClass'));
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
+
+        /**
+         * @covers ::createFromReflector
+         */
+        public function testEvalDClass()
+        {
+            eval(<<<PHP
+namespace Foo;
+
+class Bar
+{
+}
+PHP
+);
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new \ReflectionClass('Foo\Bar'));
+
+            $this->assertSame([], $context->getNamespaceAliases());
         }
     }
 }

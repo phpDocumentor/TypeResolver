@@ -37,8 +37,6 @@ final class ContextFactory
      * @see Context for more information on Contexts.
      *
      * @return Context
-     *
-     * @throws \InvalidArgumentException
      */
     public function createFromReflector(\Reflector $reflector)
     {
@@ -47,11 +45,13 @@ final class ContextFactory
         }
 
         $fileName = $reflector->getFileName();
-        if (!$fileName) {
-            throw new \InvalidArgumentException('There is no file name associated with this reflector.');
+        $namespace = $reflector->getNamespaceName();
+
+        if (file_exists($fileName)) {
+            return $this->createForNamespace($namespace, file_get_contents($fileName));
         }
 
-        return $this->createForNamespace($reflector->getNamespaceName(), file_get_contents($fileName));
+        return new Context($namespace, []);
     }
 
     /**
