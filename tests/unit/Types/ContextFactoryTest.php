@@ -149,6 +149,16 @@ namespace phpDocumentor\Reflection\Types {
 
             $this->assertSame([], $context->getNamespaceAliases());
         }
+
+        /**
+         * @expectedException \InvalidArgumentException
+         * @covers ::createFromReflector
+         */
+        public function testThrowExceptionWhenEmptyFileName()
+        {
+            $fixture = new ContextFactory();
+            $fixture->createFromReflector(new \ReflectionClass('stdClass'));
+        }
     }
 }
 
