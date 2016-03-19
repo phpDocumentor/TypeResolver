@@ -43,9 +43,15 @@ final class ContextFactory
         if (method_exists($reflector, 'getDeclaringClass')) {
             $reflector = $reflector->getDeclaringClass();
         }
-        $fileName = $reflector->getFileName();
 
-        return $this->createForNamespace($reflector->getNamespaceName(), file_get_contents($fileName));
+        $fileName = $reflector->getFileName();
+        $namespace = $reflector->getNamespaceName();
+
+        if (file_exists($fileName)) {
+            return $this->createForNamespace($namespace, file_get_contents($fileName));
+        }
+
+        return new Context($namespace, []);
     }
 
     /**

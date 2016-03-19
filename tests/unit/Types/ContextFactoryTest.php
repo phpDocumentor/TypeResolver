@@ -149,6 +149,36 @@ namespace phpDocumentor\Reflection\Types {
 
             $this->assertSame([], $context->getNamespaceAliases());
         }
+
+        /**
+         * @covers ::createFromReflector
+         */
+        public function testEmptyFileName()
+        {
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new \ReflectionClass('stdClass'));
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
+
+        /**
+         * @covers ::createFromReflector
+         */
+        public function testEvalDClass()
+        {
+            eval(<<<PHP
+namespace Foo;
+
+class Bar
+{
+}
+PHP
+);
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new \ReflectionClass('Foo\Bar'));
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
     }
 }
 
