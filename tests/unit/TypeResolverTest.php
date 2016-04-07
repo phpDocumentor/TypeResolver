@@ -31,6 +31,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      * @covers ::resolve
      * @covers ::<private>
      *
+     * @uses phpDocumentor\Reflection\Types\Compound
      * @uses phpDocumentor\Reflection\Types\Context
      * @uses phpDocumentor\Reflection\Types\Array_
      * @uses phpDocumentor\Reflection\Types\Object_
@@ -124,6 +125,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      * @covers ::resolve
      * @covers ::<private>
      *
+     * @uses phpDocumentor\Reflection\Types\Compound
      * @uses phpDocumentor\Reflection\Types\Context
      * @uses phpDocumentor\Reflection\Types\Array_
      * @uses phpDocumentor\Reflection\Types\String_
@@ -146,6 +148,68 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      * @covers ::resolve
      * @covers ::<private>
      *
+     * @uses phpDocumentor\Reflection\Types\Array_
+     * @uses phpDocumentor\Reflection\Types\Compound
+     * @uses phpDocumentor\Reflection\Types\Context
+     * @uses phpDocumentor\Reflection\Types\Integer
+     * @uses phpDocumentor\Reflection\Types\String_
+     */
+    public function testResolvingGenericArrays()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Array_ $resolvedType */
+        $resolvedType = $fixture->resolve('array<int>', new Context(''));
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $resolvedType);
+        $this->assertSame('int[]', (string)$resolvedType);
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Compound', $resolvedType->getKeyType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Integer', $resolvedType->getValueType());
+
+        /** @var Array_ $resolvedType */
+        $resolvedType = $fixture->resolve('array<int, int[]>', new Context(''));
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $resolvedType);
+        $this->assertSame('int[][]', (string)$resolvedType);
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Integer', $resolvedType->getKeyType());
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Array_', $resolvedType->getValueType());
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses phpDocumentor\Reflection\FqsenResolver
+     * @uses phpDocumentor\Reflection\Types\Array_
+     * @uses phpDocumentor\Reflection\Types\Compound
+     * @uses phpDocumentor\Reflection\Types\Context
+     * @uses phpDocumentor\Reflection\Types\Integer
+     * @uses phpDocumentor\Reflection\Types\Object_
+     */
+    public function testResolvingGenericObjects()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Array_ $resolvedType */
+        $resolvedType = $fixture->resolve('Object<int>', new Context(''));
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Object_', $resolvedType);
+        $this->assertSame('\Object', (string)$resolvedType);
+
+        /** @var Array_ $resolvedType */
+        $resolvedType = $fixture->resolve('Object<int, Object, Object, void>', new Context(''));
+
+        $this->assertInstanceOf('phpDocumentor\Reflection\Types\Object_', $resolvedType);
+        $this->assertSame('\Object', (string)$resolvedType);
+
+    }
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     * 
+     * @uses phpDocumentor\Reflection\Types\Compound
      * @uses phpDocumentor\Reflection\Types\Context
      * @uses phpDocumentor\Reflection\Types\Array_
      * @uses phpDocumentor\Reflection\Types\String_
