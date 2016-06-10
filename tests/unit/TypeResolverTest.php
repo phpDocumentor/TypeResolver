@@ -373,7 +373,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
             ['scalar', 'phpDocumentor\Reflection\Types\Scalar'],
             ['object', 'phpDocumentor\Reflection\Types\Object_'],
             ['mixed', 'phpDocumentor\Reflection\Types\Mixed'],
-            ['void', 'phpDocumentor\Reflection\Types\Void'],
+            ['void', 'phpDocumentor\Reflection\Types\Void_'],
             ['$this', 'phpDocumentor\Reflection\Types\This'],
             ['static', 'phpDocumentor\Reflection\Types\Static_'],
             ['self', 'phpDocumentor\Reflection\Types\Self_'],
