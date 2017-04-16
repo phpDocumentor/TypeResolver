@@ -16,6 +16,7 @@ use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
 
 /**
@@ -377,6 +378,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
             ['$this', 'phpDocumentor\Reflection\Types\This'],
             ['static', 'phpDocumentor\Reflection\Types\Static_'],
             ['self', 'phpDocumentor\Reflection\Types\Self_'],
+            ['iterable', Iterable_::class],
         ];
     }
 

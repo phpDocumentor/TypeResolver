@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
 
 final class TypeResolver
@@ -47,7 +48,8 @@ final class TypeResolver
         'true' => 'phpDocumentor\Reflection\Types\Boolean',
         'self' => 'phpDocumentor\Reflection\Types\Self_',
         '$this' => 'phpDocumentor\Reflection\Types\This',
-        'static' => 'phpDocumentor\Reflection\Types\Static_'
+        'static' => 'phpDocumentor\Reflection\Types\Static_',
+        'iterable' => Iterable_::class,
     );
 
     /** @var FqsenResolver */
