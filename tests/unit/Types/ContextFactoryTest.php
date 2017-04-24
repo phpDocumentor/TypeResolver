@@ -152,6 +152,8 @@ namespace phpDocumentor\Reflection\Types {
 
         /**
          * @covers ::createFromReflector
+         *
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testEmptyFileName()
         {
@@ -163,6 +165,8 @@ namespace phpDocumentor\Reflection\Types {
 
         /**
          * @covers ::createFromReflector
+         *
+         * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testEvalDClass()
         {

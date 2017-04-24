@@ -23,6 +23,12 @@ final class TypeResolver
     /** @var string Definition of the ARRAY operator for types */
     const OPERATOR_ARRAY = '[]';
 
+    /** @var string Definition of the GENERIC OPEN operator for types */
+    const OPERATOR_OPEN_GENERIC = '<';
+
+    /** @var string Definition of the GENERIC CLOSE operator for types */
+    const OPERATOR_CLOSE_GENERIC = '>';
+
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
@@ -108,6 +114,8 @@ final class TypeResolver
                 return $this->resolveCompoundType($type, $context);
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
+            case $this->isGenericType($type):
+                return $this->resolveGenericType($type, $context);
             case $this->isFqsen($type):
                 return $this->resolveTypedObject($type);
             case $this->isPartialStructuralElementName($type):
@@ -158,6 +166,18 @@ final class TypeResolver
     private function isTypedArray($type)
     {
         return substr($type, -2) === self::OPERATOR_ARRAY;
+    }
+
+    /**
+     * Detects whether the given type represents an generic type.
+     *
+     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
+     *
+     * @return bool
+     */
+    private function isGenericType($type)
+    {
+        return substr($type, -1) === self::OPERATOR_CLOSE_GENERIC;
     }
 
     /**
@@ -219,6 +239,34 @@ final class TypeResolver
     private function resolveTypedArray($type, Context $context)
     {
         return new Array_($this->resolve(substr($type, 0, -2), $context));
+    }
+
+    /**
+     * Resolves the given generic type (i.e. `string[]`) into an Array object with the right types set.
+     *
+     * @param string $type
+     * @param Context $context
+     *
+     * @return Array_|Object_
+     */
+    private function resolveGenericType($type, Context $context)
+    {
+        $regex = '/^([^<]+)<(?:([^,>]+),)*([^,>]+)>$/';
+        preg_match($regex, $type, $matches);
+        $class = $matches[1];
+        $args = array_splice($matches, $matches[2]? 2 : 3 );
+        if (strtolower($class) === 'array') {
+            if (count($args) > 1) {
+                $key   = $this->resolve(trim($args[0]), $context);
+                $value =  $this->resolve(trim($args[1]), $context);
+                return new Array_($value, $key);
+            } else {
+                $value =  $this->resolve(trim($args[0]), $context);
+                return new Array_($value);
+            }
+        } else {
+            return new Object_($this->fqsenResolver->resolve($class, $context));
+        }
     }
 
     /**
