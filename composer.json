@@ -6,7 +6,7 @@
         {"name": "Mike van Riel", "email": "me@mikevanriel.com"}
     ],
     "require": {
-        "php": ">=5.5",
+        "php": "^5.5 || ^7.0",
         "phpdocumentor/reflection-common": "^1.0"
     },
     "autoload": {
