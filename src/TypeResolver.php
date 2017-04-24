@@ -28,27 +28,27 @@ final class TypeResolver
 
     /** @var string[] List of recognized keywords and unto which Value Object they map */
     private $keywords = array(
-        'string' => 'phpDocumentor\Reflection\Types\String_',
-        'int' => 'phpDocumentor\Reflection\Types\Integer',
-        'integer' => 'phpDocumentor\Reflection\Types\Integer',
-        'bool' => 'phpDocumentor\Reflection\Types\Boolean',
-        'boolean' => 'phpDocumentor\Reflection\Types\Boolean',
-        'float' => 'phpDocumentor\Reflection\Types\Float_',
-        'double' => 'phpDocumentor\Reflection\Types\Float_',
-        'object' => 'phpDocumentor\Reflection\Types\Object_',
-        'mixed' => 'phpDocumentor\Reflection\Types\Mixed',
-        'array' => 'phpDocumentor\Reflection\Types\Array_',
-        'resource' => 'phpDocumentor\Reflection\Types\Resource',
-        'void' => 'phpDocumentor\Reflection\Types\Void_',
-        'null' => 'phpDocumentor\Reflection\Types\Null_',
-        'scalar' => 'phpDocumentor\Reflection\Types\Scalar',
-        'callback' => 'phpDocumentor\Reflection\Types\Callable_',
-        'callable' => 'phpDocumentor\Reflection\Types\Callable_',
-        'false' => 'phpDocumentor\Reflection\Types\Boolean',
-        'true' => 'phpDocumentor\Reflection\Types\Boolean',
-        'self' => 'phpDocumentor\Reflection\Types\Self_',
-        '$this' => 'phpDocumentor\Reflection\Types\This',
-        'static' => 'phpDocumentor\Reflection\Types\Static_',
+        'string' => Types\String_::class,
+        'int' => Types\Integer::class,
+        'integer' => Types\Integer::class,
+        'bool' => Types\Boolean::class,
+        'boolean' => Types\Boolean::class,
+        'float' => Types\Float_::class,
+        'double' => Types\Float_::class,
+        'object' => Object_::class,
+        'mixed' => Types\Mixed::class,
+        'array' => Array_::class,
+        'resource' => Types\Resource::class,
+        'void' => Types\Void_::class,
+        'null' => Types\Null_::class,
+        'scalar' => Types\Scalar::class,
+        'callback' => Types\Callable_::class,
+        'callable' => Types\Callable_::class,
+        'false' => Types\Boolean::class,
+        'true' => Types\Boolean::class,
+        'self' => Types\Self_::class,
+        '$this' => Types\This::class,
+        'static' => Types\Static_::class,
         'iterable' => Iterable_::class,
     );
 
@@ -239,6 +239,7 @@ final class TypeResolver
      * Resolves the given FQSEN string into an FQSEN object.
      *
      * @param string $type
+     * @param Context|null $context
      *
      * @return Object_
      */

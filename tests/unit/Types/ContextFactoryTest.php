@@ -47,11 +47,11 @@ namespace phpDocumentor\Reflection\Types {
         {
             $fixture = new ContextFactory();
             $expected = [
-                'm' => 'Mockery',
-                'DocBlock' => 'phpDocumentor\Reflection\DocBlock',
-                'Tag' => 'phpDocumentor\Reflection\DocBlock\Tag',
+                'm' => m::class,
+                'DocBlock' => DocBlock::class,
+                'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
-                'ReflectionClass' => 'ReflectionClass'
+                ReflectionClass::class => ReflectionClass::class
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
@@ -78,11 +78,11 @@ namespace phpDocumentor\Reflection\Types {
         {
             $fixture = new ContextFactory();
             $expected = [
-                'm'               => 'Mockery',
-                'DocBlock'        => 'phpDocumentor\Reflection\DocBlock',
-                'Tag'             => 'phpDocumentor\Reflection\DocBlock\Tag',
+                'm'               => m::class,
+                'DocBlock'        => DocBlock::class,
+                'Tag'             => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
-                'ReflectionClass' => 'ReflectionClass'
+                ReflectionClass::class => ReflectionClass::class
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 
@@ -95,7 +95,7 @@ namespace phpDocumentor\Reflection\Types {
          */
         public function testTraitUseIsNotDetectedAsNamespaceUse()
         {
-            $php = "<?php
+            $php = '<?php
                 namespace Foo;
 
                 trait FooTrait {}
@@ -103,7 +103,7 @@ namespace phpDocumentor\Reflection\Types {
                 class FooClass {
                     use FooTrait;
                 }
-            ";
+            ';
 
             $fixture = new ContextFactory();
             $context = $fixture->createForNamespace('Foo', $php);
@@ -156,7 +156,7 @@ namespace phpDocumentor\Reflection\Types {
         public function testEmptyFileName()
         {
             $fixture = new ContextFactory();
-            $context = $fixture->createFromReflector(new \ReflectionClass('stdClass'));
+            $context = $fixture->createFromReflector(new \ReflectionClass(\stdClass::class));
 
             $this->assertSame([], $context->getNamespaceAliases());
         }
