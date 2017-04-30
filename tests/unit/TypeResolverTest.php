@@ -401,6 +401,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
             ['$this', 'phpDocumentor\Reflection\Types\This'],
             ['static', 'phpDocumentor\Reflection\Types\Static_'],
             ['self', 'phpDocumentor\Reflection\Types\Self_'],
+            ['parent', 'phpDocumentor\Reflection\Types\Parent_'],
             ['iterable', Iterable_::class],
         ];
     }
