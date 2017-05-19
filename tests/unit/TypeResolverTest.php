@@ -17,8 +17,10 @@ use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use Mockery\MockInterface;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
@@ -149,8 +151,29 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
-     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
+     */
+    public function testResolvingNullableTypes()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Nullable $resolvedType */
+        $resolvedType = $fixture->resolve('?string', new Context(''));
+
+        $this->assertInstanceOf(Nullable::class, $resolvedType);
+        $this->assertInstanceOf(String_::class, $resolvedType->getActualType());
+        $this->assertSame('?string', (string)$resolvedType);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses phpDocumentor\Reflection\Types\Context
+     * @uses phpDocumentor\Reflection\Types\Array_
+     * @uses phpDocumentor\Reflection\Types\String_
      */
     public function testResolvingNestedTypedArrays()
     {
@@ -379,6 +402,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
             ['$this', Types\This::class],
             ['static', Types\Static_::class],
             ['self', Types\Self_::class],
+            ['parent', Types\Parent_::class],
             ['iterable', Iterable_::class],
         ];
     }

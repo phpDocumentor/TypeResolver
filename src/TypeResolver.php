@@ -16,6 +16,7 @@ use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 
 final class TypeResolver
@@ -49,6 +50,7 @@ final class TypeResolver
         'self' => Types\Self_::class,
         '$this' => Types\This::class,
         'static' => Types\Static_::class,
+        'parent' => Types\Parent_::class,
         'iterable' => Iterable_::class,
     );
 
@@ -102,6 +104,8 @@ final class TypeResolver
         }
 
         switch (true) {
+            case $this->isNullableType($type):
+                return $this->resolveNullableType($type, $context);
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
             case ($this->isCompoundType($type)):
@@ -209,6 +213,18 @@ final class TypeResolver
     }
 
     /**
+     * Test whether the given type is a nullable type (i.e. `?string`)
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    private function isNullableType($type)
+    {
+        return $type[0] === '?';
+    }
+
+    /**
      * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
      *
      * @param string $type
@@ -265,5 +281,18 @@ final class TypeResolver
         }
 
         return new Compound($types);
+    }
+
+    /**
+     * Resolve nullable types (i.e. `?string`) into a Nullable type wrapper
+     *
+     * @param string $type
+     * @param Context $context
+     *
+     * @return Nullable
+     */
+    private function resolveNullableType($type, Context $context)
+    {
+        return new Nullable($this->resolve(ltrim($type, '?'), $context));
     }
 }
