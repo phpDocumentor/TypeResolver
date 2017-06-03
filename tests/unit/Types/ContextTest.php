@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\Reflection\Types;
 
-use Mockery as m;
-
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Context
  */

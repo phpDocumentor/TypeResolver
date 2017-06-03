@@ -29,10 +29,10 @@ namespace phpDocumentor\Reflection\Types;
 final class Context
 {
     /** @var string The current namespace. */
-    private $namespace = '';
+    private $namespace;
 
     /** @var array List of namespace aliases => Fully Qualified Namespace. */
-    private $namespaceAliases = [];
+    private $namespaceAliases;
 
     /**
      * Initializes the new context and normalizes all passed namespaces to be in Qualified Namespace Name (QNN)
