@@ -12,6 +12,8 @@
 
 namespace phpDocumentor\Reflection\Types;
 
+use ArrayIterator;
+use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
 
 /**
@@ -21,7 +23,7 @@ use phpDocumentor\Reflection\Type;
  * using an OR operator (`|`). This combination of types signifies that whatever is associated with this compound type
  * may contain a value with any of the given types.
  */
-final class Compound implements Type
+final class Compound implements Type, IteratorAggregate
 {
     /** @var Type[] */
     private $types;
@@ -79,5 +81,13 @@ final class Compound implements Type
     public function __toString()
     {
         return implode('|', $this->types);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->types);
     }
 }
