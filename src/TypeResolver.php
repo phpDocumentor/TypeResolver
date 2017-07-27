@@ -27,6 +27,12 @@ final class TypeResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
+    /** @var integer the iterator parser is inside a compound context */
+    const PARSER_IN_COMPOUND = 0;
+
+    /** @var integer the iterator parser is inside a nullable expression context */
+    const PARSER_IN_NULLABLE = 1;
+
     /** @var string[] List of recognized keywords and unto which Value Object they map */
     private $keywords = array(
         'string' => Types\String_::class,
@@ -84,7 +90,7 @@ final class TypeResolver
      * @uses Context::getNamespaceAliases() to check whether the first part of the relative type name should not be
      *     replaced with another namespace.
      *
-     * @return Type|null
+     * @return Type
      */
     public function resolve($type, Context $context = null)
     {
@@ -103,13 +109,83 @@ final class TypeResolver
             $context = new Context('');
         }
 
+        // split the type string into tokens `|`, `?` and type names
+        $tokens = preg_split('/(\||\?)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $tokenIterator = new \ArrayIterator($tokens);
+        return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
+    }
+
+    /**
+     * Analyse each tokens and creates types
+     *
+     * @param \ArrayIterator $tokens  the iterator on tokens
+     * @param Context        $context
+     * @param integer        $parserContext on of self::PARSER_* constants, indicating
+     *                        the context where we are in the parsing
+     *
+     * @return Type
+     */
+    private function parseTypes(\ArrayIterator $tokens, Context $context, $parserContext)
+    {
+        $types = array();
+        $token = '';
+        while ($tokens->valid()) {
+            $token = $tokens->current();
+            if ($parserContext === self::PARSER_IN_COMPOUND && $token == '|') {
+                if (count($types) == 0) {
+                    throw new \RuntimeException(
+                        'A type is missing before a type separator'
+                    );
+                }
+                $tokens->next();
+            } else if ($parserContext === self::PARSER_IN_COMPOUND
+                       && $token == '?'
+                ) {
+                $tokens->next();
+                $type = $this->parseTypes($tokens, $context, self::PARSER_IN_NULLABLE);
+                $types[] = new Nullable($type);
+            } else {
+                $type = $this->resolveSingleType($token, $context);
+                $tokens->next();
+                if ($parserContext === self::PARSER_IN_NULLABLE) {
+                    return $type;
+                }
+                $types[] = $type;
+            }
+        }
+
+        if ($token == '|') {
+            throw new \RuntimeException(
+                'A type is missing after a type separator'
+            );
+        }
+        if (count($types) == 0) {
+            if ($parserContext == self::PARSER_IN_NULLABLE) {
+                throw new \RuntimeException(
+                    'A type is missing after a nullable character'
+                );
+            }
+            throw new \RuntimeException(
+                'No types in a compound list'
+            );
+        } else if (count($types) == 1) {
+            return $types[0];
+        }
+        return new Compound($types);
+    }
+
+    /**
+     * resolve the given type into a type object
+     *
+     * @param string    $type      the type string, representing a single type
+     * @param Context   $context
+     * @return Type|Array_|Object_
+     */
+    private function resolveSingleType($type, Context $context)
+    {
         switch (true) {
-            case $this->isNullableType($type):
-                return $this->resolveNullableType($type, $context);
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
-            case ($this->isCompoundType($type)):
-                return $this->resolveCompoundType($type, $context);
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
             case $this->isFqsen($type):
@@ -201,30 +277,6 @@ final class TypeResolver
     }
 
     /**
-     * Tests whether the given type is a compound type (i.e. `string|int`).
-     *
-     * @param string $type
-     *
-     * @return bool
-     */
-    private function isCompoundType($type)
-    {
-        return strpos($type, '|') !== false;
-    }
-
-    /**
-     * Test whether the given type is a nullable type (i.e. `?string`)
-     *
-     * @param string $type
-     *
-     * @return bool
-     */
-    private function isNullableType($type)
-    {
-        return $type[0] === '?';
-    }
-
-    /**
      * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
      *
      * @param string $type
@@ -234,7 +286,7 @@ final class TypeResolver
      */
     private function resolveTypedArray($type, Context $context)
     {
-        return new Array_($this->resolve(substr($type, 0, -2), $context));
+        return new Array_($this->resolveSingleType(substr($type, 0, -2), $context));
     }
 
     /**
@@ -262,37 +314,5 @@ final class TypeResolver
     private function resolveTypedObject($type, Context $context = null)
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
-    }
-
-    /**
-     * Resolves a compound type (i.e. `string|int`) into the appropriate Type objects or FQSEN.
-     *
-     * @param string $type
-     * @param Context $context
-     *
-     * @return Compound
-     */
-    private function resolveCompoundType($type, Context $context)
-    {
-        $types = [];
-
-        foreach (explode('|', $type) as $part) {
-            $types[] = $this->resolve($part, $context);
-        }
-
-        return new Compound($types);
-    }
-
-    /**
-     * Resolve nullable types (i.e. `?string`) into a Nullable type wrapper
-     *
-     * @param string $type
-     * @param Context $context
-     *
-     * @return Nullable
-     */
-    private function resolveNullableType($type, Context $context)
-    {
-        return new Nullable($this->resolve(ltrim($type, '?'), $context));
     }
 }
