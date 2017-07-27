@@ -81,6 +81,10 @@ final class Array_ implements Type
             return 'array';
         }
 
+        if ($this->valueType instanceof Compound) {
+            return '(' . $this->valueType . ')[]';
+        }
+
         return $this->valueType . '[]';
     }
 }

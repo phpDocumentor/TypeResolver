@@ -39,6 +39,7 @@ The TypeResolver can resolve:
 - a php primitive or pseudo-primitive such as a string or void (`@var string` or `@return void`).
 - a composite such as an array of string (`@var string[]`).
 - a compound such as a string or integer (`@var string|integer`).
+- an array expression (`@var (string|TypeResolver)[]`)
 - an object or interface such as the TypeResolver class (`@var TypeResolver` 
   or `@var \phpDocumentor\Reflection\TypeResolver`)
 

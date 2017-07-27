@@ -33,6 +33,9 @@ final class TypeResolver
     /** @var integer the iterator parser is inside a nullable expression context */
     const PARSER_IN_NULLABLE = 1;
 
+    /** @var integer the iterator parser is inside an array expression context */
+    const PARSER_IN_ARRAY_EXPRESSION = 2;
+
     /** @var string[] List of recognized keywords and unto which Value Object they map */
     private $keywords = array(
         'string' => Types\String_::class,
@@ -109,9 +112,10 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        // split the type string into tokens `|`, `?` and type names
-        $tokens = preg_split('/(\||\?)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        // split the type string into tokens `|`, `?`, `(`, `)[]` and type names
+        $tokens = preg_split('/(\||\?|\(|\)(?:\[\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $tokenIterator = new \ArrayIterator($tokens);
+
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
     }
 
@@ -131,19 +135,53 @@ final class TypeResolver
         $token = '';
         while ($tokens->valid()) {
             $token = $tokens->current();
-            if ($parserContext === self::PARSER_IN_COMPOUND && $token == '|') {
+
+            if ($token == '|') {
                 if (count($types) == 0) {
                     throw new \RuntimeException(
                         'A type is missing before a type separator'
                     );
                 }
+                if ($parserContext !== self::PARSER_IN_COMPOUND
+                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION) {
+                    throw new \RuntimeException(
+                        'Unexpected type separator'
+                    );
+                }
                 $tokens->next();
-            } else if ($parserContext === self::PARSER_IN_COMPOUND
-                       && $token == '?'
-                ) {
+
+            } else if ($token == '?') {
+                if ($parserContext !== self::PARSER_IN_COMPOUND
+                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION) {
+                    throw new \RuntimeException(
+                        'Unexpected nullable character'
+                    );
+                }
+
                 $tokens->next();
                 $type = $this->parseTypes($tokens, $context, self::PARSER_IN_NULLABLE);
                 $types[] = new Nullable($type);
+
+            } else if ($token === '(') {
+                $tokens->next();
+                $type = $this->parseTypes($tokens, $context, self::PARSER_IN_ARRAY_EXPRESSION);
+
+                $resolvedType = new Array_($type);
+
+                // we generates arrays corresponding to the number of '[]'
+                // after the ')'
+                $numberOfArrays = (strlen($tokens->current()) -1) / 2;
+                for ($i = 0; $i < $numberOfArrays - 1; $i++) {
+                    $resolvedType = new Array_($resolvedType);
+                }
+                $types[] = $resolvedType;
+                $tokens->next();
+
+            } else if ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION
+                       && $token[0] === ')'
+                ) {
+                break;
+
             } else {
                 $type = $this->resolveSingleType($token, $context);
                 $tokens->next();
@@ -163,6 +201,11 @@ final class TypeResolver
             if ($parserContext == self::PARSER_IN_NULLABLE) {
                 throw new \RuntimeException(
                     'A type is missing after a nullable character'
+                );
+            }
+            if ($parserContext == self::PARSER_IN_ARRAY_EXPRESSION) {
+                throw new \RuntimeException(
+                    'A type is missing in an array expression'
                 );
             }
             throw new \RuntimeException(
