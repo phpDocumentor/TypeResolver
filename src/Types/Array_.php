@@ -23,31 +23,33 @@ use phpDocumentor\Reflection\Type;
  * 2. Types (`string[]`), where the value type is provided by preceding an opening and closing square bracket with a
  *    type name.
  */
-final class Array_ implements Type
+class Array_ implements Type
 {
     /** @var Type */
-    private $valueType;
+    protected $valueType;
+
+    /** @var Type|null */
+    protected $keyType;
 
     /** @var Type */
-    private $keyType;
+    protected $defaultKeyType;
 
     /**
-     * Initializes this representation of an array with the given Type or Fqsen.
+     * Initializes this representation of an array with the given Type.
      *
      * @param Type $valueType
      * @param Type $keyType
      */
     public function __construct(Type $valueType = null, Type $keyType = null)
     {
-        if ($keyType === null) {
-            $keyType = new Compound([ new String_(), new Integer() ]);
-        }
         if ($valueType === null) {
             $valueType = new Mixed_();
         }
 
         $this->valueType = $valueType;
+        $this->defaultKeyType = new Compound([ new String_(), new Integer() ]);
         $this->keyType = $keyType;
+
     }
 
     /**
@@ -57,6 +59,9 @@ final class Array_ implements Type
      */
     public function getKeyType()
     {
+        if ($this->keyType === null) {
+            return $this->defaultKeyType;
+        }
         return $this->keyType;
     }
 
@@ -77,6 +82,10 @@ final class Array_ implements Type
      */
     public function __toString()
     {
+        if ($this->keyType) {
+            return 'array<'.$this->keyType.','.$this->valueType.'>';
+        }
+
         if ($this->valueType instanceof Mixed_) {
             return 'array';
         }

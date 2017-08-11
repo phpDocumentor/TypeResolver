@@ -172,9 +172,9 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      * @covers ::resolve
      * @covers ::<private>
      *
-     * @uses phpDocumentor\Reflection\Types\Context
-     * @uses phpDocumentor\Reflection\Types\Array_
-     * @uses phpDocumentor\Reflection\Types\String_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\String_
      */
     public function testResolvingNestedTypedArrays()
     {
