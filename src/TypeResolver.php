@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\Integer;
 
 final class TypeResolver
 {
@@ -35,6 +38,10 @@ final class TypeResolver
 
     /** @var integer the iterator parser is inside an array expression context */
     const PARSER_IN_ARRAY_EXPRESSION = 2;
+
+    /** @var integer the iterator parser is inside a collection expression context */
+    const PARSER_IN_COLLECTION_EXPRESSION = 3;
+
 
     /** @var string[] List of recognized keywords and unto which Value Object they map */
     private $keywords = array(
@@ -112,8 +119,8 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        // split the type string into tokens `|`, `?`, `(`, `)[]` and type names
-        $tokens = preg_split('/(\||\?|\(|\)(?:\[\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        // split the type string into tokens `|`, `?`, `(`, `)[]`, '<', '>' and type names
+        $tokens = preg_split('/(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $tokenIterator = new \ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
@@ -143,7 +150,9 @@ final class TypeResolver
                     );
                 }
                 if ($parserContext !== self::PARSER_IN_COMPOUND
-                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION) {
+                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION
+                    && $parserContext !== self::PARSER_IN_COLLECTION_EXPRESSION
+                ) {
                     throw new \RuntimeException(
                         'Unexpected type separator'
                     );
@@ -152,7 +161,9 @@ final class TypeResolver
 
             } else if ($token == '?') {
                 if ($parserContext !== self::PARSER_IN_COMPOUND
-                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION) {
+                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION
+                    && $parserContext !== self::PARSER_IN_COLLECTION_EXPRESSION
+                ) {
                     throw new \RuntimeException(
                         'Unexpected nullable character'
                     );
@@ -182,6 +193,22 @@ final class TypeResolver
                 ) {
                 break;
 
+            } else if ($token === '<') {
+                if (count($types) === 0) {
+                    throw new \RuntimeException(
+                        'Unexpected collection operator "<", class name is missing'
+                    );
+                }
+                $classType = array_pop($types);
+
+                $types[] = $this->resolveCollection($tokens, $classType, $context);
+
+                $tokens->next();
+
+            } else if ($parserContext === self::PARSER_IN_COLLECTION_EXPRESSION
+                && ($token === '>' || $token === ',')
+                ) {
+                break;
             } else {
                 $type = $this->resolveSingleType($token, $context);
                 $tokens->next();
@@ -197,6 +224,7 @@ final class TypeResolver
                 'A type is missing after a type separator'
             );
         }
+
         if (count($types) == 0) {
             if ($parserContext == self::PARSER_IN_NULLABLE) {
                 throw new \RuntimeException(
@@ -206,6 +234,11 @@ final class TypeResolver
             if ($parserContext == self::PARSER_IN_ARRAY_EXPRESSION) {
                 throw new \RuntimeException(
                     'A type is missing in an array expression'
+                );
+            }
+            if ($parserContext == self::PARSER_IN_COLLECTION_EXPRESSION) {
+                throw new \RuntimeException(
+                    'A type is missing in a collection expression'
                 );
             }
             throw new \RuntimeException(
@@ -357,5 +390,80 @@ final class TypeResolver
     private function resolveTypedObject($type, Context $context = null)
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
+    }
+
+    /**
+     * Resolves the collection values and keys
+     *
+     * @param \ArrayIterator $tokens
+     * @param Type $classType
+     * @param Context|null $context
+     * @return Array_|Collection
+     */
+    private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context = null) {
+
+        $isArray = ('array' == (string) $classType);
+
+        // allow only "array" or class name before "<"
+        if (!$isArray
+            && (! $classType instanceof Object_ || $classType->getFqsen() === null)) {
+            throw new \RuntimeException(
+                $classType.' is not a collection'
+            );
+        }
+
+        $tokens->next();
+
+        $valueType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
+        $keyType = null;
+
+        if ($tokens->current() == ',') {
+            // if we have a coma, then we just parsed the key type, not the value type
+            $keyType = $valueType;
+            if ($isArray) {
+                // check the key type for an "array" collection. We allow only
+                // strings or integers.
+                if (! $keyType instanceof String_ &&
+                    ! $keyType instanceof Integer &&
+                    ! $keyType instanceof Compound
+                ) {
+                    throw new \RuntimeException(
+                        'An array can have only integers or strings as keys'
+                    );
+                }
+                if ($keyType instanceof Compound) {
+                    foreach($keyType->getIterator() as $item) {
+                        if (! $item instanceof String_ &&
+                            ! $item instanceof Integer
+                        ) {
+                            throw new \RuntimeException(
+                                'An array can have only integers or strings as keys'
+                            );
+                        }
+                    }
+                }
+            }
+            $tokens->next();
+            // now let's parse the value type
+            $valueType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
+        }
+
+        if ($tokens->current() !== '>') {
+            if ($tokens->current() == '') {
+                throw new \RuntimeException(
+                    'Collection: ">" is missing'
+                );
+            }
+
+            throw new \RuntimeException(
+                'Unexpected character "'.$tokens->current().'", ">" is missing'
+            );
+        }
+        if ($isArray) {
+            return new Array_($valueType, $keyType);
+        }
+        else {
+            return new Collection($classType->getFqsen(), $valueType, $keyType);
+        }
     }
 }
