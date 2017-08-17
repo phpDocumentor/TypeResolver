@@ -12,8 +12,6 @@
 
 namespace phpDocumentor\Reflection\Types;
 
-use phpDocumentor\Reflection\Type;
-
 /**
  * Represents an array type as described in the PSR-5, the PHPDoc Standard.
  *
@@ -23,77 +21,6 @@ use phpDocumentor\Reflection\Type;
  * 2. Types (`string[]`), where the value type is provided by preceding an opening and closing square bracket with a
  *    type name.
  */
-class Array_ implements Type
+final class Array_ extends AbstractList
 {
-    /** @var Type */
-    protected $valueType;
-
-    /** @var Type|null */
-    protected $keyType;
-
-    /** @var Type */
-    protected $defaultKeyType;
-
-    /**
-     * Initializes this representation of an array with the given Type.
-     *
-     * @param Type $valueType
-     * @param Type $keyType
-     */
-    public function __construct(Type $valueType = null, Type $keyType = null)
-    {
-        if ($valueType === null) {
-            $valueType = new Mixed_();
-        }
-
-        $this->valueType = $valueType;
-        $this->defaultKeyType = new Compound([ new String_(), new Integer() ]);
-        $this->keyType = $keyType;
-
-    }
-
-    /**
-     * Returns the type for the keys of this array.
-     *
-     * @return Type
-     */
-    public function getKeyType()
-    {
-        if ($this->keyType === null) {
-            return $this->defaultKeyType;
-        }
-        return $this->keyType;
-    }
-
-    /**
-     * Returns the value for the keys of this array.
-     *
-     * @return Type
-     */
-    public function getValueType()
-    {
-        return $this->valueType;
-    }
-
-    /**
-     * Returns a rendered output of the Type as it would be used in a DocBlock.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        if ($this->keyType) {
-            return 'array<'.$this->keyType.','.$this->valueType.'>';
-        }
-
-        if ($this->valueType instanceof Mixed_) {
-            return 'array';
-        }
-
-        if ($this->valueType instanceof Compound) {
-            return '(' . $this->valueType . ')[]';
-        }
-
-        return $this->valueType . '[]';
-    }
 }

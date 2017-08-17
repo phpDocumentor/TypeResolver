@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\Fqsen;
  * - ACollectionObject can be 'array' or an object that can act as an array
  * - aValueType and aKeyType can be any type expression
  */
-class Collection extends Array_
+final class Collection extends AbstractList
 {
 
     /** @var Fqsen */
@@ -43,7 +43,6 @@ class Collection extends Array_
         parent::__construct($valueType, $keyType);
 
         $this->fqsen = $fqsen;
-
     }
 
     /**
@@ -66,6 +65,7 @@ class Collection extends Array_
         if ($this->keyType === null) {
             return $this->fqsen.'<'.$this->valueType . '>';
         }
+
         return $this->fqsen.'<'.$this->keyType . ',' . $this->valueType . '>';
     }
 }

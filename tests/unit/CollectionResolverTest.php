@@ -12,19 +12,14 @@
 
 namespace phpDocumentor\Reflection;
 
-use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\Iterable_;
-use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
-use phpDocumentor\Reflection\Types\Boolean;
-use Mockery\MockInterface;
-use phpDocumentor\Reflection\Types\String_;
 
 /**
+ * @covers ::<private>
  * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
  */
 class CollectionResolverTest extends \PHPUnit_Framework_TestCase
@@ -33,7 +28,6 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
@@ -65,7 +59,6 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
@@ -99,7 +92,6 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
@@ -129,7 +121,6 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
@@ -159,7 +150,6 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
@@ -192,11 +182,9 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Types\Float_::class, $keyType->get(2));
     }
 
-
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      * @expectedException \RuntimeException
      * @expectedExceptionMessage An array can have only integers or strings as keys
      */
@@ -204,13 +192,11 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TypeResolver();
         $fixture->resolve('array<object,string>', new Context(''));
-
     }
 
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Unexpected collection operator "<", class name is missing
      */
@@ -218,13 +204,11 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TypeResolver();
         $fixture->resolve('<string>', new Context(''));
-
     }
 
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Collection: ">" is missing
      */
@@ -232,14 +216,11 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TypeResolver();
         $fixture->resolve('ArrayObject<object|string', new Context(''));
-
     }
-
 
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @covers ::<private>
      * @expectedException \RuntimeException
      * @expectedExceptionMessage string is not a collection
      */
@@ -247,6 +228,34 @@ class CollectionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $fixture = new TypeResolver();
         $fixture->resolve('string<integer>', new Context(''));
+    }
 
+    /**
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Collection
+     * @uses \phpDocumentor\Reflection\Types\String_
+     */
+    public function testResolvingCollectionAsArray() {
+        $fixture = new TypeResolver();
+
+        /** @var Collection $resolvedType */
+        $resolvedType = $fixture->resolve('array<string,float>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<string,float>', (string)$resolvedType);
+
+        /** @var Array_ $valueType */
+        $valueType = $resolvedType->getValueType();
+
+        /** @var Compound $keyType */
+        $keyType = $resolvedType->getKeyType();
+
+        $this->assertInstanceOf(Types\Float_::class, $valueType);
+        $this->assertInstanceOf(Types\String_::class, $keyType);
     }
 }
