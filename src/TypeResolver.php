@@ -331,7 +331,7 @@ final class TypeResolver
      */
     private function isKeyword($type)
     {
-        return in_array(strtolower($type), array_keys($this->keywords), true);
+        return array_key_exists(strtolower($type), $this->keywords);
     }
 
     /**
