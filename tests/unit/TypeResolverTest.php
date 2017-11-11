@@ -22,11 +22,12 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Boolean;
 use Mockery\MockInterface;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
  */
-class TypeResolverTest extends \PHPUnit_Framework_TestCase
+class TypeResolverTest extends TestCase
 {
     /**
      * @param string $keyword

@@ -12,10 +12,12 @@
 
 namespace phpDocumentor\Reflection\Types;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Compound
  */
-class CompoundTest extends \PHPUnit_Framework_TestCase
+class CompoundTest extends TestCase
 {
     /**
      * @covers ::__construct

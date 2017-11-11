@@ -18,12 +18,13 @@ namespace phpDocumentor\Reflection\Types {
         phpDocumentor\Reflection\DocBlock\Tag;
     use phpDocumentor;
     use \ReflectionClass; // yes, the slash is part of the test
+    use PHPUnit\Framework\TestCase;
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
      * @covers ::<private>
      */
-    class ContextFactoryTest extends \PHPUnit_Framework_TestCase
+    class ContextFactoryTest extends TestCase
     {
         /**
          * @covers ::createFromReflector
@@ -51,7 +52,8 @@ namespace phpDocumentor\Reflection\Types {
                 'DocBlock' => DocBlock::class,
                 'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
-                ReflectionClass::class => ReflectionClass::class
+                ReflectionClass::class => ReflectionClass::class,
+                'TestCase' => TestCase::class
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
@@ -82,7 +84,8 @@ namespace phpDocumentor\Reflection\Types {
                 'DocBlock'        => DocBlock::class,
                 'Tag'             => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
-                ReflectionClass::class => ReflectionClass::class
+                ReflectionClass::class => ReflectionClass::class,
+                'TestCase' => TestCase::class,
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 

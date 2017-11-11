@@ -12,10 +12,12 @@
 
 namespace phpDocumentor\Reflection\Types;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Nullable
  */
-class NullableTest extends \PHPUnit_Framework_TestCase
+class NullableTest extends TestCase
 {
     /**
      * @covers ::__construct

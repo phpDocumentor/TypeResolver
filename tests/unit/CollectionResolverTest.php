@@ -17,12 +17,13 @@ use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Object_;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers ::<private>
  * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
  */
-class CollectionResolverTest extends \PHPUnit_Framework_TestCase
+class CollectionResolverTest extends TestCase
 {
     /**
      *
