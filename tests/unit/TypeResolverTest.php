@@ -598,4 +598,9 @@ class TypeResolverTest extends TestCase
             'class'     => ['\phpDocumentor\Reflection\DocBlock'],
         ];
     }
+
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
 }
