@@ -182,6 +182,11 @@ PHP
 
             $this->assertSame([], $context->getNamespaceAliases());
         }
+
+        public function tearDown()
+        {
+            \Mockery::close();
+        }
     }
 }
 
