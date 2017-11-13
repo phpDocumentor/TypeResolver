@@ -80,9 +80,9 @@ namespace phpDocumentor\Reflection\Types {
         {
             $fixture = new ContextFactory();
             $expected = [
-                'm'               => m::class,
-                'DocBlock'        => DocBlock::class,
-                'Tag'             => Tag::class,
+                'm' => m::class,
+                'DocBlock' => DocBlock::class,
+                'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
                 ReflectionClass::class => ReflectionClass::class,
                 'TestCase' => TestCase::class,
