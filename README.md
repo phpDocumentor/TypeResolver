@@ -1,7 +1,6 @@
 # TypeResolver and FqsenResolver
 
 [![Build Status](https://img.shields.io/travis/phpDocumentor/TypeResolver/master.svg?style=flat-square)](https://travis-ci.org/phpDocumentor/TypeResolver)
-
 [![Code Coverage](https://img.shields.io/coveralls/phpDocumentor/TypeResolver/master.svg?style=flat-square)](https://coveralls.io/github/phpDocumentor/TypeResolver)
 
 The specification on types in DocBlocks (PSR-5) describes various keywords and special constructs
