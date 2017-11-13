@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -98,7 +98,7 @@ namespace phpDocumentor\Reflection\Types {
          */
         public function testTraitUseIsNotDetectedAsNamespaceUse()
         {
-            $php = '<?php
+            $php = '<?php declare(strict_types=1);
                 namespace Foo;
 
                 trait FooTrait {}
@@ -120,7 +120,7 @@ namespace phpDocumentor\Reflection\Types {
          */
         public function testAllOpeningBracesAreCheckedWhenSearchingForEndOfClass()
         {
-            $php = '<?php
+            $php = '<?php declare(strict_types=1);
                 namespace Foo;
 
                 trait FooTrait {}

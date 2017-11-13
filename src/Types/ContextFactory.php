@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -47,7 +47,7 @@ final class ContextFactory
         $fileName = $reflector->getFileName();
         $namespace = $reflector->getNamespaceName();
 
-        if (file_exists($fileName)) {
+        if ($fileName && file_exists($fileName)) {
             return $this->createForNamespace($namespace, file_get_contents($fileName));
         }
 
