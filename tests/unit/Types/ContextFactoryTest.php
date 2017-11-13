@@ -17,8 +17,8 @@ namespace phpDocumentor\Reflection\Types {
     use phpDocumentor\Reflection\DocBlock,
         phpDocumentor\Reflection\DocBlock\Tag;
     use phpDocumentor;
-    use \ReflectionClass; // yes, the slash is part of the test
     use PHPUnit\Framework\TestCase;
+    use \ReflectionClass; // yes, the slash is part of the test
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
