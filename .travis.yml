@@ -1,29 +1,26 @@
 language: php
-dist: trusty
+
 php:
   - 7.0
   - 7.1
-  - nightly
-
-matrix:
-  allow_failures:
-    - php:
-      - nightly
+  - 7.2
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-script:
-  - vendor/bin/phpunit --coverage-clover=coverage.clover -v
-  - composer update --no-interaction --prefer-source
-  - vendor/bin/phpunit -v
-
-before_script:
+install:
  - composer install --no-interaction
 
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.clover -v
+
 after_script:
-  - if [ $TRAVIS_PHP_VERSION = '7.0' ]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - |
+    if [ $TRAVIS_PHP_VERSION = '7.1' ]; then
+      wget https://scrutinizer-ci.com/ocular.phar;
+      php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+    fi
 
 notifications:
   irc: "irc.freenode.org#phpdocumentor"
