@@ -29,6 +29,15 @@ use PHPUnit\Framework\TestCase;
  */
 class TypeResolverTest extends TestCase
 {
+
+    /**
+     * Call Mockery::close after each test.
+     */
+    public function tearDown()
+    {
+        m::close();
+    }
+
     /**
      * @param string $keyword
      * @param string $expectedClass
