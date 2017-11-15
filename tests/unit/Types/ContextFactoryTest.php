@@ -52,8 +52,8 @@ namespace phpDocumentor\Reflection\Types {
                 'DocBlock' => DocBlock::class,
                 'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
+                'TestCase' => TestCase::class,
                 ReflectionClass::class => ReflectionClass::class,
-                'TestCase' => TestCase::class
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
@@ -84,8 +84,8 @@ namespace phpDocumentor\Reflection\Types {
                 'DocBlock' => DocBlock::class,
                 'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
-                ReflectionClass::class => ReflectionClass::class,
                 'TestCase' => TestCase::class,
+                ReflectionClass::class => ReflectionClass::class,
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 
