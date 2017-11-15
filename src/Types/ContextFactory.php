@@ -47,7 +47,7 @@ final class ContextFactory
         $fileName = $reflector->getFileName();
         $namespace = $reflector->getNamespaceName();
 
-        if ($fileName && file_exists($fileName)) {
+        if (is_string($fileName) && file_exists($fileName)) {
             return $this->createForNamespace($namespace, file_get_contents($fileName));
         }
 
