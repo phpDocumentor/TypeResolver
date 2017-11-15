@@ -599,8 +599,4 @@ class TypeResolverTest extends TestCase
         ];
     }
 
-    public function tearDown()
-    {
-        \Mockery::close();
-    }
 }
