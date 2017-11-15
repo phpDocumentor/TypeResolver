@@ -47,19 +47,13 @@ final class TypeResolver
     private $keywords = array(
         'string' => Types\String_::class,
         'int' => Types\Integer::class,
-        'integer' => Types\Integer::class,
         'bool' => Types\Boolean::class,
-        'boolean' => Types\Boolean::class,
         'float' => Types\Float_::class,
-        'double' => Types\Float_::class,
         'object' => Object_::class,
-        'mixed' => Types\Mixed_::class,
         'array' => Array_::class,
         'resource' => Types\Resource_::class,
         'void' => Types\Void_::class,
         'null' => Types\Null_::class,
-        'scalar' => Types\Scalar::class,
-        'callback' => Types\Callable_::class,
         'callable' => Types\Callable_::class,
         'false' => Types\Boolean::class,
         'true' => Types\Boolean::class,
@@ -68,6 +62,16 @@ final class TypeResolver
         'static' => Types\Static_::class,
         'parent' => Types\Parent_::class,
         'iterable' => Iterable_::class,
+    );
+
+    /** @var string[] List of recognized pseudo keywords and unto which Value Object they map */
+    private $pseudoKeywords = array(
+        'integer' => Types\Integer::class,
+        'double' => Types\Float_::class,
+        'boolean' => Types\Boolean::class,
+        'mixed' => Types\Mixed_::class,
+        'scalar' => Types\Scalar::class,
+        'callback' => Types\Callable_::class,
     );
 
     /** @var FqsenResolver */
@@ -262,6 +266,8 @@ final class TypeResolver
         switch (true) {
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
+            case $this->isPseudoKeyword($type):
+                return $this->resolvePseudoKeyword($type);
             case $this->isTypedArray($type):
                 return $this->resolveTypedArray($type, $context);
             case $this->isFqsen($type):
@@ -325,7 +331,19 @@ final class TypeResolver
      */
     private function isKeyword($type)
     {
-        return in_array(strtolower($type), array_keys($this->keywords), true);
+        return array_key_exists(strtolower($type), $this->keywords);
+    }
+
+    /**
+     * Detects whether the given type represents a PHPDoc pseudo keyword.
+     *
+     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
+     *
+     * @return bool
+     */
+    private function isPseudoKeyword($type)
+    {
+        return array_key_exists($type, $this->pseudoKeywords);
     }
 
     /**
@@ -375,6 +393,20 @@ final class TypeResolver
     private function resolveKeyword($type)
     {
         $className = $this->keywords[strtolower($type)];
+
+        return new $className();
+    }
+
+    /**
+     * Resolves the given pseudo keyword (such as `scalar`) into a Type object representing that keyword.
+     *
+     * @param string $type
+     *
+     * @return Type
+     */
+    private function resolvePseudoKeyword($type)
+    {
+        $className = $this->pseudoKeywords[$type];
 
         return new $className();
     }

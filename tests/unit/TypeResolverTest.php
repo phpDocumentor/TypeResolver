@@ -55,10 +55,43 @@ class TypeResolverTest extends TestCase
     public function testResolvingKeywords($keyword, $expectedClass)
     {
         $fixture = new TypeResolver();
+        $context = new Context('');
 
-        $resolvedType = $fixture->resolve($keyword, new Context(''));
+        $resolvedType = $fixture->resolve($keyword, $context);
 
         $this->assertInstanceOf($expectedClass, $resolvedType);
+
+        $resolvedType = $fixture->resolve(strtoupper($keyword), $context);
+
+        $this->assertInstanceOf($expectedClass, $resolvedType);
+    }
+
+    /**
+     * @param string $pseudoKeyword
+     * @param string $expectedClass
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     *
+     * @dataProvider providePseudoKeywords
+     */
+    public function testResolvingPseudoKeywords($pseudoKeyword, $expectedClass)
+    {
+        $fixture = new TypeResolver();
+        $context = new Context('');
+
+        $resolvedType = $fixture->resolve($pseudoKeyword, $context);
+
+        $this->assertInstanceOf($expectedClass, $resolvedType);
+
+        $resolvedType = $fixture->resolve(strtoupper($pseudoKeyword), $context);
+
+        $this->assertInstanceOf(Object_::class, $resolvedType);
     }
 
     /**
@@ -564,25 +597,36 @@ class TypeResolverTest extends TestCase
         return [
             ['string', Types\String_::class],
             ['int', Types\Integer::class],
-            ['integer', Types\Integer::class],
             ['float', Types\Float_::class],
-            ['double', Types\Float_::class],
             ['bool', Types\Boolean::class],
-            ['boolean', Types\Boolean::class],
             ['resource', Types\Resource_::class],
             ['null', Types\Null_::class],
             ['callable', Types\Callable_::class],
-            ['callback', Types\Callable_::class],
             ['array', Array_::class],
-            ['scalar', Types\Scalar::class],
             ['object', Object_::class],
-            ['mixed', Types\Mixed_::class],
             ['void', Types\Void_::class],
             ['$this', Types\This::class],
             ['static', Types\Static_::class],
             ['self', Types\Self_::class],
             ['parent', Types\Parent_::class],
             ['iterable', Iterable_::class],
+        ];
+    }
+
+    /**
+     * Returns a list of pseudo keywords and expected classes that are created from them.
+     *
+     * @return string[][]
+     */
+    public function providePseudoKeywords()
+    {
+        return [
+            ['integer', Types\Integer::class],
+            ['double', Types\Float_::class],
+            ['boolean', Types\Boolean::class],
+            ['callback', Types\Callable_::class],
+            ['scalar', Types\Scalar::class],
+            ['mixed', Types\Mixed_::class],
         ];
     }
 
