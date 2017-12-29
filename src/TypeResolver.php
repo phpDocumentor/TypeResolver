@@ -50,6 +50,7 @@ final class TypeResolver
         'integer' => Types\Integer::class,
         'bool' => Types\Boolean::class,
         'boolean' => Types\Boolean::class,
+        'real' => Types\Float_::class,
         'float' => Types\Float_::class,
         'double' => Types\Float_::class,
         'object' => Object_::class,
