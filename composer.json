@@ -9,11 +9,11 @@
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": ">=7.1",
         "phpdocumentor/reflection-common": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4",
+        "phpunit/phpunit": "^6.5",
         "mockery/mockery": "^1.0"
     },
     "autoload": {
