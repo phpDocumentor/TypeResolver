@@ -17,14 +17,5 @@ parameters:
         - PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer
 
     skip:
-#        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
-#            # WIP code
-#            - src/DocBlock/StandardTagFactory.php
-#        PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\EmptyStatementSniff:
-#            # WIP code
-#            - src/DocBlock/StandardTagFactory.php
-#        PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff:
-#            - src/DocBlock/Tags/Return_.php
-#            - src/DocBlock/Tags/Var_.php
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - */tests/**
