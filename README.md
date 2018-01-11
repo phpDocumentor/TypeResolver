@@ -1,16 +1,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Travis Status](https://travis-ci.org/phpDocumentor/TypeResolver.svg?branch=master)](https://travis-ci.org/phpDocumentor/TypeResolver)
-[![Appveyor Status](https://ci.appveyor.com/api/projects/status/eqx2s0oqhjgvlh04/branch/master?svg=true)](https://ci.appveyor.com/project/phpDocumentor/typeresolver/branch/master)
-[![Code Quality](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/phpDocumentor/TypeResolver/badge.svg?branch=master)](https://coveralls.io/github/phpDocumentor/TypeResolver?branch=master)
-[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
+[![Travis Status](https://img.shields.io/travis/phpDocumentor/TypeResolver.svg?label=Linux)](https://travis-ci.org/phpDocumentor/TypeResolver)
+[![Appveyor Status](https://img.shields.io/appveyor/ci/phpDocumentor/TypeResolver.svg?label=Windows)](https://ci.appveyor.com/project/phpDocumentor/TypeResolver/branch/master)
+[![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/TypeResolver.svg)](https://coveralls.io/github/phpDocumentor/TypeResolver?branch=master)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
+[![Stable Version](https://img.shields.io/packagist/v/phpDocumentor/TypeResolver.svg)](https://packagist.org/packages/phpDocumentor/TypeResolver)
+[![Unstable Version](https://img.shields.io/packagist/vpre/phpDocumentor/TypeResolver.svg)](https://packagist.org/packages/phpDocumentor/TypeResolver)
 
 
-# TypeResolver and FqsenResolver
-
-[![Build Status](https://img.shields.io/travis/phpDocumentor/TypeResolver/master.svg?style=flat-square)](https://travis-ci.org/phpDocumentor/TypeResolver)
-[![Code Coverage](https://img.shields.io/coveralls/phpDocumentor/TypeResolver/master.svg?style=flat-square)](https://coveralls.io/github/phpDocumentor/TypeResolver)
+TypeResolver and FqsenResolver
+==============================
 
 The specification on types in DocBlocks (PSR-5) describes various keywords and special constructs
 but also how to statically resolve the partial name of a Class into a Fully Qualified Class Name (FQCN).
