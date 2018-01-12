@@ -51,6 +51,7 @@ final class Context
             if ($fqnn[0] === '\\') {
                 $fqnn = substr($fqnn, 1);
             }
+
             if ($fqnn[strlen($fqnn) - 1] === '\\') {
                 $fqnn = substr($fqnn, 0, -1);
             }

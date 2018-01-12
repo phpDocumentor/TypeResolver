@@ -16,7 +16,6 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Represents a list of values. This is an abstract class for Array_ and Collection.
- *
  */
 abstract class AbstractList implements Type
 {
@@ -31,9 +30,6 @@ abstract class AbstractList implements Type
 
     /**
      * Initializes this representation of an array with the given Type.
-     *
-     * @param Type $valueType
-     * @param Type $keyType
      */
     public function __construct(Type $valueType = null, Type $keyType = null)
     {
@@ -42,9 +38,8 @@ abstract class AbstractList implements Type
         }
 
         $this->valueType = $valueType;
-        $this->defaultKeyType = new Compound([ new String_(), new Integer() ]);
+        $this->defaultKeyType = new Compound([new String_(), new Integer()]);
         $this->keyType = $keyType;
-
     }
 
     /**
@@ -57,6 +52,7 @@ abstract class AbstractList implements Type
         if ($this->keyType === null) {
             return $this->defaultKeyType;
         }
+
         return $this->keyType;
     }
 
@@ -78,7 +74,7 @@ abstract class AbstractList implements Type
     public function __toString()
     {
         if ($this->keyType) {
-            return 'array<'.$this->keyType.','.$this->valueType.'>';
+            return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
         if ($this->valueType instanceof Mixed_) {

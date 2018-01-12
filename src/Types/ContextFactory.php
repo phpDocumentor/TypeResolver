@@ -32,10 +32,7 @@ final class ContextFactory
     /**
      * Build a Context given a Class Reflection.
      *
-     * @param \Reflector $reflector
-     *
      * @see Context for more information on Contexts.
-     *
      * @return Context
      */
     public function createFromReflector(\Reflector $reflector)
@@ -50,7 +47,6 @@ final class ContextFactory
     }
 
     /**
-     * @param \ReflectionMethod $method
      * @return Context
      */
     private function createFromReflectionMethod(\ReflectionMethod $method)
@@ -59,7 +55,6 @@ final class ContextFactory
     }
 
     /**
-     * @param \ReflectionClass $class
      * @return Context
      */
     private function createFromReflectionClass(\ReflectionClass $class)
@@ -109,12 +104,14 @@ final class ContextFactory
                             if (!$firstBraceFound) {
                                 $firstBraceFound = true;
                             }
-                            $braceLevel++;
+
+                            ++$braceLevel;
                         }
 
                         if ($tokens->current() === '}') {
-                            $braceLevel--;
+                            --$braceLevel;
                         }
+
                         $tokens->next();
                     }
                     break;
@@ -124,6 +121,7 @@ final class ContextFactory
                     }
                     break;
             }
+
             $tokens->next();
         }
 
@@ -132,8 +130,6 @@ final class ContextFactory
 
     /**
      * Deduce the name from tokens when we are at the T_NAMESPACE token.
-     *
-     * @param \ArrayIterator $tokens
      *
      * @return string
      */
@@ -154,8 +150,6 @@ final class ContextFactory
 
     /**
      * Deduce the names of all imports when we are at the T_USE token.
-     *
-     * @param \ArrayIterator $tokens
      *
      * @return string[]
      */
@@ -179,10 +173,6 @@ final class ContextFactory
 
     /**
      * Fast-forwards the iterator as longs as we don't encounter a T_STRING or T_NS_SEPARATOR token.
-     *
-     * @param \ArrayIterator $tokens
-     *
-     * @return void
      */
     private function skipToNextStringOrNamespaceSeparator(\ArrayIterator $tokens)
     {
@@ -194,8 +184,6 @@ final class ContextFactory
     /**
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
      * a USE statement yet.
-     *
-     * @param \ArrayIterator $tokens
      *
      * @return array
      */
@@ -209,13 +197,15 @@ final class ContextFactory
             if ($tokens->current()[0] === T_AS) {
                 $result[] = '';
             }
+
             if ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR) {
                 $result[count($result) - 1] .= $tokens->current()[1];
             }
+
             $tokens->next();
         }
 
-        if (count($result) == 1) {
+        if (count($result) === 1) {
             $backslashPos = strrpos($result[0], '\\');
 
             if (false !== $backslashPos) {

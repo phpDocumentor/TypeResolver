@@ -49,10 +49,8 @@ class FqsenResolver
      * (i.e. `\phpDocumentor\Reflection\DocBlock`) based on the Namespace and aliases mentioned in the Context.
      *
      * @param string $type
-     * @param Context $context
-     *
      * @return Fqsen
-     * @throws \InvalidArgumentException when type is not a valid FQSEN.
+     * @throws InvalidArgumentException when type is not a valid FQSEN.
      */
     private function resolvePartialStructuralElementName($type, Context $context)
     {

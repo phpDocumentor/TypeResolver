@@ -30,15 +30,14 @@ final class Object_ implements Type
     /**
      * Initializes this object with an optional FQSEN, if not provided this object is considered 'untyped'.
      *
-     * @param Fqsen $fqsen
-     * @throws \InvalidArgumentException when provided $fqsen is not a valid type.
+     * @throws InvalidArgumentException when provided $fqsen is not a valid type.
      */
     public function __construct(Fqsen $fqsen = null)
     {
-        if (strpos((string)$fqsen, '::') !== false || strpos((string)$fqsen, '()') !== false) {
+        if (strpos((string) $fqsen, '::') !== false || strpos((string) $fqsen, '()') !== false) {
             throw new \InvalidArgumentException(
                 'Object types can only refer to a class, interface or trait but a method, function, constant or '
-                . 'property was received: ' . (string)$fqsen
+                . 'property was received: ' . (string) $fqsen
             );
         }
 
@@ -58,7 +57,7 @@ final class Object_ implements Type
     public function __toString()
     {
         if ($this->fqsen) {
-            return (string)$this->fqsen;
+            return (string) $this->fqsen;
         }
 
         return 'object';
