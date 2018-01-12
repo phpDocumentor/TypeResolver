@@ -1,4 +1,22 @@
+# IDE Shizzle; it is recommended to use a global .gitignore for this but since this is an OSS project we want to make
+# it easy to contribute
 .idea
-composer.lock
-vendor
-.DS_Store
+/nbproject/private/
+.buildpath
+.project
+.settings
+
+# No need to version the binary files of other tools
+bin/behat*
+bin/phpcs*
+bin/phpunit*
+bin/jsonlint*
+bin/validate-json*
+
+# Build folder and vendor folder are generated code; no need to version this
+build/*
+vendor/*
+composer.phar
+
+# By default the phpunit.xml.dist is provided; you can override this using a local config file
+phpunit.xml
