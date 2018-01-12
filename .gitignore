@@ -12,6 +12,7 @@ bin/phpcs*
 bin/phpunit*
 bin/jsonlint*
 bin/validate-json*
+temp/ecs/*
 
 # Build folder and vendor folder are generated code; no need to version this
 build/*
