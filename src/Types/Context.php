@@ -44,7 +44,7 @@ final class Context
     public function __construct($namespace, array $namespaceAliases = [])
     {
         $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
-            ? trim((string)$namespace, '\\')
+            ? trim($namespace, '\\')
             : '';
 
         foreach ($namespaceAliases as $alias => $fqnn) {

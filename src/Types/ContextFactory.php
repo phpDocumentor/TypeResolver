@@ -40,12 +40,32 @@ final class ContextFactory
      */
     public function createFromReflector(\Reflector $reflector)
     {
-        if (method_exists($reflector, 'getDeclaringClass')) {
-            $reflector = $reflector->getDeclaringClass();
+        if ($reflector instanceof \ReflectionMethod) {
+            return $this->createFromReflectionMethod($reflector);
         }
 
-        $fileName = $reflector->getFileName();
-        $namespace = $reflector->getNamespaceName();
+        if ($reflector instanceof \ReflectionClass) {
+            return $this->createFromReflectionClass($reflector);
+        }
+    }
+
+    /**
+     * @param \ReflectionMethod $method
+     * @return Context
+     */
+    private function createFromReflectionMethod(\ReflectionMethod $method)
+    {
+        return $this->createFromReflectionClass($method->getDeclaringClass());
+    }
+
+    /**
+     * @param \ReflectionClass $class
+     * @return Context
+     */
+    private function createFromReflectionClass(\ReflectionClass $class)
+    {
+        $fileName = $class->getFileName();
+        $namespace = $class->getNamespaceName();
 
         if (is_string($fileName) && file_exists($fileName)) {
             return $this->createForNamespace($namespace, file_get_contents($fileName));
@@ -177,7 +197,7 @@ final class ContextFactory
      *
      * @param \ArrayIterator $tokens
      *
-     * @return string
+     * @return array
      */
     private function extractUseStatement(\ArrayIterator $tokens)
     {

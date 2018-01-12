@@ -29,16 +29,17 @@ use phpDocumentor\Reflection\Fqsen;
 final class Collection extends AbstractList
 {
 
-    /** @var Fqsen */
+    /** @var Fqsen|null */
     private $fqsen;
 
     /**
      * Initializes this representation of an array with the given Type or Fqsen.
      *
+     * @param \phpDocumentor\Reflection\Fqsen|null $fqsen
      * @param Type $valueType
      * @param Type $keyType
      */
-    public function __construct(Fqsen $fqsen, Type $valueType, Type $keyType = null)
+    public function __construct(Fqsen $fqsen = null, Type $valueType, Type $keyType = null)
     {
         parent::__construct($valueType, $keyType);
 
@@ -48,7 +49,7 @@ final class Collection extends AbstractList
     /**
      * Returns the FQSEN associated with this object.
      *
-     * @return Fqsen
+     * @return Fqsen|null
      */
     public function getFqsen()
     {

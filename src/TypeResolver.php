@@ -398,10 +398,10 @@ final class TypeResolver
      *
      * @param \ArrayIterator $tokens
      * @param Type $classType
-     * @param Context|null $context
+     * @param Context $context
      * @return Array_|Collection
      */
-    private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context = null) {
+    private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context) {
 
         $isArray = ('array' == (string) $classType);
 
@@ -419,7 +419,7 @@ final class TypeResolver
         $keyType = null;
 
         if ($tokens->current() == ',') {
-            // if we have a coma, then we just parsed the key type, not the value type
+            // if we have a comma, then we just parsed the key type, not the value type
             $keyType = $valueType;
             if ($isArray) {
                 // check the key type for an "array" collection. We allow only
@@ -463,8 +463,20 @@ final class TypeResolver
         if ($isArray) {
             return new Array_($valueType, $keyType);
         }
-        else {
-            return new Collection($classType->getFqsen(), $valueType, $keyType);
+
+        if ($classType instanceof Object_) {
+            return $this->makeCollectionFromObject($classType, $valueType, $keyType);
         }
+    }
+
+    /**
+     * @param Object_ $object
+     * @param Type $valueType
+     * @param Type|null $keyType
+     * @return Collection
+     */
+    private function makeCollectionFromObject(Object_ $object, Type $valueType, Type $keyType = null)
+    {
+        return new Collection($object->getFqsen(), $valueType, $keyType);
     }
 }
