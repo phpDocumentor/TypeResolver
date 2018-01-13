@@ -34,7 +34,7 @@ final class Collection extends AbstractList
     /**
      * Initializes this representation of an array with the given Type or Fqsen.
      *
-     * @param phpDocumentor\Reflection\Fqsen|null $fqsen
+     * @param Fqsen|null $fqsen
      */
     public function __construct(Fqsen $fqsen = null, Type $valueType, Type $keyType = null)
     {

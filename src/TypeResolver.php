@@ -462,8 +462,6 @@ final class TypeResolver
     }
 
     /**
-     * @param Object_ $object
-     * @param Type $valueType
      * @param Type|null $keyType
      * @return Collection
      */
