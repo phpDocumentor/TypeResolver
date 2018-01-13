@@ -290,7 +290,7 @@ final class TypeResolver
             );
         }
 
-        if (!in_array(Type::class, class_implements($typeClassName))) {
+        if (!in_array(Type::class, class_implements($typeClassName), true)) {
             throw new \InvalidArgumentException(
                 'The class "' . $typeClassName . '" must implement the interface "phpDocumentor\Reflection\Type"'
             );
