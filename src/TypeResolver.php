@@ -441,7 +441,7 @@ final class TypeResolver
         }
 
         if ($tokens->current() !== '>') {
-            if ($tokens->current() === '') {
+            if (empty($tokens->current())) {
                 throw new \RuntimeException(
                     'Collection: ">" is missing'
                 );
