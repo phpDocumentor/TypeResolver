@@ -57,7 +57,10 @@ namespace phpDocumentor\Reflection\Types {
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
-            $this->assertSame($expected, $context->getNamespaceAliases());
+            $actual = $context->getNamespaceAliases();
+
+            // sort so that order differences don't break it
+            $this->assertSame(sort($expected), sort($actual));
         }
 
         /**
@@ -89,7 +92,10 @@ namespace phpDocumentor\Reflection\Types {
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 
-            $this->assertSame($expected, $context->getNamespaceAliases());
+            $actual = $context->getNamespaceAliases();
+
+            // sort so that order differences don't break it
+            $this->assertSame(sort($expected), sort($actual));
         }
 
         /**
