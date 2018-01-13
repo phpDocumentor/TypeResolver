@@ -124,7 +124,7 @@ final class TypeResolver
     /**
      * Analyse each tokens and creates types
      *
-     * @param ArrayIterator $tokens the iterator on tokens
+     * @param \ArrayIterator $tokens the iterator on tokens
      * @param int $parserContext on of self::PARSER_* constants, indicating
      * the context where we are in the parsing
      * @return Type
@@ -251,7 +251,7 @@ final class TypeResolver
      * resolve the given type into a type object
      *
      * @param string $type the type string, representing a single type
-     * @return Type|\Array_|\Object_
+     * @return Type|Array_|Object_
      */
     private function resolveSingleType($type, Context $context)
     {
