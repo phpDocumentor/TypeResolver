@@ -388,7 +388,7 @@ final class TypeResolver
     /**
      * Resolves the collection values and keys
      *
-     * @return Array_|\Collection
+     * @return Array_|Collection
      */
     private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context)
     {
@@ -462,6 +462,8 @@ final class TypeResolver
     }
 
     /**
+     * @param Object_ $object
+     * @param Type $valueType
      * @param Type|null $keyType
      * @return Collection
      */
