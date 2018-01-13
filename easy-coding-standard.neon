@@ -20,4 +20,16 @@ parameters:
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - */tests/**
         PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff:
-            - */src/**
+            - src/Types/Array_.php
+            - src/Types/Callable_.php
+            - src/Types/Float_.php
+            - src/Types/Iterable_.php
+            - src/Types/Mixed_.php
+            - src/Types/Null_.php
+            - src/Types/Object_.php
+            - src/Types/Parent_.php
+            - src/Types/Resource_.php
+            - src/Types/Self_.php
+            - src/Types/Static_.php
+            - src/Types/String_.php
+            - src/Types/Void_.php
