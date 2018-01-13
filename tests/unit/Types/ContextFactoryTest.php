@@ -197,6 +197,12 @@ PHP
 }
 
 namespace phpDocumentor\Reflection\Types\Mock {
-    // the following import should not show in the tests above
 
+    // the following import should not show in the tests above
+    use phpDocumentor\Reflection\DocBlock\Description;
+
+    class Foo extends Description
+    {
+        // dummy class
     }
+}
