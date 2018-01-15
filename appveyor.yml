@@ -45,10 +45,12 @@ install:
   - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
   - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
   - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
+  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://phar.phpunit.de/phpunit.phar
+  - IF NOT EXIST php-installed.txt echo @php %%~dp0phpunit.phar %%* > phpunit.bat
   - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
   - cd c:\typeresolver
   - composer install --no-interaction --prefer-dist --no-progress
 
 test_script:
   - cd c:\typeresolver
-  - vendor/bin/phpunit --no-coverage
+  - phpunit --no-coverage
