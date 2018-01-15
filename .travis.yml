@@ -12,9 +12,7 @@ matrix:
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
   - travis_retry wget https://phar.io/releases/phive.phar
-  - travis_retry php phive.phar --no-progress install --trust-gpg-keys 4AA394086372C20A phpunit
-  - echo "tests won't work from phpunit.phar, because some of this package's deps are in that phar..."
-  - travis_retry composer require --dev phpunit/phpunit
+  - travis_retry composer require --dev phpunit/phpunit # cannot trust phpunit.phar, because of reflection-docblock in that phar..."
 
 script:
   - ./vendor/bin/phpunit --no-coverage
@@ -23,9 +21,6 @@ jobs:
   include:
     - stage: coverage
       php: 7.1
-      before_script:
-        - echo "code coverage won't work from phpunit.phar, because some of this package's deps are in that phar..."
-        - travis_retry composer require --dev phpunit/phpunit
       script:
         - ./vendor/bin/phpunit
       after_script:
