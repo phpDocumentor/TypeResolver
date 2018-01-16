@@ -12,7 +12,6 @@ matrix:
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
   - travis_retry wget https://phar.io/releases/phive.phar
-  - travis_retry composer require --dev phpunit/phpunit # cannot trust phpunit.phar, because of reflection-docblock in that phar..."
 
 script:
   - ./vendor/bin/phpunit --no-coverage
