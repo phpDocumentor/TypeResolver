@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -58,7 +58,7 @@ final class Collection extends AbstractList
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->keyType === null) {
             return $this->fqsen . '<' . $this->valueType . '>';

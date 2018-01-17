@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -47,7 +47,7 @@ abstract class AbstractList implements Type
      *
      * @return Type
      */
-    public function getKeyType()
+    public function getKeyType(): Type
     {
         if ($this->keyType === null) {
             return $this->defaultKeyType;
@@ -61,7 +61,7 @@ abstract class AbstractList implements Type
      *
      * @return Type
      */
-    public function getValueType()
+    public function getValueType(): Type
     {
         return $this->valueType;
     }
@@ -71,7 +71,7 @@ abstract class AbstractList implements Type
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->keyType) {
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
