@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of phpDocumentor.
  *
@@ -44,10 +44,8 @@ abstract class AbstractList implements Type
 
     /**
      * Returns the type for the keys of this array.
-     *
-     * @return Type
      */
-    public function getKeyType()
+    public function getKeyType(): Type
     {
         if ($this->keyType === null) {
             return $this->defaultKeyType;
@@ -58,20 +56,16 @@ abstract class AbstractList implements Type
 
     /**
      * Returns the value for the keys of this array.
-     *
-     * @return Type
      */
-    public function getValueType()
+    public function getValueType(): Type
     {
         return $this->valueType;
     }
 
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->keyType) {
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
