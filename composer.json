@@ -8,9 +8,10 @@
           "email": "me@mikevanriel.com"
         }
     ],
+    "minimum-stability": "alpha",
     "require": {
         "php": ">=7.1",
-        "phpdocumentor/reflection-common": "^1.0"
+        "phpdocumentor/reflection-common": "^2.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
@@ -24,11 +25,6 @@
     "autoload-dev": {
         "psr-4": {
             "phpDocumentor\\Reflection\\": "tests"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
         }
     }
 }
