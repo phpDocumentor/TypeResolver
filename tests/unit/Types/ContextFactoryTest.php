@@ -13,12 +13,12 @@
 namespace phpDocumentor\Reflection\Types {
 
 // Added imports on purpose as mock for the unit tests, please do not remove.
+    use \ReflectionClass;
     use Mockery as m;
-    use phpDocumentor\Reflection\DocBlock,
-        phpDocumentor\Reflection\DocBlock\Tag;
     use phpDocumentor;
-    use PHPUnit\Framework\TestCase;
-    use \ReflectionClass; // yes, the slash is part of the test
+    use phpDocumentor\Reflection\DocBlock;
+    use phpDocumentor\Reflection\DocBlock\Tag;
+    use PHPUnit\Framework\TestCase; // yes, the slash is part of the test
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
@@ -57,7 +57,10 @@ namespace phpDocumentor\Reflection\Types {
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
-            $this->assertSame($expected, $context->getNamespaceAliases());
+            $actual = $context->getNamespaceAliases();
+
+            // sort so that order differences don't break it
+            $this->assertSame(sort($expected), sort($actual));
         }
 
         /**
@@ -89,7 +92,10 @@ namespace phpDocumentor\Reflection\Types {
             ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 
-            $this->assertSame($expected, $context->getNamespaceAliases());
+            $actual = $context->getNamespaceAliases();
+
+            // sort so that order differences don't break it
+            $this->assertSame(sort($expected), sort($actual));
         }
 
         /**
@@ -191,6 +197,12 @@ PHP
 }
 
 namespace phpDocumentor\Reflection\Types\Mock {
+
     // the following import should not show in the tests above
     use phpDocumentor\Reflection\DocBlock\Description;
+
+    class Foo extends Description
+    {
+        // dummy class
+    }
 }

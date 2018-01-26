@@ -26,8 +26,6 @@ final class Nullable implements Type
 
     /**
      * Initialises this nullable type using the real type embedded
-     *
-     * @param Type $realType
      */
     public function __construct(Type $realType)
     {

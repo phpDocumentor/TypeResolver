@@ -32,20 +32,35 @@ final class ContextFactory
     /**
      * Build a Context given a Class Reflection.
      *
-     * @param \Reflector $reflector
-     *
      * @see Context for more information on Contexts.
-     *
      * @return Context
      */
     public function createFromReflector(\Reflector $reflector)
     {
-        if (method_exists($reflector, 'getDeclaringClass')) {
-            $reflector = $reflector->getDeclaringClass();
+        if ($reflector instanceof \ReflectionMethod) {
+            return $this->createFromReflectionMethod($reflector);
         }
 
-        $fileName = $reflector->getFileName();
-        $namespace = $reflector->getNamespaceName();
+        if ($reflector instanceof \ReflectionClass) {
+            return $this->createFromReflectionClass($reflector);
+        }
+    }
+
+    /**
+     * @return Context
+     */
+    private function createFromReflectionMethod(\ReflectionMethod $method)
+    {
+        return $this->createFromReflectionClass($method->getDeclaringClass());
+    }
+
+    /**
+     * @return Context
+     */
+    private function createFromReflectionClass(\ReflectionClass $class)
+    {
+        $fileName = $class->getFileName();
+        $namespace = $class->getNamespaceName();
 
         if (is_string($fileName) && file_exists($fileName)) {
             return $this->createForNamespace($namespace, file_get_contents($fileName));
@@ -89,12 +104,14 @@ final class ContextFactory
                             if (!$firstBraceFound) {
                                 $firstBraceFound = true;
                             }
-                            $braceLevel++;
+
+                            ++$braceLevel;
                         }
 
                         if ($tokens->current() === '}') {
-                            $braceLevel--;
+                            --$braceLevel;
                         }
+
                         $tokens->next();
                     }
                     break;
@@ -104,6 +121,7 @@ final class ContextFactory
                     }
                     break;
             }
+
             $tokens->next();
         }
 
@@ -112,8 +130,6 @@ final class ContextFactory
 
     /**
      * Deduce the name from tokens when we are at the T_NAMESPACE token.
-     *
-     * @param \ArrayIterator $tokens
      *
      * @return string
      */
@@ -134,8 +150,6 @@ final class ContextFactory
 
     /**
      * Deduce the names of all imports when we are at the T_USE token.
-     *
-     * @param \ArrayIterator $tokens
      *
      * @return string[]
      */
@@ -159,10 +173,6 @@ final class ContextFactory
 
     /**
      * Fast-forwards the iterator as longs as we don't encounter a T_STRING or T_NS_SEPARATOR token.
-     *
-     * @param \ArrayIterator $tokens
-     *
-     * @return void
      */
     private function skipToNextStringOrNamespaceSeparator(\ArrayIterator $tokens)
     {
@@ -175,9 +185,7 @@ final class ContextFactory
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
      * a USE statement yet.
      *
-     * @param \ArrayIterator $tokens
-     *
-     * @return string
+     * @return array
      */
     private function extractUseStatement(\ArrayIterator $tokens)
     {
@@ -189,13 +197,15 @@ final class ContextFactory
             if ($tokens->current()[0] === T_AS) {
                 $result[] = '';
             }
+
             if ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR) {
                 $result[count($result) - 1] .= $tokens->current()[1];
             }
+
             $tokens->next();
         }
 
-        if (count($result) == 1) {
+        if (count($result) === 1) {
             $backslashPos = strrpos($result[0], '\\');
 
             if (false !== $backslashPos) {

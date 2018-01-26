@@ -51,4 +51,4 @@ install:
 
 test_script:
   - cd c:\typeresolver
-  - vendor/bin/phpunit --no-coverage
+  - vendor\bin\phpunit --no-coverage

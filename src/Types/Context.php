@@ -44,13 +44,14 @@ final class Context
     public function __construct($namespace, array $namespaceAliases = [])
     {
         $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
-            ? trim((string)$namespace, '\\')
+            ? trim($namespace, '\\')
             : '';
 
         foreach ($namespaceAliases as $alias => $fqnn) {
             if ($fqnn[0] === '\\') {
                 $fqnn = substr($fqnn, 1);
             }
+
             if ($fqnn[strlen($fqnn) - 1] === '\\') {
                 $fqnn = substr($fqnn, 0, -1);
             }

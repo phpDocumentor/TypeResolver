@@ -85,7 +85,7 @@ class CompoundTest extends TestCase
      */
     public function testCompoundCanBeConstructedAndStringifiedCorrectly()
     {
-        $this->assertSame('int|bool', (string)(new Compound([new Integer(), new Boolean()])));
+        $this->assertSame('int|bool', (string) (new Compound([new Integer(), new Boolean()])));
     }
 
     /**

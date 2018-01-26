@@ -12,8 +12,8 @@
 
 namespace phpDocumentor\Reflection\Types;
 
-use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Represents a collection type as described in the PSR-5, the PHPDoc Standard.
@@ -28,17 +28,15 @@ use phpDocumentor\Reflection\Fqsen;
  */
 final class Collection extends AbstractList
 {
-
-    /** @var Fqsen */
+    /** @var Fqsen|null */
     private $fqsen;
 
     /**
      * Initializes this representation of an array with the given Type or Fqsen.
      *
-     * @param Type $valueType
-     * @param Type $keyType
+     * @param Fqsen|null $fqsen
      */
-    public function __construct(Fqsen $fqsen, Type $valueType, Type $keyType = null)
+    public function __construct(Fqsen $fqsen = null, Type $valueType, Type $keyType = null)
     {
         parent::__construct($valueType, $keyType);
 
@@ -48,7 +46,7 @@ final class Collection extends AbstractList
     /**
      * Returns the FQSEN associated with this object.
      *
-     * @return Fqsen
+     * @return Fqsen|null
      */
     public function getFqsen()
     {
@@ -63,9 +61,9 @@ final class Collection extends AbstractList
     public function __toString()
     {
         if ($this->keyType === null) {
-            return $this->fqsen.'<'.$this->valueType . '>';
+            return $this->fqsen . '<' . $this->valueType . '>';
         }
 
-        return $this->fqsen.'<'.$this->keyType . ',' . $this->valueType . '>';
+        return $this->fqsen . '<' . $this->keyType . ',' . $this->valueType . '>';
     }
 }

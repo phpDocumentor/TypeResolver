@@ -3,10 +3,6 @@ includes:
     - temp/ecs/config/psr2.neon
     - temp/ecs/config/common.neon
 
-checkers:
-    PhpCsFixer\Fixer\Operator\ConcatSpaceFixer:
-        spacing: one
-
 parameters:
     exclude_checkers:
         # from temp/ecs/config/common.neon
@@ -19,3 +15,17 @@ parameters:
     skip:
         PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff:
             - */tests/**
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes\ValidClassNameSniff:
+            - src/Types/Array_.php
+            - src/Types/Callable_.php
+            - src/Types/Float_.php
+            - src/Types/Iterable_.php
+            - src/Types/Mixed_.php
+            - src/Types/Null_.php
+            - src/Types/Object_.php
+            - src/Types/Parent_.php
+            - src/Types/Resource_.php
+            - src/Types/Self_.php
+            - src/Types/Static_.php
+            - src/Types/String_.php
+            - src/Types/Void_.php

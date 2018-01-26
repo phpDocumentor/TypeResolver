@@ -37,6 +37,6 @@ class NullableTest extends TestCase
      */
     public function testNullableStringifyCorrectly()
     {
-        $this->assertSame('?string', (string)(new Nullable(new String_())));
+        $this->assertSame('?string', (string) (new Nullable(new String_())));
     }
 }
