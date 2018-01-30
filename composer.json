@@ -26,5 +26,10 @@
         "psr-4": {
             "phpDocumentor\\Reflection\\": "tests"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
     }
 }
