@@ -12,7 +12,6 @@
 
 namespace phpDocumentor\Reflection\Types;
 
-use phpDocumentor\Reflection\DocBlock\Context;
 use UnexpectedValueException;
 
 /**
