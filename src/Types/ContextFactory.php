@@ -12,6 +12,9 @@
 
 namespace phpDocumentor\Reflection\Types;
 
+use phpDocumentor\Reflection\DocBlock\Context;
+use UnexpectedValueException;
+
 /**
  * Convenience class to create a Context for DocBlocks when not using the Reflection Component of phpDocumentor.
  *
@@ -33,31 +36,53 @@ final class ContextFactory
      * Build a Context given a Class Reflection.
      *
      * @see Context for more information on Contexts.
-     * @return Context
      */
-    public function createFromReflector(\Reflector $reflector)
+    public function createFromReflector(\Reflector $reflector): Context
     {
+        if ($reflector instanceof \ReflectionClass) {
+            return $this->createFromReflectionClass($reflector);
+        }
+
+        if ($reflector instanceof \ReflectionParameter) {
+            return $this->createFromReflectionParameter($reflector);
+        }
+
         if ($reflector instanceof \ReflectionMethod) {
             return $this->createFromReflectionMethod($reflector);
         }
 
-        if ($reflector instanceof \ReflectionClass) {
-            return $this->createFromReflectionClass($reflector);
+        if ($reflector instanceof \ReflectionProperty) {
+            return $this->createFromReflectionProperty($reflector);
         }
+
+        if ($reflector instanceof \ReflectionClassConstant) {
+            return $this->createFromReflectionClassConstant($reflector);
+        }
+
+        throw new UnexpectedValueException('Unhandled \Reflector instance given:  ' . get_class($reflector));
     }
 
-    /**
-     * @return Context
-     */
-    private function createFromReflectionMethod(\ReflectionMethod $method)
+    private function createFromReflectionParameter(\ReflectionParameter $parameter): Context
+    {
+        return $this->createFromReflectionClass($parameter->getDeclaringClass());
+    }
+
+    private function createFromReflectionMethod(\ReflectionMethod $method): Context
     {
         return $this->createFromReflectionClass($method->getDeclaringClass());
     }
 
-    /**
-     * @return Context
-     */
-    private function createFromReflectionClass(\ReflectionClass $class)
+    private function createFromReflectionProperty(\ReflectionProperty $property): Context
+    {
+        return $this->createFromReflectionClass($property->getDeclaringClass());
+    }
+
+    private function createFromReflectionClassConstant(\ReflectionClassConstant $constant): Context
+    {
+        return $this->createFromReflectionClass($constant->getDeclaringClass());
+    }
+
+    private function createFromReflectionClass(\ReflectionClass $class): Context
     {
         $fileName = $class->getFileName();
         $namespace = $class->getNamespaceName();
