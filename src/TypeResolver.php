@@ -114,7 +114,7 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        // split the type string into tokens `|`, `?`, `(`, `)[]`, '<', '>' and type names
+        // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)[]`, '<', '>' and type names
         $tokens = preg_split('/\s*(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)\s*/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $tokenIterator = new \ArrayIterator($tokens);
 
