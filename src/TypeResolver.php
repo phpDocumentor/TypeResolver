@@ -115,7 +115,7 @@ final class TypeResolver
         }
 
         // split the type string into tokens `|`, `?`, `(`, `)[]`, '<', '>' and type names
-        $tokens = preg_split('/(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $tokens = preg_split('/\s*(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)\s*/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $tokenIterator = new \ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
