@@ -72,7 +72,7 @@ abstract class AbstractList implements Type
         }
 
         if ($this->valueType instanceof Mixed_) {
-            return 'array';
+            return 'mixed[]';
         }
 
         if ($this->valueType instanceof Compound) {
