@@ -1,5 +1,6 @@
 {
     "name": "phpdocumentor/type-resolver",
+    "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
     "type": "library",
     "license": "MIT",
     "authors": [
