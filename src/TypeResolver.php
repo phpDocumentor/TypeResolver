@@ -116,6 +116,9 @@ final class TypeResolver
 
         // split the type string into tokens `|`, `?`, `(`, `)[]`, '<', '>' and type names
         $tokens = preg_split('/(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        if (false === $tokens) {
+            throw new \InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
+        }
         $tokenIterator = new \ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
@@ -193,8 +196,9 @@ final class TypeResolver
                 }
 
                 $classType = array_pop($types);
-
-                $types[] = $this->resolveCollection($tokens, $classType, $context);
+                if ($classType) {
+                    $types[] = $this->resolveCollection($tokens, $classType, $context);
+                }
 
                 $tokens->next();
             } elseif ($parserContext === self::PARSER_IN_COLLECTION_EXPRESSION

@@ -63,7 +63,10 @@ final class ContextFactory
 
     private function createFromReflectionParameter(\ReflectionParameter $parameter): Context
     {
-        return $this->createFromReflectionClass($parameter->getDeclaringClass());
+        $class = $parameter->getDeclaringClass();
+        if ($class) {
+            return $this->createFromReflectionClass($class);
+        }
     }
 
     private function createFromReflectionMethod(\ReflectionMethod $method): Context
@@ -87,7 +90,11 @@ final class ContextFactory
         $namespace = $class->getNamespaceName();
 
         if (is_string($fileName) && file_exists($fileName)) {
-            return $this->createForNamespace($namespace, file_get_contents($fileName));
+            $contents = file_get_contents($fileName);
+            if (false === $contents) {
+                throw new \RuntimeException('Unable to read file "' . $fileName . '"');
+            }
+            return $this->createForNamespace($namespace, $contents);
         }
 
         return new Context($namespace, []);
