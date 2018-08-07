@@ -94,6 +94,7 @@ final class ContextFactory
             if (false === $contents) {
                 throw new \RuntimeException('Unable to read file "' . $fileName . '"');
             }
+
             return $this->createForNamespace($namespace, $contents);
         }
 

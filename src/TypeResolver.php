@@ -119,6 +119,7 @@ final class TypeResolver
         if (false === $tokens) {
             throw new \InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
         }
+
         $tokenIterator = new \ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
