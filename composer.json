@@ -12,11 +12,11 @@
     "minimum-stability": "alpha",
     "require": {
         "php": ">=7.1",
-        "phpdocumentor/reflection-common": "^2"
+        "phpdocumentor/reflection-common": "^2.0.0-alpha3"
     },
     "require-dev": {
-        "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^6.5"
+        "mockery/mockery": "^1.0.0-beta1",
+        "phpunit/phpunit": "~6"
     },
     "autoload": {
         "psr-4": {
