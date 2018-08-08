@@ -4,27 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b8300aa8829c8b5d31340d09cdd7248",
+    "content-hash": "b86fda2a5ea5ce96e6f3d75584fc43fc",
     "packages": [
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "2.0.0-alpha3",
+            "version": "2.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "eedd98e8bc9cfd924f056b4b5847066d4a250d2f"
+                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/eedd98e8bc9cfd924f056b4b5847066d4a250d2f",
-                "reference": "eedd98e8bc9cfd924f056b4b5847066d4a250d2f",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/63a995caa1ca9e5590304cd845c15ad6d482a62a",
+                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6"
+                "phpunit/phpunit": "~6"
             },
             "type": "library",
             "extra": {
@@ -34,9 +34,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "phpDocumentor\\Reflection\\": [
-                        "src"
-                    ]
+                    "phpDocumentor\\Reflection\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -58,7 +56,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-06-13T21:44:20+00:00"
+            "time": "2018-08-07T13:53:10+00:00"
         }
     ],
     "packages-dev": [
@@ -328,26 +326,31 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "2.0.0a1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "841897062442e2a0e8b3def1518caa25f6498dfd"
+                "reference": "66ae84e9d7c8ea85c979cb65977bd8e608baf0c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/841897062442e2a0e8b3def1518caa25f6498dfd",
-                "reference": "841897062442e2a0e8b3def1518caa25f6498dfd",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/66ae84e9d7c8ea85c979cb65977bd8e608baf0c5",
+                "reference": "66ae84e9d7c8ea85c979cb65977bd8e608baf0c5",
                 "shasum": ""
             },
             "require": {
                 "dflydev/markdown": "1.0.*",
-                "php": ">=5.3.2"
+                "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "*@stable"
+                "phpunit/phpunit": "3.7.*@stable"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "phpDocumentor": [
@@ -365,7 +368,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2012-11-27T17:52:28+00:00"
+            "time": "2013-08-07T11:04:22+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1329,9 +1332,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "alpha",
+    "minimum-stability": "beta",
     "stability-flags": {
-        "phpdocumentor/reflection-common": 15
+        "phpdocumentor/reflection-common": 10
     },
     "prefer-stable": false,
     "prefer-lowest": true,
