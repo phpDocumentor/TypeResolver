@@ -224,7 +224,7 @@ final class ContextFactory
         $groupedNs = '';
         $currentNs = '';
         $currentAlias = null;
-        $state = "start";
+        $state = 'start';
 
         $i = 0;
         while ($tokens->valid()) {
@@ -233,7 +233,7 @@ final class ContextFactory
             $tokenId = is_string($currentToken) ? $currentToken : $currentToken[0];
             $tokenValue = is_string($currentToken) ? null : $currentToken[1];
             switch ($state) {
-                case "start":
+                case 'start':
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
@@ -255,7 +255,7 @@ final class ContextFactory
                             break;
                     }
                     break;
-                case "start-alias":
+                case 'start-alias':
                     switch ($tokenId) {
                         case T_STRING:
                             $currentAlias .= $tokenValue;
@@ -268,7 +268,7 @@ final class ContextFactory
                             break;
                     }
                     break;
-                case "grouped":
+                case 'grouped':
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
@@ -290,7 +290,7 @@ final class ContextFactory
                             break;
                     }
                     break;
-                case "grouped-alias":
+                case 'grouped-alias':
                     switch ($tokenId) {
                         case T_STRING:
                             $currentAlias .= $tokenValue;
@@ -309,17 +309,16 @@ final class ContextFactory
                     }
             }
 
-            if ($state == "end") {
+            if ($state === 'end') {
                 break;
             }
 
             $tokens->next();
         }
 
-        if ($groupedNs != $currentNs) {
+        if ($groupedNs !== $currentNs) {
             $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
         }
-
 
         return $extractedUseStatements;
     }

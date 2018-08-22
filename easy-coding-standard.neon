@@ -29,3 +29,9 @@ parameters:
             - src/Types/Static_.php
             - src/Types/String_.php
             - src/Types/Void_.php
+        PhpCsFixer\Fixer\Import\OrderedImportsFixer:
+            - *tests/unit/Types/ContextFactoryTest.php
+        PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer:
+            - *tests/unit/Types/ContextFactoryTest.php
+        PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer:
+            - *tests/unit/Types/ContextFactoryTest.php
