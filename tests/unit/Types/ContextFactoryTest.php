@@ -14,11 +14,14 @@ namespace phpDocumentor\Reflection\Types {
 
 // Added imports on purpose as mock for the unit tests, please do not remove.
     use \ReflectionClass;
-    use Mockery as m;
-    use phpDocumentor;
+    use Mockery as m, phpDocumentor;
     use phpDocumentor\Reflection\DocBlock;
     use phpDocumentor\Reflection\DocBlock\Tag;
     use PHPUnit\Framework\TestCase; // yes, the slash is part of the test
+    use PHPUnit\Framework\{
+        Assert,
+        Exception as e
+    };
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
@@ -53,6 +56,8 @@ namespace phpDocumentor\Reflection\Types {
                 'Tag' => Tag::class,
                 'phpDocumentor' => 'phpDocumentor',
                 'TestCase' => TestCase::class,
+                'Assert' => Assert::class,
+                'e' => e::class,
                 ReflectionClass::class => ReflectionClass::class,
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
@@ -60,7 +65,9 @@ namespace phpDocumentor\Reflection\Types {
             $actual = $context->getNamespaceAliases();
 
             // sort so that order differences don't break it
-            $this->assertSame(sort($expected), sort($actual));
+            sort($expected);
+            sort($actual);
+            $this->assertSame($expected, $actual);
         }
 
         /**
