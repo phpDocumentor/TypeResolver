@@ -13,7 +13,6 @@
 namespace phpDocumentor\Reflection\Types {
 
 // Added imports on purpose as mock for the unit tests, please do not remove.
-    use \ReflectionClass;
     use Mockery as m, phpDocumentor;
     use phpDocumentor\Reflection\DocBlock;
     use phpDocumentor\Reflection\DocBlock\Tag;
@@ -22,6 +21,7 @@ namespace phpDocumentor\Reflection\Types {
         Assert,
         Exception as e
     };
+    use \ReflectionClass;
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
