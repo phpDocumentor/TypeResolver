@@ -30,7 +30,7 @@ final class Object_ implements Type
     /**
      * Initializes this object with an optional FQSEN, if not provided this object is considered 'untyped'.
      *
-     * @throws InvalidArgumentException when provided $fqsen is not a valid type.
+     * @throws \InvalidArgumentException when provided $fqsen is not a valid type.
      */
     public function __construct(Fqsen $fqsen = null)
     {

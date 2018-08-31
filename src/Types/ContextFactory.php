@@ -63,7 +63,10 @@ final class ContextFactory
 
     private function createFromReflectionParameter(\ReflectionParameter $parameter): Context
     {
-        return $this->createFromReflectionClass($parameter->getDeclaringClass());
+        $class = $parameter->getDeclaringClass();
+        if ($class) {
+            return $this->createFromReflectionClass($class);
+        }
     }
 
     private function createFromReflectionMethod(\ReflectionMethod $method): Context
@@ -87,7 +90,12 @@ final class ContextFactory
         $namespace = $class->getNamespaceName();
 
         if (is_string($fileName) && file_exists($fileName)) {
-            return $this->createForNamespace($namespace, file_get_contents($fileName));
+            $contents = file_get_contents($fileName);
+            if (false === $contents) {
+                throw new \RuntimeException('Unable to read file "' . $fileName . '"');
+            }
+
+            return $this->createForNamespace($namespace, $contents);
         }
 
         return new Context($namespace, []);
@@ -185,8 +193,7 @@ final class ContextFactory
         while ($continue) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
 
-            list($alias, $fqnn) = $this->extractUseStatement($tokens);
-            $uses[$alias] = $fqnn;
+            $uses = array_merge($uses, $this->extractUseStatements($tokens));
             if ($tokens->current()[0] === self::T_LITERAL_END_OF_USE) {
                 $continue = false;
             }
@@ -207,38 +214,112 @@ final class ContextFactory
 
     /**
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
-     * a USE statement yet.
+     * a USE statement yet. This will return a key/value array of the alias => namespace.
      *
      * @return array
      */
-    private function extractUseStatement(\ArrayIterator $tokens)
+    private function extractUseStatements(\ArrayIterator $tokens)
     {
-        $result = [''];
-        while ($tokens->valid()
-            && ($tokens->current()[0] !== self::T_LITERAL_USE_SEPARATOR)
-            && ($tokens->current()[0] !== self::T_LITERAL_END_OF_USE)
-        ) {
-            if ($tokens->current()[0] === T_AS) {
-                $result[] = '';
+        $extractedUseStatements = [];
+        $groupedNs = '';
+        $currentNs = '';
+        $currentAlias = null;
+        $state = 'start';
+
+        $i = 0;
+        while ($tokens->valid()) {
+            $i += 1;
+            $currentToken = $tokens->current();
+            $tokenId = is_string($currentToken) ? $currentToken : $currentToken[0];
+            $tokenValue = is_string($currentToken) ? null : $currentToken[1];
+            switch ($state) {
+                case 'start':
+                    switch ($tokenId) {
+                        case T_STRING:
+                        case T_NS_SEPARATOR:
+                            $currentNs .= $tokenValue;
+                            break;
+                        case T_CURLY_OPEN:
+                        case '{':
+                            $state = 'grouped';
+                            $groupedNs = $currentNs;
+                            break;
+                        case T_AS:
+                            $state = 'start-alias';
+                            break;
+                        case self::T_LITERAL_USE_SEPARATOR:
+                        case self::T_LITERAL_END_OF_USE:
+                            $state = 'end';
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'start-alias':
+                    switch ($tokenId) {
+                        case T_STRING:
+                            $currentAlias .= $tokenValue;
+                            break;
+                        case self::T_LITERAL_USE_SEPARATOR:
+                        case self::T_LITERAL_END_OF_USE:
+                            $state = 'end';
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'grouped':
+                    switch ($tokenId) {
+                        case T_STRING:
+                        case T_NS_SEPARATOR:
+                            $currentNs .= $tokenValue;
+                            break;
+                        case T_AS:
+                            $state = 'grouped-alias';
+                            break;
+                        case self::T_LITERAL_USE_SEPARATOR:
+                            $state = 'grouped';
+                            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
+                            $currentNs = $groupedNs;
+                            $currentAlias = null;
+                            break;
+                        case self::T_LITERAL_END_OF_USE:
+                            $state = 'end';
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'grouped-alias':
+                    switch ($tokenId) {
+                        case T_STRING:
+                            $currentAlias .= $tokenValue;
+                            break;
+                        case self::T_LITERAL_USE_SEPARATOR:
+                            $state = 'grouped';
+                            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
+                            $currentNs = $groupedNs;
+                            $currentAlias = null;
+                            break;
+                        case self::T_LITERAL_END_OF_USE:
+                            $state = 'end';
+                            break;
+                        default:
+                            break;
+                    }
             }
 
-            if ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR) {
-                $result[count($result) - 1] .= $tokens->current()[1];
+            if ($state === 'end') {
+                break;
             }
 
             $tokens->next();
         }
 
-        if (count($result) === 1) {
-            $backslashPos = strrpos($result[0], '\\');
-
-            if (false !== $backslashPos) {
-                $result[] = substr($result[0], $backslashPos + 1);
-            } else {
-                $result[] = $result[0];
-            }
+        if ($groupedNs !== $currentNs) {
+            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
         }
 
-        return array_reverse($result);
+        return $extractedUseStatements;
     }
 }
