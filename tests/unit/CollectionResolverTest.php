@@ -179,6 +179,25 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * 
+     * @expectedException \InvalidArgumentException
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Collection
+     * @uses \phpDocumentor\Reflection\Types\String_
+     */
+    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Collection $resolvedType */
+        $resolvedType = $fixture->resolve('array<string,  object|array>', new Context(''));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
