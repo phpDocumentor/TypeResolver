@@ -115,7 +115,7 @@ final class TypeResolver
         }
 
         // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)[]`, '<', '>' and type names
-        $tokens = preg_split('/\s*(\\||\\?|<|>|,|\\(|\\)(?:\\[\\])+)\s*/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $tokens = preg_split('/(\\||\\?|<|>|, ?|\\(|\\)(?:\\[\\])+)/', $type, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $tokenIterator = new \ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
@@ -198,7 +198,7 @@ final class TypeResolver
 
                 $tokens->next();
             } elseif ($parserContext === self::PARSER_IN_COLLECTION_EXPRESSION
-                && ($token === '>' || $token === ',')
+                && ($token === '>' || trim($token) === ',')
                 ) {
                 break;
             } else {
@@ -407,7 +407,7 @@ final class TypeResolver
         $valueType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
         $keyType = null;
 
-        if ($tokens->current() === ',') {
+        if ($tokens->current() !== null && trim($tokens->current()) === ',') {
             // if we have a comma, then we just parsed the key type, not the value type
             $keyType = $valueType;
             if ($isArray) {
