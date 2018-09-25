@@ -402,6 +402,29 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      */
+    public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Compound $resolvedType */
+        $resolvedType = $fixture->resolve('(string|\stdClass', new Context(''));
+
+        $this->assertInstanceOf(Compound::class, $resolvedType);
+        $this->assertSame('', (string)$resolvedType);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     */
     public function testResolvingArrayExpressionOrCompoundTypes()
     {
         $fixture = new TypeResolver();

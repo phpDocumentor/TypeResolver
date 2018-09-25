@@ -30,16 +30,16 @@ final class TypeResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
-    /** @var integer the iterator parser is inside a compound context */
+    /** @var int the iterator parser is inside a compound context */
     const PARSER_IN_COMPOUND = 0;
 
-    /** @var integer the iterator parser is inside a nullable expression context */
+    /** @var int the iterator parser is inside a nullable expression context */
     const PARSER_IN_NULLABLE = 1;
 
-    /** @var integer the iterator parser is inside an array expression context */
+    /** @var int the iterator parser is inside an array expression context */
     const PARSER_IN_ARRAY_EXPRESSION = 2;
 
-    /** @var integer the iterator parser is inside a collection expression context */
+    /** @var int the iterator parser is inside a collection expression context */
     const PARSER_IN_COLLECTION_EXPRESSION = 3;
 
     /** @var string[] List of recognized keywords and unto which Value Object they map */
@@ -176,18 +176,21 @@ final class TypeResolver
 
                 $resolvedType = new Array_($type);
 
-                // we generates arrays corresponding to the number of '[]'
-                // after the ')'
-                $numberOfArrays = (strlen($tokens->current()) - 1) / 2;
+                $token = $tokens->current();
+                // Someone did not properly close their array expression ..
+                if ($token === null) {
+                    break;
+                }
+
+                // we generate arrays corresponding to the number of '[]' after the ')'
+                $numberOfArrays = (strlen($token) - 1) / 2;
                 for ($i = 0; $i < $numberOfArrays - 1; ++$i) {
                     $resolvedType = new Array_($resolvedType);
                 }
 
                 $types[] = $resolvedType;
                 $tokens->next();
-            } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION
-                       && $token[0] === ')'
-                ) {
+            } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
                 break;
             } elseif ($token === '<') {
                 if (count($types) === 0) {
@@ -241,10 +244,6 @@ final class TypeResolver
                     'A type is missing in a collection expression'
                 );
             }
-
-            throw new \RuntimeException(
-                'No types in a compound list'
-            );
         } elseif (count($types) === 1) {
             return $types[0];
         }
