@@ -81,6 +81,12 @@ elements, one of type `\phpDocumentor\Reflection\Types\String_` and one of type
 
 The real power of this resolver is in its capability to expand partial class names into fully qualified class names; but in order to do that we need an additional `\phpDocumentor\Reflection\Types\Context` class that will inform the resolver in which namespace the given expression occurs and which namespace aliases (or imports) apply.
 
+### Resolving nullable types
+
+Php 7.1 introduced nullable types e.g. `?string`. Type resolver will resolve the original type without the nullable notation `?`
+just like it would do without the `?`. After that the type is wrapped in a `\phpDocumentor\Reflection\Types\Nullable` object.
+The `Nullable` type has a method to fetch the actual type. 
+
 ## Resolving an FQSEN
 
 A Fully Qualified Structural Element Name is a reference to another element in your code bases and can be resolved using the `\phpDocumentor\Reflection\FqsenResolver` class' `resolve` method, like this:
