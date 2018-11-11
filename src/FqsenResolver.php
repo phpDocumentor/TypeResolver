@@ -61,6 +61,31 @@ class FqsenResolver
         // if the first segment is not an alias; prepend namespace name and return
         if (!isset($namespaceAliases[$typeParts[0]])) {
             $namespace = $context->getNamespace();
+
+            // check if class is not a part of the current context
+            foreach ($namespaceAliases as $value) {
+                // if it is a part of current context - leave foreach
+                if (strpos($value, $namespace) !== false) {
+                    break;
+                }
+
+                // check case if typename is a part of namespace, and alias has another part
+                $_typeParts = explode(self::OPERATOR_NAMESPACE, $type);
+                if (count($_typeParts) > 2) {
+                    $_type = $_typeParts[0];
+                    if (strrpos($value, $_type) === strlen($value) - strlen($_type))
+                    {
+                        unset($_typeParts[0]);
+                        return new Fqsen(self::OPERATOR_NAMESPACE . $value . self::OPERATOR_NAMESPACE . implode(self::OPERATOR_NAMESPACE, $_typeParts));
+                    }
+                }
+
+                // if found alias
+                if (strrpos($value, $type) === strlen($value) - strlen($type)) {
+                    return new Fqsen(self::OPERATOR_NAMESPACE . $value);
+                }
+            }
+
             if ('' !== $namespace) {
                 $namespace .= self::OPERATOR_NAMESPACE;
             }
