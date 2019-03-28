@@ -279,6 +279,29 @@ class TypeResolverTest extends TestCase
      *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\String_
+     * @uses \phpDocumentor\Reflection\Types\Nullable
+     * @uses \phpDocumentor\Reflection\Types\Null_
+     * @uses \phpDocumentor\Reflection\Types\Boolean
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     */
+    public function testResolvingNullableCompoundTypes()
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('?string|null|?boolean');
+
+        $this->assertSame('?string|null|?bool', (string)$resolvedType);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
