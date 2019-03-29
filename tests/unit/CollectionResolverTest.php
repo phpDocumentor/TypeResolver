@@ -170,10 +170,12 @@ class CollectionResolverTest extends TestCase
 
         /** @var Collection $valueType */
         $valueType = $resolvedType->getValueType();
+        /** @var Object_ $collectionValueType */
+        $collectionValueType = $valueType->getValueType();
         $this->assertInstanceOf(Types\Collection::class, $valueType);
         $this->assertInstanceOf(Types\Object_::class, $valueType->getValueType());
         $this->assertEquals('\\ArrayObject', (string) $valueType->getFqsen());
-        $this->assertEquals('\\DateTime', (string) $valueType->getValueType()->getFqsen());
+        $this->assertEquals('\\DateTime', (string) $collectionValueType->getFqsen());
 
         /** @var Compound $keyType */
         $keyType = $resolvedType->getKeyType();

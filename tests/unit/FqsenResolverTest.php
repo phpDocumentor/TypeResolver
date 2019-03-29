@@ -1,6 +1,6 @@
 <?php
 
-namespace phpDocumentor\Reflection\unit;
+namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\Context;

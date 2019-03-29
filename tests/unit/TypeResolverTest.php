@@ -584,19 +584,6 @@ class TypeResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @uses \phpDocumentor\Reflection\Types\Context
-     *
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionIsThrownIfTypeIsNotAString()
-    {
-        $fixture = new TypeResolver();
-        $fixture->resolve(['a'], new Context(''));
-    }
-
-    /**
      * Returns a list of keywords and expected classes that are created from them.
      *
      * @return string[][]

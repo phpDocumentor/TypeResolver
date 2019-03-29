@@ -97,14 +97,8 @@ final class TypeResolver
      * replaced with another namespace.
      * @return Type
      */
-    public function resolve($type, Context $context = null)
+    public function resolve(string $type, Context $context = null): Type
     {
-        if (!is_string($type)) {
-            throw new \InvalidArgumentException(
-                'Attempted to resolve type but it appeared not to be a string, received: ' . var_export($type, true)
-            );
-        }
-
         $type = trim($type);
         if (!$type) {
             throw new \InvalidArgumentException('Attempted to resolve "' . $type . '" but it appears to be empty');
