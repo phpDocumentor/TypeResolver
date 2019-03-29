@@ -191,8 +191,7 @@ class CollectionResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
-        /** @var Collection $resolvedType */
-        $resolvedType = $fixture->resolve('array<string,  object|array>', new Context(''));
+        $fixture->resolve('array<string,  object|array>', new Context(''));
     }
 
     /**
