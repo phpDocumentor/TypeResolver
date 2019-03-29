@@ -179,7 +179,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * 
+     *
      * @expectedException \InvalidArgumentException
      *
      * @uses \phpDocumentor\Reflection\Types\Context
