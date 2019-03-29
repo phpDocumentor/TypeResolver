@@ -156,6 +156,54 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      */
+    public function testResolvingArrayCollectionWithKeyAndWhitespace()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Collection $resolvedType */
+        $resolvedType = $fixture->resolve('array<string, object|array>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<string,object|array>', (string) $resolvedType);
+
+        /** @var Array_ $valueType */
+        $valueType = $resolvedType->getValueType();
+
+        /** @var Compound $keyType */
+        $keyType = $resolvedType->getKeyType();
+
+        $this->assertInstanceOf(Types\String_::class, $keyType);
+        $this->assertInstanceOf(Types\Compound::class, $valueType);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * 
+     * @expectedException \InvalidArgumentException
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Collection
+     * @uses \phpDocumentor\Reflection\Types\String_
+     */
+    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace()
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Collection $resolvedType */
+        $resolvedType = $fixture->resolve('array<string,  object|array>', new Context(''));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     *
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Collection
+     * @uses \phpDocumentor\Reflection\Types\String_
+     */
     public function testResolvingCollectionOfCollection()
     {
         $fixture = new TypeResolver();
