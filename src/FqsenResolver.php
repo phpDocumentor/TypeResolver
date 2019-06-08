@@ -19,7 +19,7 @@ class FqsenResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
-    public function resolve($fqsen, Context $context = null): Fqsen
+    public function resolve(string $fqsen, Context $context = null): Fqsen
     {
         if ($context === null) {
             $context = new Context('');
@@ -39,7 +39,7 @@ class FqsenResolver
      *
      * @return bool
      */
-    private function isFqsen($type): bool
+    private function isFqsen(string $type): bool
     {
         return strpos($type, self::OPERATOR_NAMESPACE) === 0;
     }
@@ -52,7 +52,7 @@ class FqsenResolver
      * @return Fqsen
      * @throws \InvalidArgumentException when type is not a valid FQSEN.
      */
-    private function resolvePartialStructuralElementName($type, Context $context): Fqsen
+    private function resolvePartialStructuralElementName(string $type, Context $context): Fqsen
     {
         $typeParts = explode(self::OPERATOR_NAMESPACE, $type, 2);
 

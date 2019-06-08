@@ -33,3 +33,9 @@ action "Code style check" {
   args = "-d memory_limit=1024M"
   needs = ["composer"]
 }
+
+action "Psalm" {
+  uses = "docker://mickaelandrieu/psalm-ga"
+  secrets = ["GITHUB_TOKEN"]
+  needs = ["composer"]
+}

@@ -42,7 +42,7 @@ final class TypeResolver
     /** @var int the iterator parser is inside a collection expression context */
     const PARSER_IN_COLLECTION_EXPRESSION = 3;
 
-    /** @var string[] List of recognized keywords and unto which Value Object they map */
+    /** @var array<string, string> List of recognized keywords and unto which Value Object they map */
     private $keywords = [
         'string' => Types\String_::class,
         'int' => Types\Integer::class,
@@ -133,7 +133,7 @@ final class TypeResolver
      * the context where we are in the parsing
      * @return Type
      */
-    private function parseTypes(\ArrayIterator $tokens, Context $context, $parserContext)
+    private function parseTypes(\ArrayIterator $tokens, Context $context, $parserContext): Type
     {
         $types = [];
         $token = '';
@@ -257,7 +257,7 @@ final class TypeResolver
      * @param string $type the type string, representing a single type
      * @return Type|Array_|Object_
      */
-    private function resolveSingleType($type, Context $context)
+    private function resolveSingleType(string $type, Context $context)
     {
         switch (true) {
             case $this->isKeyword($type):
@@ -281,11 +281,8 @@ final class TypeResolver
 
     /**
      * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
-     *
-     * @param string $keyword
-     * @param string $typeClassName
      */
-    public function addKeyword($keyword, $typeClassName)
+    public function addKeyword(string $keyword, string $typeClassName): void
     {
         if (!class_exists($typeClassName)) {
             throw new \InvalidArgumentException(
@@ -307,10 +304,8 @@ final class TypeResolver
      * Detects whether the given type represents an array.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
-     * @return bool
      */
-    private function isTypedArray($type)
+    private function isTypedArray(string $type): bool
     {
         return substr($type, -2) === self::OPERATOR_ARRAY;
     }
@@ -319,10 +314,8 @@ final class TypeResolver
      * Detects whether the given type represents a PHPDoc keyword.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
-     * @return bool
      */
-    private function isKeyword($type)
+    private function isKeyword(string $type): bool
     {
         return in_array(strtolower($type), array_keys($this->keywords), true);
     }
@@ -334,45 +327,38 @@ final class TypeResolver
      *
      * @return bool
      */
-    private function isPartialStructuralElementName($type)
+    private function isPartialStructuralElementName(string $type): bool
     {
         return ($type[0] !== self::OPERATOR_NAMESPACE) && !$this->isKeyword($type);
     }
 
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
-     *
-     * @param string $type
-     *
-     * @return bool
      */
-    private function isFqsen($type)
+    private function isFqsen(string $type): bool
     {
         return strpos($type, self::OPERATOR_NAMESPACE) === 0;
     }
 
     /**
      * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
-     *
-     * @param string $type
-     * @return Array_
      */
-    private function resolveTypedArray($type, Context $context)
+    private function resolveTypedArray(string $type, Context $context): Array_
     {
         return new Array_($this->resolveSingleType(substr($type, 0, -2), $context));
     }
 
     /**
      * Resolves the given keyword (such as `string`) into a Type object representing that keyword.
-     *
-     * @param string $type
-     *
-     * @return Type
+     * @psalm-suppress MoreSpecificReturnType
      */
-    private function resolveKeyword($type)
+    private function resolveKeyword(string $type): Type
     {
         $className = $this->keywords[strtolower($type)];
-
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * @psalm-suppress InvalidStringClass
+         */
         return new $className();
     }
 
@@ -384,7 +370,7 @@ final class TypeResolver
      *
      * @return Object_
      */
-    private function resolveTypedObject($type, Context $context = null)
+    private function resolveTypedObject($type, Context $context = null): Object_
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
     }
@@ -394,7 +380,7 @@ final class TypeResolver
      *
      * @return Array_|Collection
      */
-    private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context)
+    private function resolveCollection(\ArrayIterator $tokens, Type $classType, Context $context): Type
     {
         $isArray = ('array' === (string) $classType);
 
@@ -460,16 +446,14 @@ final class TypeResolver
             return new Array_($valueType, $keyType);
         }
 
-        if ($classType instanceof Object_) {
-            return $this->makeCollectionFromObject($classType, $valueType, $keyType);
-        }
+        return $this->makeCollectionFromObject($classType, $valueType, $keyType);
     }
 
     /**
      * @param Type|null $keyType
      * @return Collection
      */
-    private function makeCollectionFromObject(Object_ $object, Type $valueType, Type $keyType = null)
+    private function makeCollectionFromObject(Object_ $object, Type $valueType, Type $keyType = null): Collection
     {
         return new Collection($object->getFqsen(), $valueType, $keyType);
     }

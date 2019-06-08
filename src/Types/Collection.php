@@ -36,7 +36,7 @@ final class Collection extends AbstractList
      *
      * @param Fqsen|null $fqsen
      */
-    public function __construct(Fqsen $fqsen = null, Type $valueType, Type $keyType = null)
+    public function __construct(?Fqsen $fqsen, Type $valueType, Type $keyType = null)
     {
         parent::__construct($valueType, $keyType);
 
@@ -48,7 +48,7 @@ final class Collection extends AbstractList
      *
      * @return Fqsen|null
      */
-    public function getFqsen()
+    public function getFqsen(): ?Fqsen
     {
         return $this->fqsen;
     }
@@ -58,10 +58,12 @@ final class Collection extends AbstractList
      */
     public function __toString(): string
     {
+        $objectType = (string) ($this->fqsen ?? 'object');
+ 
         if ($this->keyType === null) {
-            return $this->fqsen . '<' . $this->valueType . '>';
+            return  $objectType . '<' . $this->valueType . '>';
         }
 
-        return $this->fqsen . '<' . $this->keyType . ',' . $this->valueType . '>';
+        return $objectType . '<' . $this->keyType . ',' . $this->valueType . '>';
     }
 }

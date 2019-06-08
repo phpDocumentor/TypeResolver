@@ -37,6 +37,7 @@ final class Compound implements Type, IteratorAggregate
     public function __construct(array $types)
     {
         foreach ($types as $type) {
+            /** @psalm-suppress RedundantConditionGivenDocblockType */
             if (!$type instanceof Type) {
                 throw new \InvalidArgumentException('A compound type can only have other types as elements');
             }

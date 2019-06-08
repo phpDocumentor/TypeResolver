@@ -67,6 +67,8 @@ final class ContextFactory
         if ($class) {
             return $this->createFromReflectionClass($class);
         }
+
+        throw new \InvalidArgumentException('Unable to get class of ' . $parameter->getName());
     }
 
     private function createFromReflectionMethod(\ReflectionMethod $method): Context
@@ -111,7 +113,7 @@ final class ContextFactory
      *
      * @return Context
      */
-    public function createForNamespace($namespace, $fileContents)
+    public function createForNamespace($namespace, $fileContents): Context
     {
         $namespace = trim($namespace, '\\');
         $useStatements = [];
@@ -165,7 +167,7 @@ final class ContextFactory
      *
      * @return string
      */
-    private function parseNamespace(\ArrayIterator $tokens)
+    private function parseNamespace(\ArrayIterator $tokens): string
     {
         // skip to the first string or namespace separator
         $this->skipToNextStringOrNamespaceSeparator($tokens);
@@ -185,7 +187,7 @@ final class ContextFactory
      *
      * @return string[]
      */
-    private function parseUseStatement(\ArrayIterator $tokens)
+    private function parseUseStatement(\ArrayIterator $tokens): array
     {
         $uses = [];
         $continue = true;
@@ -205,7 +207,7 @@ final class ContextFactory
     /**
      * Fast-forwards the iterator as longs as we don't encounter a T_STRING or T_NS_SEPARATOR token.
      */
-    private function skipToNextStringOrNamespaceSeparator(\ArrayIterator $tokens)
+    private function skipToNextStringOrNamespaceSeparator(\ArrayIterator $tokens): void
     {
         while ($tokens->valid() && ($tokens->current()[0] !== T_STRING) && ($tokens->current()[0] !== T_NS_SEPARATOR)) {
             $tokens->next();
@@ -216,9 +218,10 @@ final class ContextFactory
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
      * a USE statement yet. This will return a key/value array of the alias => namespace.
      *
+     * @psalm-suppress TypeDoesNotContainType
      * @return array
      */
-    private function extractUseStatements(\ArrayIterator $tokens)
+    private function extractUseStatements(\ArrayIterator $tokens): array
     {
         $extractedUseStatements = [];
         $groupedNs = '';
