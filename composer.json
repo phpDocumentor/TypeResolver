@@ -16,8 +16,8 @@
     },
     "require-dev": {
         "mockery/mockery": "~1",
-        "phpunit/phpunit": "~6",
-        "ext-tokenizer": "^7.1"
+        "ext-tokenizer": "^7.1",
+        "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "psr-4": {
