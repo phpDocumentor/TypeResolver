@@ -42,7 +42,10 @@ final class TypeResolver
     /** @var int the iterator parser is inside a collection expression context */
     const PARSER_IN_COLLECTION_EXPRESSION = 3;
 
-    /** @var array<string, string> List of recognized keywords and unto which Value Object they map */
+    /**
+     * @var array<string, string> List of recognized keywords and unto which Value Object they map
+     * @psalm-var array<string, class-string<Type>>
+     */
     private $keywords = [
         'string' => Types\String_::class,
         'int' => Types\Integer::class,
@@ -350,15 +353,10 @@ final class TypeResolver
 
     /**
      * Resolves the given keyword (such as `string`) into a Type object representing that keyword.
-     * @psalm-suppress MoreSpecificReturnType
      */
     private function resolveKeyword(string $type): Type
     {
         $className = $this->keywords[strtolower($type)];
-        /**
-         * @psalm-suppress LessSpecificReturnStatement
-         * @psalm-suppress InvalidStringClass
-         */
         return new $className();
     }
 
