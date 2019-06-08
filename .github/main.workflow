@@ -2,6 +2,7 @@ workflow "Qa workflow" {
   on = "push"
   resolves = [
     "PHPStan",
+    "Psalm",
     "composer-require-checker",
     "Code style check",
   ]

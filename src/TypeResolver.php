@@ -370,7 +370,7 @@ final class TypeResolver
      *
      * @return Object_
      */
-    private function resolveTypedObject($type, Context $context = null): Object_
+    private function resolveTypedObject(string $type, Context $context = null): Object_
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
     }
@@ -446,7 +446,12 @@ final class TypeResolver
             return new Array_($valueType, $keyType);
         }
 
-        return $this->makeCollectionFromObject($classType, $valueType, $keyType);
+        /** @psalm-suppress RedundantCondition */
+        if ($classType instanceof Object_) {
+            return $this->makeCollectionFromObject($classType, $valueType, $keyType);
+        }
+
+        throw new \RuntimeException('Invalid $classType provided');
     }
 
     /**
