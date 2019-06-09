@@ -26,10 +26,10 @@ use UnexpectedValueException;
 final class ContextFactory
 {
     /** The literal used at the end of a use statement. */
-    const T_LITERAL_END_OF_USE = ';';
+    private const T_LITERAL_END_OF_USE = ';';
 
     /** The literal used between sets of use statements */
-    const T_LITERAL_USE_SEPARATOR = ',';
+    private const T_LITERAL_USE_SEPARATOR = ',';
 
     /**
      * Build a Context given a Class Reflection.

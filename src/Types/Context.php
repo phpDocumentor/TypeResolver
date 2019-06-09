@@ -67,7 +67,7 @@ final class Context
      *
      * @return string
      */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
@@ -78,7 +78,7 @@ final class Context
      *
      * @return string[]
      */
-    public function getNamespaceAliases()
+    public function getNamespaceAliases(): array
     {
         return $this->namespaceAliases;
     }

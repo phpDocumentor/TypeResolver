@@ -64,6 +64,7 @@ abstract class AbstractList implements Type
 
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
+     * @return string
      */
     public function __toString(): string
     {

@@ -25,22 +25,22 @@ use phpDocumentor\Reflection\Types\String_;
 final class TypeResolver
 {
     /** @var string Definition of the ARRAY operator for types */
-    const OPERATOR_ARRAY = '[]';
+    private const OPERATOR_ARRAY = '[]';
 
     /** @var string Definition of the NAMESPACE operator in PHP */
-    const OPERATOR_NAMESPACE = '\\';
+    private const OPERATOR_NAMESPACE = '\\';
 
     /** @var int the iterator parser is inside a compound context */
-    const PARSER_IN_COMPOUND = 0;
+    private const PARSER_IN_COMPOUND = 0;
 
     /** @var int the iterator parser is inside a nullable expression context */
-    const PARSER_IN_NULLABLE = 1;
+    private const PARSER_IN_NULLABLE = 1;
 
     /** @var int the iterator parser is inside an array expression context */
-    const PARSER_IN_ARRAY_EXPRESSION = 2;
+    private const PARSER_IN_ARRAY_EXPRESSION = 2;
 
     /** @var int the iterator parser is inside a collection expression context */
-    const PARSER_IN_COLLECTION_EXPRESSION = 3;
+    private const PARSER_IN_COLLECTION_EXPRESSION = 3;
 
     /**
      * @var array<string, string> List of recognized keywords and unto which Value Object they map

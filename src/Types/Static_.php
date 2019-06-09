@@ -31,7 +31,7 @@ final class Static_ implements Type
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'static';
     }

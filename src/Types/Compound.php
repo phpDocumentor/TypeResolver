@@ -53,7 +53,7 @@ final class Compound implements Type, IteratorAggregate
      *
      * @return Type|null
      */
-    public function get($index)
+    public function get(int $index): ?Type
     {
         if (!$this->has($index)) {
             return null;
@@ -69,7 +69,7 @@ final class Compound implements Type, IteratorAggregate
      *
      * @return bool
      */
-    public function has($index)
+    public function has(int $index): bool
     {
         return isset($this->types[$index]);
     }
@@ -79,7 +79,7 @@ final class Compound implements Type, IteratorAggregate
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return implode('|', $this->types);
     }

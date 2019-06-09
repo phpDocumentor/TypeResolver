@@ -34,20 +34,16 @@ final class Nullable implements Type
 
     /**
      * Provide access to the actual type directly, if needed.
-     *
-     * @return Type
      */
-    public function getActualType()
+    public function getActualType(): Type
     {
         return $this->realType;
     }
 
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return '?' . $this->realType->__toString();
     }

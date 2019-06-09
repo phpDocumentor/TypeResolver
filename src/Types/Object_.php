@@ -32,7 +32,7 @@ final class Object_ implements Type
      *
      * @throws \InvalidArgumentException when provided $fqsen is not a valid type.
      */
-    public function __construct(Fqsen $fqsen = null)
+    public function __construct(?Fqsen $fqsen = null)
     {
         if (strpos((string) $fqsen, '::') !== false || strpos((string) $fqsen, '()') !== false) {
             throw new \InvalidArgumentException(
@@ -49,12 +49,12 @@ final class Object_ implements Type
      *
      * @return Fqsen|null
      */
-    public function getFqsen()
+    public function getFqsen(): ?Fqsen
     {
         return $this->fqsen;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->fqsen) {
             return (string) $this->fqsen;

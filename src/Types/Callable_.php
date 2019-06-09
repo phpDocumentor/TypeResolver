@@ -24,7 +24,7 @@ final class Callable_ implements Type
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'callable';
     }

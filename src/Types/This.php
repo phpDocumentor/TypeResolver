@@ -27,7 +27,7 @@ final class This implements Type
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return '$this';
     }

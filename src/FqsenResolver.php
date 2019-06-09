@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Types\Context;
 class FqsenResolver
 {
     /** @var string Definition of the NAMESPACE operator in PHP */
-    const OPERATOR_NAMESPACE = '\\';
+    private const OPERATOR_NAMESPACE = '\\';
 
     public function resolve(string $fqsen, Context $context = null): Fqsen
     {
