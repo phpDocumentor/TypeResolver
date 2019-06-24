@@ -1,12 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -23,7 +24,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testProvidesANormalizedNamespace()
+    public function testProvidesANormalizedNamespace() : void
     {
         $fixture = new Context('\My\Space');
         $this->assertSame('My\Space', $fixture->getNamespace());
@@ -33,7 +34,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedGlobalAsRootNamespace()
+    public function testInterpretsNamespaceNamedGlobalAsRootNamespace() : void
     {
         $fixture = new Context('global');
         $this->assertSame('', $fixture->getNamespace());
@@ -43,7 +44,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedDefaultAsRootNamespace()
+    public function testInterpretsNamespaceNamedDefaultAsRootNamespace() : void
     {
         $fixture = new Context('default');
         $this->assertSame('', $fixture->getNamespace());
@@ -53,7 +54,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespaceAliases
      */
-    public function testProvidesNormalizedNamespaceAliases()
+    public function testProvidesNormalizedNamespaceAliases() : void
     {
         $fixture = new Context('', ['Space' => '\My\Space']);
         $this->assertSame(['Space' => 'My\Space'], $fixture->getNamespaceAliases());

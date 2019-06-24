@@ -1,16 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
+
+use function strlen;
+use function substr;
+use function trim;
 
 /**
  * Provides information about the Context in which the DocBlock occurs that receives this context.
@@ -31,19 +36,19 @@ final class Context
     /** @var string The current namespace. */
     private $namespace;
 
-    /** @var array List of namespace aliases => Fully Qualified Namespace. */
+    /** @var string[] List of namespace aliases => Fully Qualified Namespace. */
     private $namespaceAliases;
 
     /**
      * Initializes the new context and normalizes all passed namespaces to be in Qualified Namespace Name (QNN)
      * format (without a preceding `\`).
      *
-     * @param string $namespace The namespace where this DocBlock resides in.
-     * @param array $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
+     * @param string   $namespace        The namespace where this DocBlock resides in.
+     * @param string[] $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
      */
-    public function __construct($namespace, array $namespaceAliases = [])
+    public function __construct(string $namespace, array $namespaceAliases = [])
     {
-        $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
+        $this->namespace = $namespace !== 'global' && $namespace !== 'default'
             ? trim($namespace, '\\')
             : '';
 
@@ -64,10 +69,8 @@ final class Context
 
     /**
      * Returns the Qualified Namespace Name (thus without `\` in front) where the associated element is in.
-     *
-     * @return string
      */
-    public function getNamespace(): string
+    public function getNamespace() : string
     {
         return $this->namespace;
     }
@@ -78,7 +81,7 @@ final class Context
      *
      * @return string[]
      */
-    public function getNamespaceAliases(): array
+    public function getNamespaceAliases() : array
     {
         return $this->namespaceAliases;
     }

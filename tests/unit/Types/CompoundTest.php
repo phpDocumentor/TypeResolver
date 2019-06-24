@@ -1,17 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,23 +23,22 @@ class CompoundTest extends TestCase
 {
     /**
      * @covers ::__construct
-     *
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage A compound type can only have other types as elements
      */
-    public function testCompoundCannotBeConstructedFromType()
+    public function testCompoundCannotBeConstructedFromType() : void
     {
         new Compound(['foo']);
     }
 
     /**
-     * @covers ::get
-     *
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Compound::has
      * @uses \phpDocumentor\Reflection\Types\Integer
+     *
+     * @covers ::get
      */
-    public function testCompoundGetType()
+    public function testCompoundGetType() : void
     {
         $integer = new Integer();
 
@@ -45,57 +46,57 @@ class CompoundTest extends TestCase
     }
 
     /**
-     * @covers ::get
-     *
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Compound::has
+     *
+     * @covers ::get
      */
-    public function testCompoundGetNotExistingType()
+    public function testCompoundGetNotExistingType() : void
     {
         $this->assertNull((new Compound([]))->get(0));
     }
 
     /**
-     * @covers ::has
-     *
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Integer
+     *
+     * @covers ::has
      */
-    public function testCompoundHasType()
+    public function testCompoundHasType() : void
     {
         $this->assertTrue((new Compound([new Integer()]))->has(0));
     }
 
     /**
-     * @covers ::has
-     *
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
+     *
+     * @covers ::has
      */
-    public function testCompoundHasNotExistingType()
+    public function testCompoundHasNotExistingType() : void
     {
         $this->assertFalse((new Compound([]))->has(0));
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::__toString
-     *
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
+     *
+     * @covers ::__construct
+     * @covers ::__toString
      */
-    public function testCompoundCanBeConstructedAndStringifiedCorrectly()
+    public function testCompoundCanBeConstructedAndStringifiedCorrectly() : void
     {
         $this->assertSame('int|bool', (string) (new Compound([new Integer(), new Boolean()])));
     }
 
     /**
-     * @covers ::getIterator
-     *
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
+     *
+     * @covers ::getIterator
      */
-    public function testCompoundCanBeIterated()
+    public function testCompoundCanBeIterated() : void
     {
         $types = [new Integer(), new Boolean()];
 

@@ -1,17 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
@@ -19,6 +21,7 @@ use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @covers ::<private>
@@ -27,15 +30,15 @@ use PHPUnit\Framework\TestCase;
 class CollectionResolverTest extends TestCase
 {
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::resolve
+     * @covers ::__construct
      */
-    public function testResolvingCollection()
+    public function testResolvingCollection() : void
     {
         $fixture = new TypeResolver();
 
@@ -58,15 +61,15 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingCollectionWithKeyType()
+    public function testResolvingCollectionWithKeyType() : void
     {
         $fixture = new TypeResolver();
 
@@ -91,15 +94,15 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingArrayCollection()
+    public function testResolvingArrayCollection() : void
     {
         $fixture = new TypeResolver();
 
@@ -120,15 +123,15 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKey()
+    public function testResolvingArrayCollectionWithKey() : void
     {
         $fixture = new TypeResolver();
 
@@ -149,15 +152,15 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKeyAndWhitespace()
+    public function testResolvingArrayCollectionWithKeyAndWhitespace() : void
     {
         $fixture = new TypeResolver();
 
@@ -178,17 +181,17 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
-     * @expectedException \InvalidArgumentException
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     *
+     * @expectedException InvalidArgumentException
      */
-    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace()
+    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace() : void
     {
         $fixture = new TypeResolver();
 
@@ -196,15 +199,15 @@ class CollectionResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingCollectionOfCollection()
+    public function testResolvingCollectionOfCollection() : void
     {
         $fixture = new TypeResolver();
 
@@ -236,10 +239,10 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      * @expectedExceptionMessage An array can have only integers or strings as keys
      */
-    public function testBadArrayCollectionKey()
+    public function testBadArrayCollectionKey() : void
     {
         $fixture = new TypeResolver();
         $fixture->resolve('array<object,string>', new Context(''));
@@ -248,10 +251,10 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      * @expectedExceptionMessage Unexpected collection operator "<", class name is missing
      */
-    public function testMissingStartCollection()
+    public function testMissingStartCollection() : void
     {
         $fixture = new TypeResolver();
         $fixture->resolve('<string>', new Context(''));
@@ -260,10 +263,10 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      * @expectedExceptionMessage Collection: ">" is missing
      */
-    public function testMissingEndCollection()
+    public function testMissingEndCollection() : void
     {
         $fixture = new TypeResolver();
         $fixture->resolve('ArrayObject<object|string', new Context(''));
@@ -272,25 +275,25 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      * @expectedExceptionMessage string is not a collection
      */
-    public function testBadCollectionClass()
+    public function testBadCollectionClass() : void
     {
         $fixture = new TypeResolver();
         $fixture->resolve('string<integer>', new Context(''));
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     *
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
      */
-    public function testResolvingCollectionAsArray()
+    public function testResolvingCollectionAsArray() : void
     {
         $fixture = new TypeResolver();
 
