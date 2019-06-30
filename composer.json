@@ -12,7 +12,7 @@
     "minimum-stability": "beta",
     "require": {
         "php": ">=7.1",
-        "phpdocumentor/reflection-common": "~2.0.0-beta1"
+        "phpdocumentor/reflection-common": "^2.0"
     },
     "require-dev": {
         "mockery/mockery": "~1",
