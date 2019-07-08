@@ -29,7 +29,7 @@ action "composer-require-checker" {
 }
 
 action "Code style check" {
-  uses = "docker://phpdoc/phpcs-ga:latest"
+  uses = "docker://phpdoc/phpcs-ga:master"
   secrets = ["GITHUB_TOKEN"]
   args = "-d memory_limit=1024M -s"
   needs = ["composer"]
