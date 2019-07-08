@@ -211,7 +211,7 @@ final class ContextFactory
      */
     private function parseUseStatement(ArrayIterator $tokens) : array
     {
-        $uses     = [];
+        $uses = [];
 
         while (true) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
