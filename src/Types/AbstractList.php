@@ -1,12 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -31,21 +32,21 @@ abstract class AbstractList implements Type
     /**
      * Initializes this representation of an array with the given Type.
      */
-    public function __construct(Type $valueType = null, Type $keyType = null)
+    public function __construct(?Type $valueType = null, ?Type $keyType = null)
     {
         if ($valueType === null) {
             $valueType = new Mixed_();
         }
 
-        $this->valueType = $valueType;
+        $this->valueType      = $valueType;
         $this->defaultKeyType = new Compound([new String_(), new Integer()]);
-        $this->keyType = $keyType;
+        $this->keyType        = $keyType;
     }
 
     /**
      * Returns the type for the keys of this array.
      */
-    public function getKeyType(): Type
+    public function getKeyType() : Type
     {
         if ($this->keyType === null) {
             return $this->defaultKeyType;
@@ -57,7 +58,7 @@ abstract class AbstractList implements Type
     /**
      * Returns the value for the keys of this array.
      */
-    public function getValueType(): Type
+    public function getValueType() : Type
     {
         return $this->valueType;
     }
@@ -65,7 +66,7 @@ abstract class AbstractList implements Type
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
-    public function __toString(): string
+    public function __toString() : string
     {
         if ($this->keyType) {
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';

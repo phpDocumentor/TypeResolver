@@ -5,7 +5,6 @@
     colors="true"
     verbose="true"
     forceCoversAnnotation="true"
-    checkForUnintentionallyCoveredCode="false"
 >
     <testsuites>
         <testsuite name="unit">
@@ -23,13 +22,10 @@
     <logging>
         <log type="coverage-html"
             target="build/coverage"
-            charset="UTF-8"
-            yui="true"
-            highlight="false"
             lowUpperBound="35"
             highLowerBound="70" />
         <log type="coverage-clover" target="build/logs/clover.xml"/>
-        <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false" />
+        <log type="junit" target="build/logs/junit.xml"/>
     </logging>
     <listeners>
         <listener class="Mockery\Adapter\Phpunit\TestListener"

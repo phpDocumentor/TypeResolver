@@ -2,6 +2,7 @@ workflow "Qa workflow" {
   on = "push"
   resolves = [
     "PHPStan",
+    "Psalm",
     "composer-require-checker",
     "Code style check",
   ]
@@ -28,8 +29,14 @@ action "composer-require-checker" {
 }
 
 action "Code style check" {
-  uses = "docker://oskarstark/phpcs-ga"
+  uses = "docker://phpdoc/phpcs-ga:master"
   secrets = ["GITHUB_TOKEN"]
-  args = "-d memory_limit=1024M"
+  args = "-d memory_limit=1024M -s"
+  needs = ["composer"]
+}
+
+action "Psalm" {
+  uses = "docker://mickaelandrieu/psalm-ga"
+  secrets = ["GITHUB_TOKEN"]
   needs = ["composer"]
 }

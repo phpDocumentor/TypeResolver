@@ -1,20 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright 2010-2018 Mike van Riel<mike@phpdoc.org>
- * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
 
 use ArrayIterator;
+use InvalidArgumentException;
 use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
+use function implode;
 
 /**
  * Value Object representing a Compound Type.
@@ -32,13 +35,15 @@ final class Compound implements Type, IteratorAggregate
      * Initializes a compound type (i.e. `string|int`) and tests if the provided types all implement the Type interface.
      *
      * @param Type[] $types
-     * @throws \InvalidArgumentException when types are not all instance of Type
+     *
+     * @throws InvalidArgumentException When types are not all instance of Type.
      */
     public function __construct(array $types)
     {
         foreach ($types as $type) {
+            /** @psalm-suppress RedundantConditionGivenDocblockType */
             if (!$type instanceof Type) {
-                throw new \InvalidArgumentException('A compound type can only have other types as elements');
+                throw new InvalidArgumentException('A compound type can only have other types as elements');
             }
         }
 
@@ -47,12 +52,8 @@ final class Compound implements Type, IteratorAggregate
 
     /**
      * Returns the type at the given index.
-     *
-     * @param integer $index
-     *
-     * @return Type|null
      */
-    public function get($index)
+    public function get(int $index) : ?Type
     {
         if (!$this->has($index)) {
             return null;
@@ -63,22 +64,16 @@ final class Compound implements Type, IteratorAggregate
 
     /**
      * Tests if this compound type has a type with the given index.
-     *
-     * @param integer $index
-     *
-     * @return bool
      */
-    public function has($index)
+    public function has(int $index) : bool
     {
         return isset($this->types[$index]);
     }
 
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         return implode('|', $this->types);
     }
