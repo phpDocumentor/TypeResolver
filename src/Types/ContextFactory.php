@@ -212,9 +212,8 @@ final class ContextFactory
     private function parseUseStatement(ArrayIterator $tokens) : array
     {
         $uses     = [];
-        $continue = true;
 
-        while ($continue) {
+        while (true) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
 
             $uses = array_merge($uses, $this->extractUseStatements($tokens));
