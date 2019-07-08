@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f7d9ec717388eb1210a3c3fabec0523",
+    "content-hash": "8168e5df1ad1444a9512e8b63bab2bfe",
     "packages": [
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "2.0.0-beta1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
@@ -1435,14 +1435,12 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "beta",
-    "stability-flags": {
-        "phpdocumentor/reflection-common": 10
-    },
+    "minimum-stability": "stable",
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": "^7.1"
     },
     "platform-dev": {
         "ext-tokenizer": "^7.1"

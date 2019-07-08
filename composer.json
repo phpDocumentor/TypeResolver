@@ -9,9 +9,8 @@
           "email": "me@mikevanriel.com"
         }
     ],
-    "minimum-stability": "beta",
     "require": {
-        "php": ">=7.1",
+        "php": "^7.1",
         "phpdocumentor/reflection-common": "^2.0"
     },
     "require-dev": {
