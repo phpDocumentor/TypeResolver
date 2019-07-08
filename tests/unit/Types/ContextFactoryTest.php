@@ -58,6 +58,7 @@ namespace phpDocumentor\Reflection\Types {
                 'Assert' => Assert::class,
                 'e' => e::class,
                 ReflectionClass::class => ReflectionClass::class,
+                'stdClass',
             ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
