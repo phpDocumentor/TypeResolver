@@ -50,24 +50,9 @@ namespace phpDocumentor\Reflection\Types {
         public function testReadsAliasesFromClassReflection()
         {
             $fixture = new ContextFactory();
-            $expected = [
-                'm' => m::class,
-                'DocBlock' => DocBlock::class,
-                'Tag' => Tag::class,
-                'phpDocumentor' => 'phpDocumentor',
-                'TestCase' => TestCase::class,
-                'Assert' => Assert::class,
-                'e' => e::class,
-                ReflectionClass::class => ReflectionClass::class,
-            ];
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
-            $actual = $context->getNamespaceAliases();
-
-            // sort so that order differences don't break it
-            sort($expected);
-            sort($actual);
-            $this->assertSame($expected, $actual);
+            $this->assertNamespaceAliasesFrom($context);
         }
 
         /**
@@ -89,20 +74,9 @@ namespace phpDocumentor\Reflection\Types {
         public function testReadsAliasesFromProvidedNamespaceAndContent()
         {
             $fixture = new ContextFactory();
-            $expected = [
-                'm' => m::class,
-                'DocBlock' => DocBlock::class,
-                'Tag' => Tag::class,
-                'phpDocumentor' => 'phpDocumentor',
-                'TestCase' => TestCase::class,
-                ReflectionClass::class => ReflectionClass::class,
-            ];
             $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
 
-            $actual = $context->getNamespaceAliases();
-
-            // sort so that order differences don't break it
-            $this->assertSame(sort($expected), sort($actual));
+            $this->assertNamespaceAliasesFrom($context);
         }
 
         /**
@@ -194,6 +168,28 @@ PHP
             $context = $fixture->createFromReflector(new \ReflectionClass('Foo\Bar'));
 
             $this->assertSame([], $context->getNamespaceAliases());
+        }
+
+        public function assertNamespaceAliasesFrom(Context $context)
+        {
+            $expected = [
+                'm' => m::class,
+                'DocBlock' => DocBlock::class,
+                'Tag' => Tag::class,
+                'phpDocumentor' => 'phpDocumentor',
+                'TestCase' => TestCase::class,
+                'Assert' => Assert::class,
+                'e' => e::class,
+                ReflectionClass::class => ReflectionClass::class,
+            ];
+
+            $actual = $context->getNamespaceAliases();
+
+            // sort so that order differences don't break it
+            asort($expected);
+            asort($actual);
+
+            $this->assertSame($expected, $actual);
         }
 
         public function tearDown()
