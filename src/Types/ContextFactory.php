@@ -131,11 +131,11 @@ final class ContextFactory
     /**
      * Build a Context for a namespace in the provided file contents.
      *
-     * @param string $namespace It does not matter if a `\` precedes the namespace name,
-     * this method first normalizes.
-     * @param string $fileContents The file's contents to retrieve the aliases from with the given namespace.
      * @see Context for more information on Contexts.
      *
+     * @param string $namespace    It does not matter if a `\` precedes the namespace name,
+     * this method first normalizes.
+     * @param string $fileContents The file's contents to retrieve the aliases from with the given namespace.
      */
     public function createForNamespace(string $namespace, string $fileContents) : Context
     {
@@ -260,8 +260,8 @@ final class ContextFactory
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
-                            $currentNs    .= $tokenValue;
-                            $currentAlias = $tokenValue;
+                            $currentNs   .= $tokenValue;
+                            $currentAlias =  $tokenValue;
                             break;
                         case T_CURLY_OPEN:
                         case '{':
@@ -296,7 +296,7 @@ final class ContextFactory
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
-                            $currentNs    .= $tokenValue;
+                            $currentNs   .= $tokenValue;
                             $currentAlias = $tokenValue;
                             break;
                         case T_AS:
