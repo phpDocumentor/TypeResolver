@@ -248,7 +248,7 @@ final class ContextFactory
         $extractedUseStatements = [];
         $groupedNs              = '';
         $currentNs              = '';
-        $currentAlias           = null;
+        $currentAlias           = '';
         $state                  = 'start';
 
         while ($tokens->valid()) {
@@ -261,6 +261,7 @@ final class ContextFactory
                         case T_STRING:
                         case T_NS_SEPARATOR:
                             $currentNs .= $tokenValue;
+                            $currentAlias = $tokenValue;
                             break;
                         case T_CURLY_OPEN:
                         case '{':
@@ -281,7 +282,7 @@ final class ContextFactory
                 case 'start-alias':
                     switch ($tokenId) {
                         case T_STRING:
-                            $currentAlias .= $tokenValue;
+                            $currentAlias = $tokenValue;
                             break;
                         case self::T_LITERAL_USE_SEPARATOR:
                         case self::T_LITERAL_END_OF_USE:
@@ -296,15 +297,16 @@ final class ContextFactory
                         case T_STRING:
                         case T_NS_SEPARATOR:
                             $currentNs .= $tokenValue;
+                            $currentAlias = $tokenValue;
                             break;
                         case T_AS:
                             $state = 'grouped-alias';
                             break;
                         case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                               = 'grouped';
-                            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
-                            $currentNs                                           = $groupedNs;
-                            $currentAlias                                        = null;
+                            $state                                 = 'grouped';
+                            $extractedUseStatements[$currentAlias] = $currentNs;
+                            $currentNs                             = $groupedNs;
+                            $currentAlias                          = '';
                             break;
                         case self::T_LITERAL_END_OF_USE:
                             $state = 'end';
@@ -316,13 +318,13 @@ final class ContextFactory
                 case 'grouped-alias':
                     switch ($tokenId) {
                         case T_STRING:
-                            $currentAlias .= $tokenValue;
+                            $currentAlias = $tokenValue;
                             break;
                         case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                               = 'grouped';
-                            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
-                            $currentNs                                           = $groupedNs;
-                            $currentAlias                                        = null;
+                            $state                                 = 'grouped';
+                            $extractedUseStatements[$currentAlias] = $currentNs;
+                            $currentNs                             = $groupedNs;
+                            $currentAlias                          = '';
                             break;
                         case self::T_LITERAL_END_OF_USE:
                             $state = 'end';
@@ -340,7 +342,7 @@ final class ContextFactory
         }
 
         if ($groupedNs !== $currentNs) {
-            $extractedUseStatements[$currentAlias ?: $currentNs] = $currentNs;
+            $extractedUseStatements[$currentAlias] = $currentNs;
         }
 
         return $extractedUseStatements;
