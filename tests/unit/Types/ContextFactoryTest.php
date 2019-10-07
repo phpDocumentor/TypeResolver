@@ -192,7 +192,7 @@ PHP
             $this->assertSame($expected, $actual);
         }
 
-        public function tearDown()
+        public function tearDown() : void
         {
             m::close();
         }

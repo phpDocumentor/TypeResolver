@@ -37,7 +37,7 @@ class TypeResolverTest extends TestCase
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         m::close();
     }
