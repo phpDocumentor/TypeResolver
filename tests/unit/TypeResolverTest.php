@@ -486,6 +486,47 @@ class TypeResolverTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\Iterable_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     */
+    public function testResolvingIterableExpressionSimpleTypes() : void
+    {
+        $fixture = new TypeResolver();
+
+        /** @var Iterable_ $resolvedType */
+        $resolvedType = $fixture->resolve('iterable<string|\stdClass|boolean>', new Context(''));
+
+        $this->assertInstanceOf(Iterable_::class, $resolvedType);
+        $this->assertSame('iterable<string|\stdClass|bool>', (string) $resolvedType);
+
+        /** @var Compound $valueType */
+        $valueType = $resolvedType->getValueType();
+
+        $this->assertInstanceOf(Compound::class, $valueType);
+
+        /** @var String_ $firstType */
+        $firstType = $valueType->get(0);
+
+        /** @var Object_ $secondType */
+        $secondType = $valueType->get(1);
+
+        /** @var Boolean $thirdType */
+        $thirdType = $valueType->get(2);
+
+        $this->assertInstanceOf(String_::class, $firstType);
+        $this->assertInstanceOf(Object_::class, $secondType);
+        $this->assertInstanceOf(Boolean::class, $thirdType);
+    }
+
+    /**
      * This test asserts that the parameter order is correct.
      *
      * When you pass two arrays separated by the compound operator (i.e. 'integer[]|string[]') then we always split the
