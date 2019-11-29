@@ -23,11 +23,11 @@ class CompoundTest extends TestCase
 {
     /**
      * @covers ::__construct
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage A compound type can only have other types as elements
      */
     public function testCompoundCannotBeConstructedFromType() : void
     {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('A compound type can only have other types as elements');
         new Compound(['foo']);
     }
 

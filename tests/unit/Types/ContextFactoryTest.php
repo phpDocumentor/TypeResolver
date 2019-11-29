@@ -202,9 +202,9 @@ PHP
 namespace phpDocumentor\Reflection\Types\Mock {
 
     // the following import should not show in the tests above
-    use phpDocumentor\Reflection\DocBlock\Description;
+    use phpDocumentor\Reflection\Types\AbstractList;
 
-    class Foo extends Description
+    class Foo extends AbstractList
     {
         // dummy class
     }

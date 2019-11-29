@@ -188,11 +188,10 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
 
         $fixture->resolve('array<string,  object|array>', new Context(''));
@@ -239,11 +238,11 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage An array can have only integers or strings as keys
      */
     public function testBadArrayCollectionKey() : void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('An array can have only integers or strings as keys');
         $fixture = new TypeResolver();
         $fixture->resolve('array<object,string>', new Context(''));
     }
@@ -251,11 +250,11 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Unexpected collection operator "<", class name is missing
      */
     public function testMissingStartCollection() : void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Unexpected collection operator "<", class name is missing');
         $fixture = new TypeResolver();
         $fixture->resolve('<string>', new Context(''));
     }
@@ -263,11 +262,11 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Collection: ">" is missing
      */
     public function testMissingEndCollection() : void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Collection: ">" is missing');
         $fixture = new TypeResolver();
         $fixture->resolve('ArrayObject<object|string', new Context(''));
     }
@@ -275,11 +274,11 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage string is not a collection
      */
     public function testBadCollectionClass() : void
     {
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('string is not a collection');
         $fixture = new TypeResolver();
         $fixture->resolve('string<integer>', new Context(''));
     }

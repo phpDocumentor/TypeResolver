@@ -73,11 +73,9 @@ class FqsenResolverTest extends TestCase
         static::assertEquals('\some\other\ns', (string) $result);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testResolveThrowsExceptionWhenGarbageInputIsPassed() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fqsenResolver = new FqsenResolver();
 
         $context = new Context('', []);
