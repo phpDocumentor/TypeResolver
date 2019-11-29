@@ -1,5 +1,6 @@
 .PHONY: install-phive
 install-phive:
+	mkdir tools; \
 	wget -O tools/phive.phar https://phar.io/releases/phive.phar; \
 	wget -O tools/phive.phar.asc https://phar.io/releases/phive.phar.asc; \
 	gpg --keyserver pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79; \
