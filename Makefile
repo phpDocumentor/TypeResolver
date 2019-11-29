@@ -8,7 +8,7 @@ install-phive:
 
 .PHONY: setup
 setup: install-phive
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/phive.phar install --force-accept-unsigned
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phar-ga:master tools/phive.phar install --force-accept-unsigned
 
 .PHONY: phpcs
 phpcs:
