@@ -69,7 +69,7 @@ jobs:
           coverage: xdebug
           pecl: false
       - name: Run PHPUnit
-        run: php tools/phpunit.phar
+        run: php tools/phpunit
 
   phpunit:
     runs-on: ${{ matrix.operating-system }}
