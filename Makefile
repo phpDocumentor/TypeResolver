@@ -8,15 +8,15 @@ install-phive:
 
 .PHONY: setup
 setup: install-phive
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phar-ga:master tools/phive.phar install --force-accept-unsigned
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phar-ga:latest php tools/phive.phar install --force-accept-unsigned
 
 .PHONY: phpcs
 phpcs:
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpcs-ga:master -d memory_limit=1024M
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -d memory_limit=1024M
 
 .PHONY: phpstan
 phpstan:
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpstan-ga:master analyse src --no-progress --level max --configuration phpstan.neon
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --level max --configuration phpstan.neon
 
 .PHONY: test
 test:
