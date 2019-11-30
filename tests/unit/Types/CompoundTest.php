@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\Types;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**

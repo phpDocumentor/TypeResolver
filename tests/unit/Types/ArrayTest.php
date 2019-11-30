@@ -21,15 +21,17 @@ use PHPUnit\Framework\TestCase;
 class ArrayTest extends TestCase
 {
     /**
-     * @covers ::__toString
-     *
      * @dataProvider provideArrays
+     * @covers ::__toString
      */
     public function testArrayStringifyCorrectly(Array_ $array, string $expectedString) : void
     {
         $this->assertSame($expectedString, (string) $array);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function provideArrays() : array
     {
         return [

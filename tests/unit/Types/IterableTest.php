@@ -22,7 +22,6 @@ class IterableTest extends TestCase
 {
     /**
      * @covers ::__toString
-     *
      * @dataProvider provideIterables
      */
     public function testIterableStringifyCorrectly(Iterable_ $iterable, string $expectedString) : void
@@ -30,13 +29,19 @@ class IterableTest extends TestCase
         $this->assertSame($expectedString, (string) $iterable);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function provideIterables() : array
     {
         return [
             'simple iterable' => [new Iterable_(), 'iterable'],
             'iterable of mixed' => [new Iterable_(new Mixed_()), 'iterable'],
             'iterable of single type' => [new Iterable_(new String_()), 'iterable<string>'],
-            'iterable of compound type' => [new Iterable_(new Compound([new Integer(), new String_()])), 'iterable<int|string>'],
+            'iterable of compound type' => [
+                new Iterable_(new Compound([new Integer(), new String_()])),
+                'iterable<int|string>',
+            ],
             'iterable with key type' => [new Iterable_(new String_(), new Integer()), 'iterable<int,string>'],
         ];
     }

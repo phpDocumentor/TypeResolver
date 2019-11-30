@@ -19,10 +19,14 @@ phpcs:
 phpstan:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --level max --configuration phpstan.neon
 
+.PHONY: psaml
+psalm:
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project mickaelandrieu/psalm-ga
+
 .PHONY: test
 test:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/phpunit
 
 .PHONY: pre-commit-test
-pre-commit-test: test phpcs phpstan
+pre-commit-test: test phpcs phpstan psalm
 
