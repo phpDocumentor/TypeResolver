@@ -391,7 +391,7 @@ final class TypeResolver
      */
     private function resolveCollection(ArrayIterator $tokens, Type $classType, Context $context) : Type
     {
-        $isArray = ((string) $classType === 'array');
+        $isArray    = ((string) $classType === 'array');
         $isIterable = ((string) $classType === 'iterable');
 
         // allow only "array", "iterable" or class name before "<"

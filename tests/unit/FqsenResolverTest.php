@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
-use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
 
@@ -73,11 +72,9 @@ class FqsenResolverTest extends TestCase
         static::assertEquals('\some\other\ns', (string) $result);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testResolveThrowsExceptionWhenGarbageInputIsPassed() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fqsenResolver = new FqsenResolver();
 
         $context = new Context('', []);

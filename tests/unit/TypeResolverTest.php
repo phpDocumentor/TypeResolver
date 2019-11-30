@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
-use InvalidArgumentException;
 use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -594,11 +593,10 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::addKeyword
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', 'IDoNotExist');
     }
@@ -608,11 +606,10 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::addKeyword
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', stdClass::class);
     }
@@ -622,11 +619,10 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testExceptionIsThrownIfTypeIsEmpty() : void
     {
+        $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
         $fixture->resolve(' ', new Context(''));
     }

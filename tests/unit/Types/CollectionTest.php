@@ -22,22 +22,36 @@ use PHPUnit\Framework\TestCase;
 class CollectionTest extends TestCase
 {
     /**
-     * @covers ::__toString
-     *
      * @dataProvider provideCollections
+     * @covers ::__toString
      */
     public function testCollectionStringifyCorrectly(Collection $collection, string $expectedString) : void
     {
         $this->assertSame($expectedString, (string) $collection);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function provideCollections() : array
     {
         return [
-            'simple collection' => [new Collection(null, new Integer()), 'object<int>'],
-            'simple collection with key type' => [new Collection(null, new Integer(), new String_()), 'object<string,int>'],
-            'collection of single type using specific class' => [new Collection(new Fqsen('\Foo\Bar'), new Integer()), '\Foo\Bar<int>'],
-            'collection of single type with key type and using specific class' => [new Collection(new Fqsen('\Foo\Bar'), new String_(), new Integer()), '\Foo\Bar<int,string>'],
+            'simple collection' => [
+                new Collection(null, new Integer()),
+                'object<int>',
+            ],
+            'simple collection with key type' => [
+                new Collection(null, new Integer(), new String_()),
+                'object<string,int>',
+            ],
+            'collection of single type using specific class' => [
+                new Collection(new Fqsen('\Foo\Bar'), new Integer()),
+                '\Foo\Bar<int>',
+            ],
+            'collection of single type with key type and using specific class' => [
+                new Collection(new Fqsen('\Foo\Bar'), new String_(), new Integer()),
+                '\Foo\Bar<int,string>',
+            ],
         ];
     }
 }
