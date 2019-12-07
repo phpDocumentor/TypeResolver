@@ -18,15 +18,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Compound
  */
-class CompoundTest extends TestCase
+final class CompoundTest extends TestCase
 {
     /**
      * @covers ::__construct
      */
     public function testCompoundCannotBeConstructedFromType() : void
     {
-        $this->expectException('InvalidArgumentException');
-        $this->expectExceptionMessage('A compound type can only have other types as elements');
+        $this->expectException(\TypeError::class);
         new Compound(['foo']);
     }
 
@@ -61,7 +60,7 @@ class CompoundTest extends TestCase
      *
      * @covers ::has
      */
-    public function testCompoundHasType() : void
+    public function testCompoundHasIndex() : void
     {
         $this->assertTrue((new Compound([new Integer()]))->has(0));
     }
@@ -71,9 +70,32 @@ class CompoundTest extends TestCase
      *
      * @covers ::has
      */
-    public function testCompoundHasNotExistingType() : void
+    public function testCompoundDoesNotHasIndex() : void
     {
         $this->assertFalse((new Compound([]))->has(0));
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Compound::__construct
+     * @uses \phpDocumentor\Reflection\Types\Integer
+     *
+     * @covers ::contains
+     */
+    public function testCompoundContainsType() : void
+    {
+        $this->assertTrue((new Compound([new Integer()]))->contains(new Integer()));
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Compound::__construct
+     * @uses \phpDocumentor\Reflection\Types\Integer
+     * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::contains
+     */
+    public function testCompoundDoesNotContainType() : void
+    {
+        $this->assertFalse((new Compound([new Integer()]))->contains(new String_()));
     }
 
     /**
@@ -86,6 +108,21 @@ class CompoundTest extends TestCase
     public function testCompoundCanBeConstructedAndStringifiedCorrectly() : void
     {
         $this->assertSame('int|bool', (string) (new Compound([new Integer(), new Boolean()])));
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Integer
+     * @uses \phpDocumentor\Reflection\Types\Boolean
+     *
+     * @covers ::__construct
+     * @covers ::__toString
+     */
+    public function testCompoundDoesNotContainDuplicates() : void
+    {
+        $compound = new Compound([new Integer(), new Integer(), new Boolean()]);
+
+        $this->assertCount(2, iterator_to_array($compound));
+        $this->assertSame('int|bool', (string) $compound);
     }
 
     /**
