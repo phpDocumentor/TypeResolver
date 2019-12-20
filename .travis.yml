@@ -1,14 +1,10 @@
 language: php
-php: [ 7.1, 7.2, nightly ]
-sudo: false
 
-env:
+php: [ 7.1, 7.2, 7.3 ]
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: nightly
-
+  
 install:
   - travis_retry composer install --no-interaction --prefer-dist --optimize-autoloader
 
