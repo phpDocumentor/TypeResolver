@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
+use TypeError;
+use function iterator_to_array;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Compound
@@ -25,7 +27,7 @@ final class CompoundTest extends TestCase
      */
     public function testCompoundCannotBeConstructedFromType() : void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         new Compound(['foo']);
     }
 

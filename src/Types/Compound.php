@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use ArrayIterator;
-use InvalidArgumentException;
 use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
 use function implode;
@@ -66,7 +65,7 @@ final class Compound implements Type, IteratorAggregate
     /**
      * Tests if this compound type contains the given type.
      */
-    public function contains(Type $type): bool
+    public function contains(Type $type) : bool
     {
         foreach ($this->types as $typePart) {
             // if the type is duplicate; do not add it
@@ -94,7 +93,7 @@ final class Compound implements Type, IteratorAggregate
         return new ArrayIterator($this->types);
     }
 
-    private function add(Type $type): void
+    private function add(Type $type) : void
     {
         // if the type is duplicate; do not add it
         if ($this->contains($type)) {

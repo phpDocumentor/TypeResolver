@@ -33,8 +33,6 @@ class TypeResolverTest extends TestCase
 {
     /**
      * Call Mockery::close after each test.
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
      */
     public function tearDown() : void
     {
@@ -669,6 +667,7 @@ class TypeResolverTest extends TestCase
         return [
             'namespace' => ['\phpDocumentor\Reflection'],
             'class' => ['\phpDocumentor\Reflection\DocBlock'],
+            'class with emoji' => ['\My😁Class'],
         ];
     }
 }

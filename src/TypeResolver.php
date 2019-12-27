@@ -302,6 +302,8 @@ final class TypeResolver
 
     /**
      * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
+     *
+     * @psalm-param class-string<Type> $typeClassName
      */
     public function addKeyword(string $keyword, string $typeClassName) : void
     {

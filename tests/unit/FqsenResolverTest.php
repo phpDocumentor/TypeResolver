@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @coversDefaultClass \phpDocumentor\Reflection\FqsenResolver
  * @covers ::<private>
  */
-class FqsenResolverTest extends TestCase
+final class FqsenResolverTest extends TestCase
 {
     /**
      * @covers ::resolve
@@ -32,7 +32,20 @@ class FqsenResolverTest extends TestCase
         $context = new Context('', []);
 
         $result = $fqsenResolver->resolve('\DocBlock', $context);
-        static::assertEquals('\DocBlock', (string) $result);
+        static::assertSame('\DocBlock', (string) $result);
+    }
+
+    /**
+     * @covers ::resolve
+     */
+    public function testResolveFqsenWithEmoji() : void
+    {
+        $fqsenResolver = new FqsenResolver();
+
+        $context = new Context('', []);
+
+        $result = $fqsenResolver->resolve('\My😁DocBlock', $context);
+        static::assertSame('\My😁DocBlock', (string) $result);
     }
 
     /**
@@ -43,7 +56,7 @@ class FqsenResolverTest extends TestCase
         $fqsenResolver = new FqsenResolver();
 
         $result = $fqsenResolver->resolve('\DocBlock');
-        static::assertEquals('\DocBlock', (string) $result);
+        static::assertSame('\DocBlock', (string) $result);
     }
 
     /**
@@ -56,7 +69,7 @@ class FqsenResolverTest extends TestCase
         $context = new Context('somens', ['ns' => 'some\other\ns']);
 
         $result = $fqsenResolver->resolve('ns', $context);
-        static::assertEquals('\some\other\ns', (string) $result);
+        static::assertSame('\some\other\ns', (string) $result);
     }
 
     /**
@@ -69,7 +82,7 @@ class FqsenResolverTest extends TestCase
         $context = new Context('somens', ['other' => 'some\other']);
 
         $result = $fqsenResolver->resolve('other\ns', $context);
-        static::assertEquals('\some\other\ns', (string) $result);
+        static::assertSame('\some\other\ns', (string) $result);
     }
 
     public function testResolveThrowsExceptionWhenGarbageInputIsPassed() : void
