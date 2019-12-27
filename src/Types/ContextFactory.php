@@ -220,6 +220,10 @@ final class ContextFactory
             if ($tokens->current()[0] === self::T_LITERAL_END_OF_USE) {
                 return $uses;
             }
+
+            if ($tokens->current() === false) {
+                break;
+            }
         }
 
         return $uses;
