@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection;
 use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Iterable_;
@@ -57,6 +58,30 @@ class TypeResolverTest extends TestCase
         $resolvedType = $fixture->resolve($keyword, new Context(''));
 
         $this->assertInstanceOf($expectedClass, $resolvedType);
+    }
+
+    /**
+     * @uses         \phpDocumentor\Reflection\Types\Context
+     * @uses         \phpDocumentor\Reflection\Types\Object_
+     * @uses         \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @dataProvider provideClassStrings
+     */
+    public function testResolvingClassStrings(string $classString, bool $throwsException) : void
+    {
+        $fixture = new TypeResolver();
+
+        if ($throwsException) {
+            $this->expectException('RuntimeException');
+        }
+
+        $resolvedType = $fixture->resolve($classString, new Context(''));
+
+        $this->assertInstanceOf(ClassString::class, $resolvedType);
     }
 
     /**
@@ -634,6 +659,7 @@ class TypeResolverTest extends TestCase
     {
         return [
             ['string', Types\String_::class],
+            ['class-string', Types\ClassString::class],
             ['int', Types\Integer::class],
             ['integer', Types\Integer::class],
             ['float', Types\Float_::class],
@@ -654,6 +680,20 @@ class TypeResolverTest extends TestCase
             ['self', Types\Self_::class],
             ['parent', Types\Parent_::class],
             ['iterable', Iterable_::class],
+        ];
+    }
+
+    /**
+     * Returns a list of class string types and whether they throw an exception.
+     *
+     * @return (string|bool)[][]
+     */
+    public function provideClassStrings() : array
+    {
+        return [
+            ['class-string<\phpDocumentor\Reflection>', false],
+            ['class-string<\phpDocumentor\Reflection\DocBlock>', false],
+            ['class-string<string>', true],
         ];
     }
 
