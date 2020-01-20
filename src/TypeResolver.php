@@ -432,7 +432,7 @@ final class TypeResolver
         $isArray    = ((string) $classType === 'array');
         $isIterable = ((string) $classType === 'iterable');
 
-        // allow only "array", "iterable", "class-string" or class name before "<"
+        // allow only "array", "iterable" or class name before "<"
         if (!$isArray && !$isIterable
             && (!$classType instanceof Object_ || $classType->getFqsen() === null)) {
             throw new RuntimeException(
