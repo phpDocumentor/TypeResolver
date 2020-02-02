@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection;
 use ArrayIterator;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
@@ -66,6 +67,7 @@ final class TypeResolver
      */
     private $keywords = [
         'string' => Types\String_::class,
+        'class-string' => Types\ClassString::class,
         'int' => Types\Integer::class,
         'integer' => Types\Integer::class,
         'bool' => Types\Boolean::class,
@@ -221,7 +223,11 @@ final class TypeResolver
 
                 $classType = array_pop($types);
                 if ($classType !== null) {
-                    $types[] = $this->resolveCollection($tokens, $classType, $context);
+                    if ((string)$classType === 'class-string') {
+                        $types[] = $this->resolveClassString($tokens, $context);
+                    } else {
+                        $types[] = $this->resolveCollection($tokens, $classType, $context);
+                    }
                 }
 
                 $tokens->next();
@@ -384,6 +390,36 @@ final class TypeResolver
     private function resolveTypedObject(string $type, ?Context $context = null) : Object_
     {
         return new Object_($this->fqsenResolver->resolve($type, $context));
+    }
+
+    /**
+     * Resolves class string
+     */
+    private function resolveClassString(ArrayIterator $tokens, Context $context) : Type
+    {
+        $tokens->next();
+
+        $classType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
+
+        if (!$classType instanceof Object_ || $classType->getFqsen() === null) {
+            throw new RuntimeException(
+                $classType . ' is not a class string'
+            );
+        }
+
+        if ($tokens->current() !== '>') {
+            if (empty($tokens->current())) {
+                throw new RuntimeException(
+                    'class-string: ">" is missing'
+                );
+            }
+
+            throw new RuntimeException(
+                'Unexpected character "' . $tokens->current() . '", ">" is missing'
+            );
+        }
+
+        return new ClassString($classType->getFqsen());
     }
 
     /**
