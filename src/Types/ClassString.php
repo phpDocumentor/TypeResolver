@@ -47,8 +47,8 @@ final class ClassString implements Type
     {
         if ($this->fqsen === null) {
             return 'class-string';
-        } else {
-            return 'class-string<' . (string)$this->fqsen . '>';
         }
+
+        return 'class-string<' . (string) $this->fqsen . '>';
     }
 }

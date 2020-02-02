@@ -223,7 +223,7 @@ final class TypeResolver
 
                 $classType = array_pop($types);
                 if ($classType !== null) {
-                    if ((string)$classType === 'class-string') {
+                    if ((string) $classType === 'class-string') {
                         $types[] = $this->resolveClassString($tokens, $context);
                     } else {
                         $types[] = $this->resolveCollection($tokens, $classType, $context);
