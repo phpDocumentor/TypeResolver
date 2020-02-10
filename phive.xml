@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
   <phar name="phpunit" version="^8.4" installed="8.4.3" location="./tools/phpunit" copy="true"/>
-  <phar name="phpstan" version="^0.10" installed="0.10.8" location="./tools/phpstan" copy="true"/>
 </phive>
