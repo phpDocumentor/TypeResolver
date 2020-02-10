@@ -149,11 +149,11 @@ jobs:
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
       - name: PHPStan
-        uses: phpDocumentor/phpstan-ga@0.12.3
+        uses: phpDocumentor/phpstan-ga@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: analyse src --level max --configuration phpstan.neon
+          args: analyse src --configuration phpstan.neon
 
   psalm:
     runs-on: ubuntu-latest
