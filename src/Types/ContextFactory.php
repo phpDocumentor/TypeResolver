@@ -64,6 +64,7 @@ final class ContextFactory
     public function createFromReflector(Reflector $reflector) : Context
     {
         if ($reflector instanceof ReflectionClass) {
+            /** @var ReflectionClass<object> $reflector */
             return $this->createFromReflectionClass($reflector);
         }
 
@@ -90,6 +91,7 @@ final class ContextFactory
     {
         $class = $parameter->getDeclaringClass();
         if ($class) {
+            /** @var ReflectionClass<object> $class */
             return $this->createFromReflectionClass($class);
         }
 
@@ -111,6 +113,9 @@ final class ContextFactory
         return $this->createFromReflectionClass($constant->getDeclaringClass());
     }
 
+    /**
+     * @param ReflectionClass<object> $class
+     */
     private function createFromReflectionClass(ReflectionClass $class) : Context
     {
         $fileName  = $class->getFileName();
@@ -188,6 +193,8 @@ final class ContextFactory
 
     /**
      * Deduce the name from tokens when we are at the T_NAMESPACE token.
+     *
+     * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      */
     private function parseNamespace(ArrayIterator $tokens) : string
     {
@@ -206,6 +213,8 @@ final class ContextFactory
 
     /**
      * Deduce the names of all imports when we are at the T_USE token.
+     *
+     * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      *
      * @return string[]
      */
@@ -231,6 +240,8 @@ final class ContextFactory
 
     /**
      * Fast-forwards the iterator as longs as we don't encounter a T_STRING or T_NS_SEPARATOR token.
+     *
+     * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      */
     private function skipToNextStringOrNamespaceSeparator(ArrayIterator $tokens) : void
     {
@@ -242,6 +253,8 @@ final class ContextFactory
     /**
      * Deduce the namespace name and alias of an import when we are at the T_USE token or have not reached the end of
      * a USE statement yet. This will return a key/value array of the alias => namespace.
+     *
+     * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      *
      * @return string[]
      *
@@ -264,7 +277,7 @@ final class ContextFactory
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
-                            $currentNs   .= $tokenValue;
+                            $currentNs   .= (string) $tokenValue;
                             $currentAlias =  $tokenValue;
                             break;
                         case T_CURLY_OPEN:
@@ -300,17 +313,17 @@ final class ContextFactory
                     switch ($tokenId) {
                         case T_STRING:
                         case T_NS_SEPARATOR:
-                            $currentNs   .= $tokenValue;
+                            $currentNs   .= (string) $tokenValue;
                             $currentAlias = $tokenValue;
                             break;
                         case T_AS:
                             $state = 'grouped-alias';
                             break;
                         case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                 = 'grouped';
-                            $extractedUseStatements[$currentAlias] = $currentNs;
-                            $currentNs                             = $groupedNs;
-                            $currentAlias                          = '';
+                            $state                                          = 'grouped';
+                            $extractedUseStatements[(string) $currentAlias] = $currentNs;
+                            $currentNs                                      = $groupedNs;
+                            $currentAlias                                   = '';
                             break;
                         case self::T_LITERAL_END_OF_USE:
                             $state = 'end';
@@ -325,10 +338,10 @@ final class ContextFactory
                             $currentAlias = $tokenValue;
                             break;
                         case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                 = 'grouped';
-                            $extractedUseStatements[$currentAlias] = $currentNs;
-                            $currentNs                             = $groupedNs;
-                            $currentAlias                          = '';
+                            $state                                          = 'grouped';
+                            $extractedUseStatements[(string) $currentAlias] = $currentNs;
+                            $currentNs                                      = $groupedNs;
+                            $currentAlias                                   = '';
                             break;
                         case self::T_LITERAL_END_OF_USE:
                             $state = 'end';
@@ -346,7 +359,7 @@ final class ContextFactory
         }
 
         if ($groupedNs !== $currentNs) {
-            $extractedUseStatements[$currentAlias] = $currentNs;
+            $extractedUseStatements[(string) $currentAlias] = $currentNs;
         }
 
         return $extractedUseStatements;

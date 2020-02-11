@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
+    totallyTyped="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config file:///composer/vendor/vimeo/psalm/config.xsd"
@@ -13,6 +13,20 @@
     </projectFiles>
 
     <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
+        <DocblockTypeContradiction>
+            <errorLevel type="info">
+                <!-- ArrayIterator::current can return null if iterated even if ArrayIterator::valid isn't checked before -->
+                <file name="src/TypeResolver.php"/>
+                <!-- Not sure what's going on. I don't think it's possible to have false here -->
+                <file name="src/Types/ContextFactory.php"/>
+            </errorLevel>
+        </DocblockTypeContradiction>
+        
+        <RedundantConditionGivenDocblockType>
+            <errorLevel type="info">
+                <!-- ArrayIterator::current can return null if iterated even if ArrayIterator::valid isn't checked before -->
+                <file name="src/TypeResolver.php"/>
+            </errorLevel>
+        </RedundantConditionGivenDocblockType>
     </issueHandlers>
 </psalm>

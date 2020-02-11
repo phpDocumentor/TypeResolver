@@ -151,8 +151,8 @@ final class TypeResolver
     /**
      * Analyse each tokens and creates types
      *
-     * @param ArrayIterator $tokens        the iterator on tokens
-     * @param int           $parserContext on of self::PARSER_* constants, indicating
+     * @param ArrayIterator<int, string> $tokens        the iterator on tokens
+     * @param int                        $parserContext on of self::PARSER_* constants, indicating
      * the context where we are in the parsing
      */
     private function parseTypes(ArrayIterator $tokens, Context $context, int $parserContext) : Type
@@ -394,6 +394,8 @@ final class TypeResolver
 
     /**
      * Resolves class string
+     *
+     * @param ArrayIterator<int, string> $tokens
      */
     private function resolveClassString(ArrayIterator $tokens, Context $context) : Type
     {
@@ -424,6 +426,8 @@ final class TypeResolver
 
     /**
      * Resolves the collection values and keys
+     *
+     * @param ArrayIterator<int, string> $tokens
      *
      * @return Array_|Iterable_|Collection
      */
