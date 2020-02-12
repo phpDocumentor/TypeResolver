@@ -131,7 +131,7 @@ jobs:
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
       - name: Code style check
-        uses: phpDocumentor/coding-standard@v1.0.0
+        uses: phpDocumentor/coding-standard@master
         with:
           args: -s
 
