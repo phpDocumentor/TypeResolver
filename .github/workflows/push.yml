@@ -187,6 +187,8 @@ jobs:
     needs: [setup, phpunit]
     steps:
       - uses: actions/checkout@master
+      - name: fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
         with:
