@@ -26,8 +26,6 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use RuntimeException;
-use const PREG_SPLIT_DELIM_CAPTURE;
-use const PREG_SPLIT_NO_EMPTY;
 use function array_keys;
 use function array_pop;
 use function class_exists;
@@ -40,6 +38,8 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trim;
+use const PREG_SPLIT_DELIM_CAPTURE;
+use const PREG_SPLIT_NO_EMPTY;
 
 final class TypeResolver
 {
@@ -295,6 +295,7 @@ final class TypeResolver
                 return $this->resolveTypedObject($type);
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
+
             // @codeCoverageIgnoreStart
             default:
                 // I haven't got the foggiest how the logic would come here but added this as a defense.
@@ -381,6 +382,7 @@ final class TypeResolver
     private function resolveKeyword(string $type) : Type
     {
         $className = $this->keywords[strtolower($type)];
+
         return new $className();
     }
 
