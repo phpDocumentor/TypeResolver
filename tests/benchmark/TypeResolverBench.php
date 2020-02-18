@@ -27,7 +27,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 10mb", "title"="test"},
-     *      "main.wall_time < 50ms"
+     *      "main.wall_time < 1ms"
      *      }
      * )
      */
@@ -39,6 +39,13 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
+     * @Executor(
+     *     "blackfire",
+     *     assertions={
+     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      "main.wall_time < 50ms"
+     *      }
+     * )
      */
     public function benchResolveCompoundType() : void
     {
@@ -48,6 +55,13 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
+     * @Executor(
+     *     "blackfire",
+     *     assertions={
+     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      "main.wall_time < 50ms"
+     *      }
+     * )
      */
     public function benchResolveArrayType() : void
     {
@@ -57,6 +71,13 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
+     * @Executor(
+     *     "blackfire",
+     *     assertions={
+     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      "main.wall_time < 50ms"
+     *      }
+     * )
      */
     public function benchResolveCompoundArrayType() : void
     {
@@ -66,6 +87,13 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
+     * @Executor(
+     *     "blackfire",
+     *     assertions={
+     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      "main.wall_time < 50ms"
+     *      }
+     * )
      */
     public function benchResolveCompoundArrayWithDefinedTypes() : void
     {

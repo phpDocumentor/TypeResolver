@@ -9,14 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -25,22 +18,91 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
+
       - name: composer
         uses: docker://composer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: composer-require-checker
         uses: docker://phpga/composer-require-checker-ga
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: check --config-file ./composer-require-config.json composer.json
+
       - name: Install phive
         run: make install-phive
+
       - name: Install PHAR dependencies
         run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5 --force-accept-unsigned
+
+  profile:
+    runs-on: ubuntu-latest
+    name: profile
+    needs: setup
+    services:
+      blackfire:
+        # Docker Hub image
+        image: blackfire/blackfire
+        ports:
+          - 8707:8707
+        env:
+          BLACKFIRE_SERVER_ID: "517a7aa6-1ec8-4d29-bff8-dddecf4333de"
+          BLACKFIRE_SERVER_TOKEN: "21795bdce7c0b5d24f0ccbb42e2a7518feb5359840752b163652899f927cbf2b"
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.2
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          coverage: none
+
+      - name: Setup blackfire
+        run: |
+              curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/72 \
+              && mkdir -p /tmp/blackfire \
+              && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+              && sudo mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so
+
+      - name: Configure blackfire
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.2
+          ini-values: extension=blackfire.so, blackfire.agent_socket=tcp://localhost:8707
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Add blackfire & phpbench
+        run: |
+          mkdir -p /tmp/blackfire \
+          && cd /tmp/blackfire \
+          && composer require --no-cache jaapio/phpbench-blackfire:1.x-dev@dev \
+          && cd -
+
+      - name: Run profiler
+        run: php /tmp/blackfire/vendor/bin/phpbench run -l blackfire --revs=1 --tag="Build_PR_${{ github.event.number }}"
+        env:
+          BLACKFIRE_CLIENT_ID: ${{ secrets.BLACKFIRE_CLIENT_ID }}
+          BLACKFIRE_CLIENT_TOKEN: ${{ secrets.BLACKFIRE_CLIENT_TOKEN }}
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
