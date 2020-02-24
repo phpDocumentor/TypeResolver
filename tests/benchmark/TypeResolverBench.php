@@ -26,7 +26,7 @@ class TypeResolverBench
      * @Executor(
      *     "blackfire",
      *     assertions={
-     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
      *      "main.wall_time < 1ms"
      *      }
      * )
@@ -42,7 +42,7 @@ class TypeResolverBench
      * @Executor(
      *     "blackfire",
      *     assertions={
-     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
      *      "main.wall_time < 50ms"
      *      }
      * )
@@ -58,7 +58,7 @@ class TypeResolverBench
      * @Executor(
      *     "blackfire",
      *     assertions={
-     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
      *      "main.wall_time < 50ms"
      *      }
      * )
@@ -74,7 +74,7 @@ class TypeResolverBench
      * @Executor(
      *     "blackfire",
      *     assertions={
-     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
      *      "main.wall_time < 50ms"
      *      }
      * )
@@ -90,7 +90,7 @@ class TypeResolverBench
      * @Executor(
      *     "blackfire",
      *     assertions={
-     *      {"expression"="main.peak_memory < 10mb", "title"="test"},
+     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
      *      "main.wall_time < 50ms"
      *      }
      * )
