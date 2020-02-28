@@ -23,7 +23,6 @@ use ReflectionProperty;
 use Reflector;
 use RuntimeException;
 use UnexpectedValueException;
-use function array_merge;
 use function file_exists;
 use function file_get_contents;
 use function get_class;
@@ -145,7 +144,8 @@ final class ContextFactory
         $tokens           = new ArrayIterator(token_get_all($fileContents));
 
         while ($tokens->valid()) {
-            switch ($tokens->current()[0]) {
+            $currentToken = $tokens->current();
+            switch ($currentToken[0]) {
                 case T_NAMESPACE:
                     $currentNamespace = $this->parseNamespace($tokens);
                     break;
@@ -156,9 +156,10 @@ final class ContextFactory
                     $braceLevel      = 0;
                     $firstBraceFound = false;
                     while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
-                        if ($tokens->current() === '{'
-                            || $tokens->current()[0] === T_CURLY_OPEN
-                            || $tokens->current()[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
+                        $currentToken = $tokens->current();
+                        if ($currentToken === '{'
+                            || $currentToken[0] === T_CURLY_OPEN
+                            || $currentToken[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
                             if (!$firstBraceFound) {
                                 $firstBraceFound = true;
                             }
@@ -166,7 +167,7 @@ final class ContextFactory
                             ++$braceLevel;
                         }
 
-                        if ($tokens->current() === '}') {
+                        if ($currentToken === '}') {
                             --$braceLevel;
                         }
 
@@ -176,7 +177,7 @@ final class ContextFactory
                     break;
                 case T_USE:
                     if ($currentNamespace === $namespace) {
-                        $useStatements = array_merge($useStatements, $this->parseUseStatement($tokens));
+                        $useStatements += $this->parseUseStatement($tokens);
                     }
 
                     break;
@@ -218,12 +219,13 @@ final class ContextFactory
         while (true) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
 
-            $uses = array_merge($uses, $this->extractUseStatements($tokens));
-            if ($tokens->current()[0] === self::T_LITERAL_END_OF_USE) {
+            $uses += $this->extractUseStatements($tokens);
+            $currentToken = $tokens->current();
+            if ($currentToken[0] === self::T_LITERAL_END_OF_USE) {
                 return $uses;
             }
 
-            if ($tokens->current() === false) {
+            if ($currentToken === false) {
                 break;
             }
         }
@@ -236,7 +238,12 @@ final class ContextFactory
      */
     private function skipToNextStringOrNamespaceSeparator(ArrayIterator $tokens) : void
     {
-        while ($tokens->valid() && ($tokens->current()[0] !== T_STRING) && ($tokens->current()[0] !== T_NS_SEPARATOR)) {
+        while ($tokens->valid()) {
+            $currentToken = $tokens->current();
+            if ($currentToken[0] === T_STRING || $currentToken[0] === T_NS_SEPARATOR) {
+                break;
+            }
+
             $tokens->next();
         }
     }
