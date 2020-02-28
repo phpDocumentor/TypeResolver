@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace benchmark;
 
-use Blackfire\Profile\Configuration;
-use PhpBench\Benchmark\Metadata\Annotations\Assert;
 use phpDocumentor\Reflection\TypeResolver;
 
 /**
@@ -27,7 +25,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 1ms"
+     *      "main.wall_time < 300us"
      *      }
      * )
      */
@@ -43,7 +41,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 50ms"
+     *      "main.wall_time < 300us"
      *      }
      * )
      */
@@ -59,7 +57,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 50ms"
+     *      "main.wall_time < 300us"
      *      }
      * )
      */
@@ -75,7 +73,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 50ms"
+     *      "main.wall_time < 300us"
      *      }
      * )
      */
@@ -91,7 +89,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 50ms"
+     *      "main.wall_time < 1ms"
      *      }
      * )
      */
