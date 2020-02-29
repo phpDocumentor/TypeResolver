@@ -41,7 +41,7 @@ class TypeResolverBench
      *     "blackfire",
      *     assertions={
      *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 300us"
+     *      "main.wall_time < 0.5ms"
      *      }
      * )
      */
