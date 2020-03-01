@@ -64,7 +64,6 @@ final class ContextFactory
     public function createFromReflector(Reflector $reflector) : Context
     {
         if ($reflector instanceof ReflectionClass) {
-            /** @var ReflectionClass<object> $reflector */
             return $this->createFromReflectionClass($reflector);
         }
 
@@ -91,7 +90,9 @@ final class ContextFactory
     {
         $class = $parameter->getDeclaringClass();
         if ($class) {
+            //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
             /** @var ReflectionClass<object> $class */
+
             return $this->createFromReflectionClass($class);
         }
 
@@ -114,7 +115,7 @@ final class ContextFactory
     }
 
     /**
-     * @param ReflectionClass<object> $class
+     * @phpstan-param ReflectionClass<object> $class
      */
     private function createFromReflectionClass(ReflectionClass $class) : Context
     {

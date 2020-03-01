@@ -13,7 +13,7 @@ setup: install-phive
 
 .PHONY: phpcs
 phpcs:
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpcs-ga:v1.0.0 -s
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest -s
 
 .PHONY: phpstan
 phpstan:
@@ -21,8 +21,7 @@ phpstan:
 
 .PHONY: psaml
 psalm:
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project mickaelandrieu/psalm-ga
-
+	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/psalm
 .PHONY: test
 test:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/phpunit
