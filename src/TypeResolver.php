@@ -26,7 +26,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use RuntimeException;
-use function array_keys;
+use function array_key_exists;
 use function array_pop;
 use function class_exists;
 use function class_implements;
@@ -169,9 +169,11 @@ final class TypeResolver
                     );
                 }
 
-                if ($parserContext !== self::PARSER_IN_COMPOUND
-                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION
-                    && $parserContext !== self::PARSER_IN_COLLECTION_EXPRESSION
+                if (!in_array($parserContext, [
+                    self::PARSER_IN_COMPOUND,
+                    self::PARSER_IN_ARRAY_EXPRESSION,
+                    self::PARSER_IN_COLLECTION_EXPRESSION,
+                ], true)
                 ) {
                     throw new RuntimeException(
                         'Unexpected type separator'
@@ -180,9 +182,11 @@ final class TypeResolver
 
                 $tokens->next();
             } elseif ($token === '?') {
-                if ($parserContext !== self::PARSER_IN_COMPOUND
-                    && $parserContext !== self::PARSER_IN_ARRAY_EXPRESSION
-                    && $parserContext !== self::PARSER_IN_COLLECTION_EXPRESSION
+                if (!in_array($parserContext, [
+                    self::PARSER_IN_COMPOUND,
+                    self::PARSER_IN_ARRAY_EXPRESSION,
+                    self::PARSER_IN_COLLECTION_EXPRESSION,
+                ], true)
                 ) {
                     throw new RuntimeException(
                         'Unexpected nullable character'
@@ -284,7 +288,7 @@ final class TypeResolver
      *
      * @return Type|Array_|Object_
      */
-    private function resolveSingleType(string $type, Context $context)
+    private function resolveSingleType(string $type, Context $context) : object
     {
         switch (true) {
             case $this->isKeyword($type):
@@ -347,7 +351,7 @@ final class TypeResolver
      */
     private function isKeyword(string $type) : bool
     {
-        return in_array(strtolower($type), array_keys($this->keywords), true);
+        return array_key_exists(strtolower($type), $this->keywords);
     }
 
     /**
@@ -504,7 +508,6 @@ final class TypeResolver
             return new Iterable_($valueType, $keyType);
         }
 
-        /** @psalm-suppress RedundantCondition */
         if ($classType instanceof Object_) {
             return $this->makeCollectionFromObject($classType, $valueType, $keyType);
         }

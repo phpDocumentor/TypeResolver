@@ -26,6 +26,7 @@ use UnexpectedValueException;
 use function file_exists;
 use function file_get_contents;
 use function get_class;
+use function in_array;
 use function is_string;
 use function token_get_all;
 use function trim;
@@ -179,8 +180,7 @@ final class ContextFactory
                     while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
                         $currentToken = $tokens->current();
                         if ($currentToken === '{'
-                            || $currentToken[0] === T_CURLY_OPEN
-                            || $currentToken[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
+                            || in_array($currentToken[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true)) {
                             if (!$firstBraceFound) {
                                 $firstBraceFound = true;
                             }
@@ -221,8 +221,7 @@ final class ContextFactory
         $this->skipToNextStringOrNamespaceSeparator($tokens);
 
         $name = '';
-        while ($tokens->valid() && ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR)
-        ) {
+        while ($tokens->valid() && in_array($tokens->current()[0], [T_STRING, T_NS_SEPARATOR], true)) {
             $name .= $tokens->current()[1];
             $tokens->next();
         }
@@ -236,6 +235,8 @@ final class ContextFactory
      * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      *
      * @return string[]
+     *
+     * @psalm-return array<string, string>
      */
     private function parseUseStatement(ArrayIterator $tokens) : array
     {
@@ -267,7 +268,7 @@ final class ContextFactory
     {
         while ($tokens->valid()) {
             $currentToken = $tokens->current();
-            if ($currentToken[0] === T_STRING || $currentToken[0] === T_NS_SEPARATOR) {
+            if (in_array($currentToken[0], [T_STRING, T_NS_SEPARATOR], true)) {
                 break;
             }
 
@@ -284,6 +285,8 @@ final class ContextFactory
      * @return string[]
      *
      * @psalm-suppress TypeDoesNotContainType
+     *
+     * @psalm-return array<string, string>
      */
     private function extractUseStatements(ArrayIterator $tokens) : array
     {

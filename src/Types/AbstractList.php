@@ -48,11 +48,7 @@ abstract class AbstractList implements Type
      */
     public function getKeyType() : Type
     {
-        if ($this->keyType === null) {
-            return $this->defaultKeyType;
-        }
-
-        return $this->keyType;
+        return $this->keyType ?? $this->defaultKeyType;
     }
 
     /**

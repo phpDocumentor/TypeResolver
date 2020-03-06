@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use ArrayIterator;
 use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
+use function array_key_exists;
 use function implode;
 
 /**
@@ -63,7 +64,7 @@ final class Compound implements Type, IteratorAggregate
      */
     public function has(int $index) : bool
     {
-        return isset($this->types[$index]);
+        return array_key_exists($index, $this->types);
     }
 
     /**
