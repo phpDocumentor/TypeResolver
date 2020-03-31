@@ -133,7 +133,7 @@ final class TypeResolver
 
         // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)[]`, '<', '>' and type names
         $tokens = preg_split(
-            '/(\\||\\?|<|>|, ?|\\(|\\)(?:\\[\\])+)/',
+            '/(\\||\\?|<|>|&|, ?|\\(|\\)(?:\\[\\])+)/',
             $type,
             -1,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
@@ -162,7 +162,7 @@ final class TypeResolver
         while ($tokens->valid()) {
             $token = $tokens->current();
 
-            if ($token === '|') {
+            if ($token === '|' || $token === '&') {
                 if (count($types) === 0) {
                     throw new RuntimeException(
                         'A type is missing before a type separator'
@@ -250,7 +250,7 @@ final class TypeResolver
             }
         }
 
-        if ($token === '|') {
+        if ($token === '|' || $token === '&') {
             throw new RuntimeException(
                 'A type is missing after a type separator'
             );
