@@ -40,7 +40,6 @@ final class Compound implements Type, IteratorAggregate
      * Initializes a compound type (i.e. `string|int`) and tests if the provided types all implement the Type interface.
      *
      * @param Type[] $types
-     * @param string $token
      *
      * @phpstan-param list<Type> $types
      */
