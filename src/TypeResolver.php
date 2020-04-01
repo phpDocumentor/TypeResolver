@@ -208,14 +208,8 @@ final class TypeResolver
                 }
 
                 $tokens->next();
-                $token = $tokens->current();
 
-                if ($token === self::OPERATOR_ARRAY) {
-                    $tokens->next();
-                    $resolvedType = new Array_($type);
-                } else {
-                    $resolvedType = new Expression_($type);
-                }
+                $resolvedType = new Expression_($type);
 
                 $types[] = $resolvedType;
             } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
@@ -242,8 +236,13 @@ final class TypeResolver
             ) {
                 break;
             } elseif ($token === self::OPERATOR_ARRAY) {
-                $last = array_key_last($types);
-                $types[$last] = new Array_($types[$last]);
+                end($types);
+                $last = key($types);
+                $lastItem = $types[$last];
+                if ($lastItem instanceof Expression_) {
+                    $lastItem = $lastItem->getValueType();
+                }
+                $types[$last] = new Array_($lastItem);
 
                 $tokens->next();
             } else {
