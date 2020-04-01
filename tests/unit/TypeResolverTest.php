@@ -254,6 +254,37 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\String_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     */
+    public function testResolvingAmpersandCompoundTypes() : void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject ', new Context('phpDocumentor'));
+
+        $this->assertInstanceOf(Compound::class, $resolvedType);
+        $this->assertSame('\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject', (string) $resolvedType);
+
+        $firstType = $resolvedType->get(0);
+
+        $secondType = $resolvedType->get(1);
+
+        $this->assertInstanceOf(Object_::class, $firstType);
+        $this->assertInstanceOf(Fqsen::class, $firstType->getFqsen());
+        $this->assertInstanceOf(Object_::class, $secondType);
+        $this->assertInstanceOf(Fqsen::class, $secondType->getFqsen());
+    }
+    
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
