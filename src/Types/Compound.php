@@ -33,18 +33,24 @@ final class Compound implements Type, IteratorAggregate
     /** @var array<int, Type> */
     private $types = [];
 
+    /** @var string */
+    private $token;
+
     /**
      * Initializes a compound type (i.e. `string|int`) and tests if the provided types all implement the Type interface.
      *
      * @param Type[] $types
+     * @param string $token
      *
      * @phpstan-param list<Type> $types
      */
-    public function __construct(array $types)
+    public function __construct(array $types, string $token = '|')
     {
         foreach ($types as $type) {
             $this->add($type);
         }
+
+        $this->token = $token;
     }
 
     /**
@@ -87,7 +93,7 @@ final class Compound implements Type, IteratorAggregate
      */
     public function __toString() : string
     {
-        return implode('|', $this->types);
+        return implode($this->token, $this->types);
     }
 
     /**
