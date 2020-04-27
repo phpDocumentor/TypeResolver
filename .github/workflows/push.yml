@@ -96,6 +96,15 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
+      - name: Restore/cache vendor folder
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: all-build-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            all-build-${{ hashFiles('**/composer.lock') }}
+            all-build-
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
