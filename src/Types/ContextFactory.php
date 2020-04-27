@@ -47,8 +47,6 @@ use const T_USE;
  * Fully Qualified names.
  *
  * @see Context for more information.
- *
- * @psalm-immutable
  */
 final class ContextFactory
 {
