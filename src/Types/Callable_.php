@@ -17,6 +17,8 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Value Object representing a Callable type.
+ *
+ * @psalm-immutable
  */
 final class Callable_ implements Type
 {

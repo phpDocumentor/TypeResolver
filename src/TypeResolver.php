@@ -93,7 +93,10 @@ final class TypeResolver
         'iterable' => Iterable_::class,
     ];
 
-    /** @var FqsenResolver */
+    /**
+     * @var FqsenResolver
+     * @psalm-readonly
+     */
     private $fqsenResolver;
 
     /**
@@ -119,6 +122,8 @@ final class TypeResolver
      * @uses Context::getNamespace()        to determine with what to prefix the type name.
      *
      * @param string $type The relative or absolute type.
+     *
+     * @psalm-pure
      */
     public function resolve(string $type, ?Context $context = null) : Type
     {
@@ -143,6 +148,7 @@ final class TypeResolver
             throw new InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
         }
 
+        /** @var ArrayIterator<int, string|null> $tokenIterator */
         $tokenIterator = new ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
@@ -151,9 +157,11 @@ final class TypeResolver
     /**
      * Analyse each tokens and creates types
      *
-     * @param ArrayIterator<int, string> $tokens        the iterator on tokens
+     * @param ArrayIterator<int, string|null> $tokens        the iterator on tokens
      * @param int                        $parserContext on of self::PARSER_* constants, indicating
      * the context where we are in the parsing
+     *
+     * @psalm-pure
      */
     private function parseTypes(ArrayIterator $tokens, Context $context, int $parserContext) : Type
     {
@@ -161,8 +169,11 @@ final class TypeResolver
         $token = '';
         while ($tokens->valid()) {
             $token = $tokens->current();
-
-            if ($token === '|') {
+            if ($token === null) {
+                throw new RuntimeException(
+                    'Unexpected nullable character'
+                );
+            } elseif ($token === '|') {
                 if (count($types) === 0) {
                     throw new RuntimeException(
                         'A type is missing before a type separator'
@@ -287,6 +298,8 @@ final class TypeResolver
      * @param string $type the type string, representing a single type
      *
      * @return Type|Array_|Object_
+     *
+     * @psalm-pure
      */
     private function resolveSingleType(string $type, Context $context) : object
     {
@@ -338,6 +351,8 @@ final class TypeResolver
      * Detects whether the given type represents an array.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
+     *
+     * @psalm-pure
      */
     private function isTypedArray(string $type) : bool
     {
@@ -348,6 +363,8 @@ final class TypeResolver
      * Detects whether the given type represents a PHPDoc keyword.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
+     *
+     * @psalm-pure
      */
     private function isKeyword(string $type) : bool
     {
@@ -358,6 +375,8 @@ final class TypeResolver
      * Detects whether the given type represents a relative structural element name.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
+     *
+     * @psalm-pure
      */
     private function isPartialStructuralElementName(string $type) : bool
     {
@@ -366,6 +385,8 @@ final class TypeResolver
 
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
+     *
+     * @psalm-pure
      */
     private function isFqsen(string $type) : bool
     {
@@ -374,6 +395,8 @@ final class TypeResolver
 
     /**
      * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
+     *
+     * @psalm-pure
      */
     private function resolveTypedArray(string $type, Context $context) : Array_
     {
@@ -382,6 +405,8 @@ final class TypeResolver
 
     /**
      * Resolves the given keyword (such as `string`) into a Type object representing that keyword.
+     *
+     * @psalm-pure
      */
     private function resolveKeyword(string $type) : Type
     {
@@ -392,6 +417,8 @@ final class TypeResolver
 
     /**
      * Resolves the given FQSEN string into an FQSEN object.
+     *
+     * @psalm-pure
      */
     private function resolveTypedObject(string $type, ?Context $context = null) : Object_
     {
@@ -401,7 +428,9 @@ final class TypeResolver
     /**
      * Resolves class string
      *
-     * @param ArrayIterator<int, string> $tokens
+     * @param ArrayIterator<int, null|string> $tokens
+     *
+     * @psalm-pure
      */
     private function resolveClassString(ArrayIterator $tokens, Context $context) : Type
     {
@@ -415,15 +444,16 @@ final class TypeResolver
             );
         }
 
-        if ($tokens->current() !== '>') {
-            if (empty($tokens->current())) {
+        $token = $tokens->current();
+        if ($token !== '>') {
+            if (empty($token)) {
                 throw new RuntimeException(
                     'class-string: ">" is missing'
                 );
             }
 
             throw new RuntimeException(
-                'Unexpected character "' . $tokens->current() . '", ">" is missing'
+                'Unexpected character "' . $token . '", ">" is missing'
             );
         }
 
@@ -433,9 +463,11 @@ final class TypeResolver
     /**
      * Resolves the collection values and keys
      *
-     * @param ArrayIterator<int, string> $tokens
+     * @param ArrayIterator<int, null|string> $tokens
      *
      * @return Array_|Iterable_|Collection
+     *
+     * @psalm-mutation-free
      */
     private function resolveCollection(ArrayIterator $tokens, Type $classType, Context $context) : Type
     {
@@ -455,7 +487,8 @@ final class TypeResolver
         $valueType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
         $keyType   = null;
 
-        if ($tokens->current() !== null && trim($tokens->current()) === ',') {
+        $token = $tokens->current();
+        if ($token !== null && trim($token) === ',') {
             // if we have a comma, then we just parsed the key type, not the value type
             $keyType = $valueType;
             if ($isArray) {
@@ -488,15 +521,16 @@ final class TypeResolver
             $valueType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
         }
 
-        if ($tokens->current() !== '>') {
-            if (empty($tokens->current())) {
+        $token = $tokens->current();
+        if ($token !== '>') {
+            if (empty($token)) {
                 throw new RuntimeException(
                     'Collection: ">" is missing'
                 );
             }
 
             throw new RuntimeException(
-                'Unexpected character "' . $tokens->current() . '", ">" is missing'
+                'Unexpected character "' . $token . '", ">" is missing'
             );
         }
 
@@ -515,6 +549,9 @@ final class TypeResolver
         throw new RuntimeException('Invalid $classType provided');
     }
 
+    /**
+     * @psalm-pure
+     */
     private function makeCollectionFromObject(Object_ $object, Type $valueType, ?Type $keyType = null) : Collection
     {
         return new Collection($object->getFqsen(), $valueType, $keyType);

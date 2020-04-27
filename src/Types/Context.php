@@ -30,6 +30,8 @@ use function trim;
  *
  * @see ContextFactory::createFromClassReflector()
  * @see ContextFactory::createForNamespace()
+ *
+ * @psalm-immutable
  */
 final class Context
 {

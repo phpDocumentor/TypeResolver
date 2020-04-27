@@ -26,11 +26,15 @@ use function implode;
  * using an OR operator (`|`). This combination of types signifies that whatever is associated with this compound type
  * may contain a value with any of the given types.
  *
+ * @psalm-immutable
  * @template-implements IteratorAggregate<int, Type>
  */
 final class Compound implements Type, IteratorAggregate
 {
-    /** @var array<int, Type> */
+    /**
+     * @psalm-allow-private-mutation
+     * @var array<int, Type>
+     */
     private $types = [];
 
     /**
