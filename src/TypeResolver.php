@@ -122,8 +122,6 @@ final class TypeResolver
      * @uses Context::getNamespace()        to determine with what to prefix the type name.
      *
      * @param string $type The relative or absolute type.
-     *
-     * @psalm-pure
      */
     public function resolve(string $type, ?Context $context = null) : Type
     {
@@ -160,8 +158,6 @@ final class TypeResolver
      * @param ArrayIterator<int, string|null> $tokens        the iterator on tokens
      * @param int                        $parserContext on of self::PARSER_* constants, indicating
      * the context where we are in the parsing
-     *
-     * @psalm-pure
      */
     private function parseTypes(ArrayIterator $tokens, Context $context, int $parserContext) : Type
     {
@@ -173,7 +169,9 @@ final class TypeResolver
                 throw new RuntimeException(
                     'Unexpected nullable character'
                 );
-            } elseif ($token === '|') {
+            }
+
+            if ($token === '|') {
                 if (count($types) === 0) {
                     throw new RuntimeException(
                         'A type is missing before a type separator'
@@ -428,9 +426,7 @@ final class TypeResolver
     /**
      * Resolves class string
      *
-     * @param ArrayIterator<int, null|string> $tokens
-     *
-     * @psalm-pure
+     * @param ArrayIterator<int, (string|null)> $tokens
      */
     private function resolveClassString(ArrayIterator $tokens, Context $context) : Type
     {
@@ -463,11 +459,9 @@ final class TypeResolver
     /**
      * Resolves the collection values and keys
      *
-     * @param ArrayIterator<int, null|string> $tokens
+     * @param ArrayIterator<int, (string|null)> $tokens
      *
      * @return Array_|Iterable_|Collection
-     *
-     * @psalm-mutation-free
      */
     private function resolveCollection(ArrayIterator $tokens, Type $classType, Context $context) : Type
     {
