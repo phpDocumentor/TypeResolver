@@ -15,11 +15,11 @@ namespace phpDocumentor\Reflection;
 
 use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -269,10 +269,16 @@ class TypeResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
-        $resolvedType = $fixture->resolve('Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject ', new Context('phpDocumentor'));
+        $resolvedType = $fixture->resolve(
+            'Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject ',
+            new Context('phpDocumentor')
+        );
 
         $this->assertInstanceOf(Compound::class, $resolvedType);
-        $this->assertSame('\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject', (string) $resolvedType);
+        $this->assertSame(
+            '\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject',
+            (string) $resolvedType
+        );
 
         $firstType = $resolvedType->get(0);
 
@@ -300,17 +306,26 @@ class TypeResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
-        $resolvedType = $fixture->resolve('(Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null', new Context('phpDocumentor'));
+        $resolvedType = $fixture->resolve(
+            '(Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null',
+            new Context('phpDocumentor')
+        );
 
         $this->assertInstanceOf(Compound::class, $resolvedType);
-        $this->assertSame('(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null', (string) $resolvedType);
+        $this->assertSame(
+            '(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null',
+            (string) $resolvedType
+        );
 
         $firstType = $resolvedType->get(0);
 
         $secondType = $resolvedType->get(1);
 
         $this->assertInstanceOf(Expression_::class, $firstType);
-        $this->assertSame('(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)', (string) $firstType);
+        $this->assertSame(
+            '(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)',
+            (string) $firstType
+        );
         $this->assertInstanceOf(Null_::class, $secondType);
 
         $resolvedType = $firstType->getValueType();

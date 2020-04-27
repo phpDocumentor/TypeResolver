@@ -10,12 +10,15 @@ declare(strict_types=1);
  *
  * @link      http://phpdoc.org
  */
+
 namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
 /**
  * Represents an expression type as described in the PSR-5, the PHPDoc Standard.
+ *
+ * @psalm-immutable
  */
 final class Expression_ implements Type
 {

@@ -16,11 +16,11 @@ namespace phpDocumentor\Reflection;
 use ArrayIterator;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -29,15 +29,16 @@ use phpDocumentor\Reflection\Types\String_;
 use RuntimeException;
 use function array_key_exists;
 use function array_pop;
+use function array_values;
 use function class_exists;
 use function class_implements;
 use function count;
+use function end;
 use function in_array;
+use function key;
 use function preg_split;
-use function strlen;
 use function strpos;
 use function strtolower;
-use function substr;
 use function trim;
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
@@ -252,6 +253,7 @@ final class TypeResolver
                 if ($lastItem instanceof Expression_) {
                     $lastItem = $lastItem->getValueType();
                 }
+
                 $types[$last] = new Array_($lastItem);
 
                 $tokens->next();
@@ -294,7 +296,7 @@ final class TypeResolver
             return $types[0];
         }
 
-        return new Compound($types, $compoundToken);
+        return new Compound(array_values($types), $compoundToken);
     }
 
     /**
