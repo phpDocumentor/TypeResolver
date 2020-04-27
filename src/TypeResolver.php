@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection;
 use ArrayIterator;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
@@ -134,9 +135,9 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)[]`, '<', '>' and type names
+        // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)`, `[]`, '<', '>' and type names
         $tokens = preg_split(
-            '/(\\||\\?|<|>|, ?|\\(|\\)(?:\\[\\])+)/',
+            '/(\\||\\?|<|>|&|, ?|\\(|\\)|\\[\\]+)/',
             $type,
             -1,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
@@ -163,6 +164,7 @@ final class TypeResolver
     {
         $types = [];
         $token = '';
+        $compoundToken = '|';
         while ($tokens->valid()) {
             $token = $tokens->current();
             if ($token === null) {
@@ -171,7 +173,7 @@ final class TypeResolver
                 );
             }
 
-            if ($token === '|') {
+            if ($token === '|' || $token === '&') {
                 if (count($types) === 0) {
                     throw new RuntimeException(
                         'A type is missing before a type separator'
@@ -189,6 +191,7 @@ final class TypeResolver
                     );
                 }
 
+                $compoundToken = $token;
                 $tokens->next();
             } elseif ($token === '?') {
                 if (!in_array($parserContext, [
@@ -209,22 +212,16 @@ final class TypeResolver
                 $tokens->next();
                 $type = $this->parseTypes($tokens, $context, self::PARSER_IN_ARRAY_EXPRESSION);
 
-                $resolvedType = new Array_($type);
-
                 $token = $tokens->current();
-                // Someone did not properly close their array expression ..
-                if ($token === null) {
+                if ($token === null) { // Someone did not properly close their array expression ..
                     break;
                 }
 
-                // we generate arrays corresponding to the number of '[]' after the ')'
-                $numberOfArrays = (strlen($token) - 1) / 2;
-                for ($i = 0; $i < $numberOfArrays - 1; ++$i) {
-                    $resolvedType = new Array_($resolvedType);
-                }
+                $tokens->next();
+
+                $resolvedType = new Expression_($type);
 
                 $types[] = $resolvedType;
-                $tokens->next();
             } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
                 break;
             } elseif ($token === '<') {
@@ -248,6 +245,16 @@ final class TypeResolver
                 && ($token === '>' || trim($token) === ',')
             ) {
                 break;
+            } elseif ($token === self::OPERATOR_ARRAY) {
+                end($types);
+                $last = key($types);
+                $lastItem = $types[$last];
+                if ($lastItem instanceof Expression_) {
+                    $lastItem = $lastItem->getValueType();
+                }
+                $types[$last] = new Array_($lastItem);
+
+                $tokens->next();
             } else {
                 $type = $this->resolveSingleType($token, $context);
                 $tokens->next();
@@ -259,7 +266,7 @@ final class TypeResolver
             }
         }
 
-        if ($token === '|') {
+        if ($token === '|' || $token === '&') {
             throw new RuntimeException(
                 'A type is missing after a type separator'
             );
@@ -287,7 +294,7 @@ final class TypeResolver
             return $types[0];
         }
 
-        return new Compound($types);
+        return new Compound($types, $compoundToken);
     }
 
     /**
@@ -304,8 +311,6 @@ final class TypeResolver
         switch (true) {
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
-            case $this->isTypedArray($type):
-                return $this->resolveTypedArray($type, $context);
             case $this->isFqsen($type):
                 return $this->resolveTypedObject($type);
             case $this->isPartialStructuralElementName($type):
@@ -346,18 +351,6 @@ final class TypeResolver
     }
 
     /**
-     * Detects whether the given type represents an array.
-     *
-     * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
-     *
-     * @psalm-pure
-     */
-    private function isTypedArray(string $type) : bool
-    {
-        return substr($type, -2) === self::OPERATOR_ARRAY;
-    }
-
-    /**
      * Detects whether the given type represents a PHPDoc keyword.
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
@@ -389,16 +382,6 @@ final class TypeResolver
     private function isFqsen(string $type) : bool
     {
         return strpos($type, self::OPERATOR_NAMESPACE) === 0;
-    }
-
-    /**
-     * Resolves the given typed array string (i.e. `string[]`) into an Array object with the right types set.
-     *
-     * @psalm-pure
-     */
-    private function resolveTypedArray(string $type, Context $context) : Array_
-    {
-        return new Array_($this->resolveSingleType(substr($type, 0, -2), $context));
     }
 
     /**

@@ -15,11 +15,13 @@ namespace phpDocumentor\Reflection;
 
 use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Expression_;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
@@ -249,6 +251,77 @@ class TypeResolverTest extends TestCase
         $this->assertInstanceOf(Types\String_::class, $firstType);
         $this->assertInstanceOf(Object_::class, $secondType);
         $this->assertInstanceOf(Fqsen::class, $secondType->getFqsen());
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\String_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     */
+    public function testResolvingAmpersandCompoundTypes() : void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject ', new Context('phpDocumentor'));
+
+        $this->assertInstanceOf(Compound::class, $resolvedType);
+        $this->assertSame('\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject', (string) $resolvedType);
+
+        $firstType = $resolvedType->get(0);
+
+        $secondType = $resolvedType->get(1);
+
+        $this->assertInstanceOf(Object_::class, $firstType);
+        $this->assertInstanceOf(Fqsen::class, $firstType->getFqsen());
+        $this->assertInstanceOf(Object_::class, $secondType);
+        $this->assertInstanceOf(Fqsen::class, $secondType->getFqsen());
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Compound
+     * @uses \phpDocumentor\Reflection\Types\String_
+     * @uses \phpDocumentor\Reflection\Types\Object_
+     * @uses \phpDocumentor\Reflection\Fqsen
+     * @uses \phpDocumentor\Reflection\FqsenResolver
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     */
+    public function testResolvingMixedCompoundTypes() : void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('(Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null', new Context('phpDocumentor'));
+
+        $this->assertInstanceOf(Compound::class, $resolvedType);
+        $this->assertSame('(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)|null', (string) $resolvedType);
+
+        $firstType = $resolvedType->get(0);
+
+        $secondType = $resolvedType->get(1);
+
+        $this->assertInstanceOf(Expression_::class, $firstType);
+        $this->assertSame('(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)', (string) $firstType);
+        $this->assertInstanceOf(Null_::class, $secondType);
+
+        $resolvedType = $firstType->getValueType();
+
+        $firstSubType = $resolvedType->get(0);
+        $secondSubType =  $resolvedType->get(1);
+
+        $this->assertInstanceOf(Object_::class, $firstSubType);
+        $this->assertInstanceOf(Fqsen::class, $secondSubType->getFqsen());
+        $this->assertInstanceOf(Object_::class, $secondSubType);
+        $this->assertInstanceOf(Fqsen::class, $secondSubType->getFqsen());
     }
 
     /**
