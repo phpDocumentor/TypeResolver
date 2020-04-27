@@ -17,6 +17,8 @@ use phpDocumentor\Reflection\Type;
 
 /**
  * Represents a list of values. This is an abstract class for Array_ and Collection.
+ *
+ * @psalm-immutable
  */
 abstract class AbstractList implements Type
 {

@@ -47,6 +47,8 @@ use const T_USE;
  * Fully Qualified names.
  *
  * @see Context for more information.
+ *
+ * @psalm-immutable
  */
 final class ContextFactory
 {
@@ -242,17 +244,13 @@ final class ContextFactory
     {
         $uses = [];
 
-        while (true) {
+        while ($tokens->valid()) {
             $this->skipToNextStringOrNamespaceSeparator($tokens);
 
             $uses += $this->extractUseStatements($tokens);
             $currentToken = $tokens->current();
             if ($currentToken[0] === self::T_LITERAL_END_OF_USE) {
                 return $uses;
-            }
-
-            if ($currentToken === false) {
-                break;
             }
         }
 
