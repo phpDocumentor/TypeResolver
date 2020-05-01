@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\Expression_;
+use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -101,12 +101,16 @@ final class TypeResolver
      */
     private $fqsenResolver;
 
+    /** @var Parser Parser */
+    private $parser;
+
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
      */
     public function __construct(?FqsenResolver $fqsenResolver = null)
     {
         $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver();
+        $this->parser = new Parser();
     }
 
     /**
@@ -136,22 +140,24 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)`, `[]`, '<', '>' and type names
-        $tokens = preg_split(
-            '/(\\||\\?|<|>|&|, ?|\\(|\\)|\\[\\]+)/',
-            $type,
-            -1,
-            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
-        );
+        return $this->parser->parse($type, $context);
 
-        if ($tokens === false) {
-            throw new InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
-        }
-
-        /** @var ArrayIterator<int, string|null> $tokenIterator */
-        $tokenIterator = new ArrayIterator($tokens);
-
-        return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
+//        // split the type string into tokens `|`, `?`, `<`, `>`, `,`, `(`, `)`, `[]`, '<', '>' and type names
+//        $tokens = preg_split(
+//            '/(\\||\\?|<|>|&|, ?|\\(|\\)|\\[\\]+)/',
+//            $type,
+//            -1,
+//            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
+//        );
+//
+//        if ($tokens === false) {
+//            throw new InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
+//        }
+//
+//        /** @var ArrayIterator<int, string|null> $tokenIterator */
+//        $tokenIterator = new ArrayIterator($tokens);
+//
+//        return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
     }
 
     /**
@@ -220,7 +226,7 @@ final class TypeResolver
 
                 $tokens->next();
 
-                $resolvedType = new Expression_($type);
+                $resolvedType = new Expression($type);
 
                 $types[] = $resolvedType;
             } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
@@ -250,7 +256,7 @@ final class TypeResolver
                 end($types);
                 $last = key($types);
                 $lastItem = $types[$last];
-                if ($lastItem instanceof Expression_) {
+                if ($lastItem instanceof Expression) {
                     $lastItem = $lastItem->getValueType();
                 }
 

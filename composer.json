@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "mockery/mockery": "~1",
-        "ext-tokenizer": "^7.2"
+        "ext-tokenizer": "^7.2",
+        "ircmaxell/php-yacc": "^0.0.5"
     },
     "autoload": {
         "psr-4": {

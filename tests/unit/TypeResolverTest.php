@@ -19,7 +19,8 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\Expression_;
+use phpDocumentor\Reflection\Types\Expression;
+use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -274,7 +275,7 @@ class TypeResolverTest extends TestCase
             new Context('phpDocumentor')
         );
 
-        $this->assertInstanceOf(Compound::class, $resolvedType);
+        $this->assertInstanceOf(Intersection::class, $resolvedType);
         $this->assertSame(
             '\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject',
             (string) $resolvedType
@@ -321,7 +322,7 @@ class TypeResolverTest extends TestCase
 
         $secondType = $resolvedType->get(1);
 
-        $this->assertInstanceOf(Expression_::class, $firstType);
+        $this->assertInstanceOf(Expression::class, $firstType);
         $this->assertSame(
             '(\phpDocumentor\Reflection\DocBlock&\PHPUnit\Framework\MockObject\MockObject)',
             (string) $firstType
