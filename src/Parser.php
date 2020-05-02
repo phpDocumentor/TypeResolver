@@ -18,18 +18,18 @@ namespace phpDocumentor\Reflection;
 class Parser extends \phpDocumentor\Reflection\ParserAbstract
 {
     protected $tokenToSymbolMapSize = 272;
-    protected $actionTableSize      = 25;
-    protected $gotoTableSize        = 9;
+    protected $actionTableSize      = 20;
+    protected $gotoTableSize        = 7;
 
     protected $invalidSymbol       = 17;
     protected $errorSymbol         = 1;
     protected $defaultAction       = -32766;
     protected $unexpectedTokenRule = 32767;
 
-    protected $numNonLeafStates    = 24;
+    protected $numNonLeafStates    = 18;
 
-    protected $YY2TBLSTATE = 16;
-    protected $YYNLSTATES  = 24;
+    protected $YY2TBLSTATE = 10;
+    protected $YYNLSTATES  = 18;
 
     protected $symbolToName = array(
         "EOF",
@@ -83,57 +83,53 @@ class Parser extends \phpDocumentor\Reflection\ParserAbstract
     );
 
     protected $action = array(
-            2,    3,    5,    6,   21,    0,    8,    9,   21,   44,
-           27,   45,   46,   38,   18,    1,    4,    7,    0,   35,
-            0,   47,   41,   39,   42
+            1,    2,    4,    5,   15,    0,    6,    3,   15,   41,
+           21,   39,   40,   36,   12,   29,    0,   38,    0,   37
     );
 
     protected $actionCheck = array(
-            2,    3,    5,    6,    7,    0,    4,    4,    7,   10,
-           12,   13,   14,   11,   16,    8,    8,    8,   -1,    9,
-           -1,   15,   11,   11,   11
+            2,    3,    5,    6,    7,    0,    4,    8,    7,   15,
+           12,   13,   14,   11,   16,    9,   -1,   10,   -1,   11
     );
 
     protected $actionBase = array(
-            6,    9,   -2,   -2,   -2,   -2,   -2,   -2,   -2,   -2,
-            2,   -1,   11,    3,   12,   13,   -3,   -3,    8,    5,
-            7,   10,    1,    1,   -2,   -2,    0,    0,    0,    0,
-            0,    0,    0,    0,   -3,   -3,   -3,   -3,   -3,   -3
+           -6,   -2,   -2,   -2,   -2,   -2,   -2,    2,    7,    8,
+           -3,   -3,   -1,   -1,    5,    6,    1,    1,   -2,    0,
+            0,    0,    0,    0,    0,   -3,   -3,   -3
     );
 
     protected $actionDefault = array(
         32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
-        32767,32767,32767,32767,32767,32767,    2,   10,   16,32767,
-           19,32767,   12,   13
+            2,   10,   15,   17,32767,32767,   12,   13
     );
 
     protected $goto = array(
-           12,   17,   11,   10,   22,   23,   13,   14,   15
+           11,    8,    7,   16,   17,    9,   34
     );
 
     protected $gotoCheck = array(
-            3,    3,    3,    3,    3,    3,    3,    3,    3
+            3,    3,    3,    3,    3,    3,   10
     );
 
     protected $gotoBase = array(
             0,    0,    0,   -1,    0,    0,    0,    0,    0,    0,
-            0
+           -7,    0
     );
 
     protected $gotoDefault = array(
-        -32768,   19,   25,   16,   28,   29,   30,   31,   32,   33,
-           20
+        -32768,   14,   19,   10,   22,   23,   24,   25,   26,   27,
+           32,   13
     );
 
     protected $ruleToNonTerminal = array(
             0,    1,    1,    3,    3,    3,    3,    3,    3,    3,
-            4,    8,    5,    6,    9,    9,    9,    9,    9,    9,
-            7,   10,   10,    2
+            4,    8,    5,    6,    9,    9,    9,    9,   10,   10,
+            7,   11,   11,    2
     );
 
     protected $ruleToLength = array(
             1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-            2,    3,    3,    3,    4,    6,    1,    4,    7,    1,
+            2,    3,    3,    3,    2,    1,    2,    1,    3,    5,
             3,    1,    1,    1
     );
 
@@ -182,22 +178,22 @@ class Parser extends \phpDocumentor\Reflection\ParserAbstract
              $this->semValue = new Types\Intersection([$this->semStack[$stackPos-(3-1)], $this->semStack[$stackPos-(3-3)]]); 
             },
             14 => function ($stackPos) {
-             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(4-1)], $this->semStack[$stackPos-(4-3)]); 
+             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(2-1)], $this->semStack[$stackPos-(2-2)][0], $this->semStack[$stackPos-(2-2)][1]); 
             },
             15 => function ($stackPos) {
-             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(6-1)], $this->semStack[$stackPos-(6-5)], $this->semStack[$stackPos-(6-3)]); 
-            },
-            16 => function ($stackPos) {
              $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(1-1)]); 
             },
+            16 => function ($stackPos) {
+             $this->semValue = new Types\Collection($this->semStack[$stackPos-(2-1)], $this->semStack[$stackPos-(2-2)][0], $this->semStack[$stackPos-(2-2)][1]); 
+            },
             17 => function ($stackPos) {
-             $this->semValue = new Types\Collection($this->semStack[$stackPos-(4-1)], $this->semStack[$stackPos-(4-3)]); 
+             $this->semValue = new Types\Object_($this->semStack[$stackPos-(1-1)]); 
             },
             18 => function ($stackPos) {
-             $this->semValue = new Types\Collection($this->semStack[$stackPos-(7-1)], $this->semStack[$stackPos-(7-5)], $this->semStack[$stackPos-(7-3)]); 
+             $this->semValue = [$this->semStack[$stackPos-(3-2)], null]; 
             },
             19 => function ($stackPos) {
-             $this->semValue = new Types\Object_($this->semStack[$stackPos-(1-1)]); 
+             $this->semValue = [$this->semStack[$stackPos-(5-4)], $this->semStack[$stackPos-(5-2)]]; 
             },
             20 => function ($stackPos) {
              $this->semValue = new Types\Expression($this->semStack[$stackPos-(3-2)]); 

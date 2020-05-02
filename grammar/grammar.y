@@ -47,13 +47,15 @@ INTERSECTION:
 ;
 
 GENERIC:
-      T_COLLECTION_TYPE T_LESS_THAN TYPE T_GREATER_THAN { $$ = $this->resolveCollection($1, $3); }
-    | T_COLLECTION_TYPE T_LESS_THAN TYPE T_COMMA TYPE T_GREATER_THAN { $$ = $this->resolveCollection($1, $5, $3); }
+      T_COLLECTION_TYPE GENERIC_TYPE_DEF { $$ = $this->resolveCollection($1, $2[0], $2[1]); }
     | T_COLLECTION_TYPE { $$ = $this->resolveCollection($1); }
-    | FQSEN T_LESS_THAN TYPE T_GREATER_THAN { $$ = new Types\Collection($1, $3); }
-    | FQSEN T_LESS_THAN T_LESS_THAN TYPE T_COMMA TYPE T_GREATER_THAN { $$ = new Types\Collection($1, $5, $3); }
+    | FQSEN GENERIC_TYPE_DEF { $$ = new Types\Collection($1, $2[0], $2[1]); }
     | FQSEN { $$ = new Types\Object_($1); }
 ;
+
+GENERIC_TYPE_DEF:
+    T_LESS_THAN TYPE T_GREATER_THAN { $$ = [$2, null]; }
+    | T_LESS_THAN TYPE T_COMMA TYPE T_GREATER_THAN { $$ = [$4, $2]; }
 
 EXPRESSION:
       T_OPEN_PARENTHESIS TYPE T_CLOSE_PARENTHESIS { $$ = new Types\Expression($2); }
