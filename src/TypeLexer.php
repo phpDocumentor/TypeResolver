@@ -44,23 +44,23 @@ final class TypeLexer extends AbstractLexer
     public const T_NONE = 1;
 
     public const T_NULLABLE_OPERATOR = 257;
-    public const T_COMPOUND_OPERATOR = 258;
-    public const T_INTERSECTION_OPERATOR = 259;
-    public const T_OPEN_SQUARE_BRACKET = 260;
-    public const T_CLOSE_SQUARE_BRACKET = 261;
-    public const T_OPEN_PARENTHESIS = 262;
-    public const T_CLOSE_PARENTHESIS = 263;
-    public const T_GREATER_THAN = 5;
-    public const T_LESS_THAN = 6;
-    public const T_COMMA = 7;
+    public const T_OPEN_PARENTHESIS = 258;
+    public const T_COMMA = 259;
+    public const T_COMPOUND_OPERATOR = 260;
+    public const T_INTERSECTION_OPERATOR = 261;
+    public const T_OPEN_SQUARE_BRACKET = 262;
+    public const T_LESS_THAN = 263;
+    public const T_CLOSE_SQUARE_BRACKET = 264;
+    public const T_CLOSE_PARENTHESIS = 265;
+    public const T_GREATER_THAN = 266;
 
-    public const T_PRIMITIVE_TYPE = 264;
-    public const T_FULLY_QUALIFIED_NAME = 265;
-    public const T_QUALIFIED_NAME = 266;
-    public const T_COLLECTION_TYPE = 103;
+    public const T_PRIMITIVE_TYPE = 267;
+    public const T_FULLY_QUALIFIED_NAME = 268;
+    public const T_QUALIFIED_NAME = 269;
+    public const T_VOID = 270;
+    public const T_COLLECTION_TYPE = 271;
+
     public const T_PSEUDO_TYPE = 104;
-
-    public const T_VOID = 267;
 
     public function __construct()
     {

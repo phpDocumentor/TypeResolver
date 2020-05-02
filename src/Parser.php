@@ -17,113 +17,124 @@ namespace phpDocumentor\Reflection;
  */
 class Parser extends \phpDocumentor\Reflection\ParserAbstract
 {
-    protected $tokenToSymbolMapSize = 268;
-    protected $actionTableSize      = 18;
-    protected $gotoTableSize        = 7;
+    protected $tokenToSymbolMapSize = 272;
+    protected $actionTableSize      = 25;
+    protected $gotoTableSize        = 9;
 
-    protected $invalidSymbol       = 13;
+    protected $invalidSymbol       = 17;
     protected $errorSymbol         = 1;
     protected $defaultAction       = -32766;
     protected $unexpectedTokenRule = 32767;
 
-    protected $numNonLeafStates    = 14;
+    protected $numNonLeafStates    = 24;
 
-    protected $YY2TBLSTATE = 9;
-    protected $YYNLSTATES  = 14;
+    protected $YY2TBLSTATE = 16;
+    protected $YYNLSTATES  = 24;
 
     protected $symbolToName = array(
         "EOF",
         "error",
         "T_NULLABLE",
+        "T_OPEN_PARENTHESIS",
+        "T_COMMA",
         "T_COMPOUND_OPERATOR",
         "T_INTERSECTION_OPERATOR",
         "T_OPEN_SQUARE_BRACKET",
+        "T_LESS_THAN",
         "T_CLOSE_SQUARE_BRACKET",
-        "T_OPEN_PARENTHESIS",
         "T_CLOSE_PARENTHESIS",
+        "T_GREATER_THAN",
         "T_TYPE",
         "T_FULLY_QUALIFIED_NAME",
         "T_QUALIFIED_NAME",
-        "T_VOID"
+        "T_VOID",
+        "T_COLLECTION_TYPE"
     );
 
     protected $tokenToSymbol = array(
-            0,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,   13,   13,   13,   13,
-           13,   13,   13,   13,   13,   13,    1,    2,    3,    4,
-            5,    6,    7,    8,    9,   10,   11,   12
+            0,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,   17,   17,   17,   17,
+           17,   17,   17,   17,   17,   17,    1,    2,    3,    4,
+            5,    6,    7,    8,    9,   10,   11,   12,   13,   14,
+           15,   16
     );
 
     protected $action = array(
-            1,   23,   25,   26,    1,    2,    3,    0,    3,    2,
-           33,   32,    4,    5,    0,   12,    0,   28
+            2,    3,    5,    6,   21,    0,    8,    9,   21,   44,
+           27,   45,   46,   38,   18,    1,    4,    7,    0,   35,
+            0,   47,   41,   39,   42
     );
 
     protected $actionCheck = array(
-            2,    9,   10,   11,    2,    7,    3,    0,    3,    7,
-           12,    8,    4,    4,   -1,    5,   -1,    6
+            2,    3,    5,    6,    7,    0,    4,    4,    7,   10,
+           12,   13,   14,   11,   16,    8,    8,    8,   -1,    9,
+           -1,   15,   11,   11,   11
     );
 
     protected $actionBase = array(
-           -2,    2,    2,    2,   -8,   -8,    3,    5,    5,    7,
-            8,    9,   11,   10,   -8,   -8,   -8,   -8,    0,    0,
-           10,   10,   10
+            6,    9,   -2,   -2,   -2,   -2,   -2,   -2,   -2,   -2,
+            2,   -1,   11,    3,   12,   13,   -3,   -3,    8,    5,
+            7,   10,    1,    1,   -2,   -2,    0,    0,    0,    0,
+            0,    0,    0,    0,   -3,   -3,   -3,   -3,   -3,   -3
     );
 
     protected $actionDefault = array(
-        32767,32767,32767,32767,32767,32767,32767,    2,   13,32767,
-            3,    6,32767,   15
+        32767,32767,32767,32767,32767,32767,32767,32767,32767,32767,
+        32767,32767,32767,32767,32767,32767,    2,   10,   16,32767,
+           19,32767,   12,   13
     );
 
     protected $goto = array(
-            8,    6,   13,    0,    0,   30,   31
+           12,   17,   11,   10,   22,   23,   13,   14,   15
     );
 
     protected $gotoCheck = array(
-            3,    3,    3,   -1,   -1,    4,    4
+            3,    3,    3,    3,    3,    3,    3,    3,    3
     );
 
     protected $gotoBase = array(
-            0,    0,    0,   -1,    1,    0,    0,    0,    0,    0,
+            0,    0,    0,   -1,    0,    0,    0,    0,    0,    0,
             0
     );
 
     protected $gotoDefault = array(
-        -32768,    9,   15,    7,   10,   18,   19,   11,   21,   22,
-           24
+        -32768,   19,   25,   16,   28,   29,   30,   31,   32,   33,
+           20
     );
 
     protected $ruleToNonTerminal = array(
-            0,    1,    1,    3,    3,    3,    3,    3,    3,    4,
-            4,   10,   10,    5,    8,    6,    7,    7,    9,    2
+            0,    1,    1,    3,    3,    3,    3,    3,    3,    3,
+            4,    8,    5,    6,    9,    9,    9,    9,    9,    9,
+            7,   10,   10,    2
     );
 
     protected $ruleToLength = array(
             1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-            1,    1,    1,    2,    3,    3,    3,    3,    3,    1
+            2,    3,    3,    3,    4,    6,    1,    4,    7,    1,
+            3,    1,    1,    1
     );
 
     protected function initReduceCallbacks() {
@@ -138,8 +149,8 @@ class Parser extends \phpDocumentor\Reflection\ParserAbstract
             $this->semValue = $this->semStack[$stackPos];
         },
             3 => function ($stackPos) {
-            $this->semValue = $this->semStack[$stackPos];
-        },
+             $this->semValue = $this->resolveKeyword($this->semStack[$stackPos-(1-1)]); 
+            },
             4 => function ($stackPos) {
             $this->semValue = $this->semStack[$stackPos];
         },
@@ -156,36 +167,48 @@ class Parser extends \phpDocumentor\Reflection\ParserAbstract
             $this->semValue = $this->semStack[$stackPos];
         },
             9 => function ($stackPos) {
-             $this->semValue = $this->resolveKeyword($this->semStack[$stackPos-(1-1)]); 
-            },
+            $this->semValue = $this->semStack[$stackPos];
+        },
             10 => function ($stackPos) {
-             $this->semValue = new Types\Object_($this->semStack[$stackPos-(1-1)]); 
-            },
-            11 => function ($stackPos) {
-             $this->semValue = new Fqsen($this->semStack[$stackPos-(1-1)]); 
-            },
-            12 => function ($stackPos) {
-             $this->semValue = $this->fqsenResolver->resolve($this->semStack[$stackPos-(1-1)], $this->context); 
-            },
-            13 => function ($stackPos) {
              $this->semValue = new Types\Nullable($this->semStack[$stackPos-(2-2)]); 
             },
-            14 => function ($stackPos) {
+            11 => function ($stackPos) {
              $this->semValue = new Types\Array_($this->semStack[$stackPos-(3-1)]); 
             },
-            15 => function ($stackPos) {
+            12 => function ($stackPos) {
              $this->semValue = new Types\Compound([$this->semStack[$stackPos-(3-1)], $this->semStack[$stackPos-(3-3)]]); 
             },
-            16 => function ($stackPos) {
+            13 => function ($stackPos) {
              $this->semValue = new Types\Intersection([$this->semStack[$stackPos-(3-1)], $this->semStack[$stackPos-(3-3)]]); 
             },
+            14 => function ($stackPos) {
+             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(4-1)], $this->semStack[$stackPos-(4-3)]); 
+            },
+            15 => function ($stackPos) {
+             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(6-1)], $this->semStack[$stackPos-(6-5)], $this->semStack[$stackPos-(6-3)]); 
+            },
+            16 => function ($stackPos) {
+             $this->semValue = $this->resolveCollection($this->semStack[$stackPos-(1-1)]); 
+            },
             17 => function ($stackPos) {
-             $this->semValue = new Types\Intersection(array_merge($this->semStack[$stackPos-(3-1)]->getAll(), [$this->semStack[$stackPos-(3-3)]])); 
+             $this->semValue = new Types\Collection($this->semStack[$stackPos-(4-1)], $this->semStack[$stackPos-(4-3)]); 
             },
             18 => function ($stackPos) {
-             $this->semValue = new Types\Expression($this->semStack[$stackPos-(3-2)]); 
+             $this->semValue = new Types\Collection($this->semStack[$stackPos-(7-1)], $this->semStack[$stackPos-(7-5)], $this->semStack[$stackPos-(7-3)]); 
             },
             19 => function ($stackPos) {
+             $this->semValue = new Types\Object_($this->semStack[$stackPos-(1-1)]); 
+            },
+            20 => function ($stackPos) {
+             $this->semValue = new Types\Expression($this->semStack[$stackPos-(3-2)]); 
+            },
+            21 => function ($stackPos) {
+             $this->semValue = new Fqsen($this->semStack[$stackPos-(1-1)]); 
+            },
+            22 => function ($stackPos) {
+             $this->semValue = $this->fqsenResolver->resolve($this->semStack[$stackPos-(1-1)], $this->context); 
+            },
+            23 => function ($stackPos) {
              $this->semValue = new Types\Void_(); 
             },
         ];

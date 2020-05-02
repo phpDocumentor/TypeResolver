@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
+use RuntimeException;
 
 abstract class ParserAbstract
 {
@@ -119,7 +124,7 @@ abstract class ParserAbstract
         'iterable' => Iterable_::class,
     ];
 
-    private $errorState = 0;
+    protected $errorState = 0;
 
     abstract protected function initReduceCallbacks();
 
@@ -347,6 +352,61 @@ abstract class ParserAbstract
         $className = $this->keywords[strtolower($type)];
 
         return new $className();
+    }
+
+    /**
+     * Resolves the collection values and keys
+     *
+     * @return Array_|Iterable_
+     */
+    protected function resolveCollection(string $collectionType, ?Type $valueType = null, ?Type $keyType = null) : Type
+    {
+        $isArray    = ($collectionType === 'array');
+        $isIterable = ($collectionType === 'iterable');
+
+        // allow only "array", "iterable" or class name before "<"
+        if (!$isArray && !$isIterable) {
+            throw new RuntimeException(
+                $collectionType . ' is not a collection'
+            );
+        }
+
+        if ($isArray) {
+            // check the key type for an "array" collection. We allow only
+            // strings or integers.
+            if ($keyType !== null) {
+                if (!$keyType instanceof String_ &&
+                    !$keyType instanceof Integer &&
+                    !$keyType instanceof Compound
+                ) {
+                    throw new RuntimeException(
+                        'An array can have only integers or strings as keys'
+                    );
+                }
+
+                if ($keyType instanceof Compound) {
+                    foreach ($keyType->getIterator() as $item) {
+                        if (!$item instanceof String_ &&
+                            !$item instanceof Integer
+                        ) {
+                            throw new RuntimeException(
+                                'An array can have only integers or strings as keys'
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($isArray) {
+            return new Array_($valueType, $keyType);
+        }
+
+        if ($isIterable) {
+            return new Iterable_($valueType, $keyType);
+        }
+
+        throw new RuntimeException('Invalid $classType provided');
     }
 
     protected function traceNewState($state, $symbol) {
