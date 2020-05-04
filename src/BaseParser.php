@@ -169,7 +169,7 @@ abstract class BaseParser
                 if ($symbol === self::SYMBOL_NONE) {
                     $this->lexer->moveNext();
                     $tokenId    = $this->lexer->token['type'] ?? 0;
-                    $tokenValue = $this->lexer->token['value'];
+                    $tokenValue = $this->lexer->token['value'] ?? null;
 
                     // map the lexer token id to the internally used symbols
                     $symbol = $tokenId >= 0 && $tokenId < $this->tokenToSymbolMapSize
