@@ -6,7 +6,6 @@
  *  file that was distributed with this source code.
  *
  *  @link      http://phpdoc.org
- *
  */
 
 declare(strict_types=1);

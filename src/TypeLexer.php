@@ -1,11 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
 use Doctrine\Common\Lexer\AbstractLexer;
+use function array_flip;
+use function count;
+use function ctype_alpha;
+use function strpos;
 
 final class TypeLexer extends AbstractLexer
 {
+    /** @var array<string, int> */
     protected $primitives = [
         'string',
         'integer',
@@ -21,21 +28,25 @@ final class TypeLexer extends AbstractLexer
         'bool',
         'mixed',
         'false',
+        'FALSE',
         'true',
+        'TRUE',
         'real',
         'double',
         'null',
+        'NULL',
         'callback',
     ];
 
+    /** @var array<string, int> */
     protected $pseudoTypes = [
         'self',
-        'class-string',
         '$this',
         'static',
         'parent',
     ];
 
+    /** @var array<string, int> */
     protected $collections = [
         'array',
         'iterable',
@@ -60,7 +71,8 @@ final class TypeLexer extends AbstractLexer
     public const T_VOID = 270;
     public const T_COLLECTION_TYPE = 271;
 
-    public const T_PSEUDO_TYPE = 104;
+    public const T_PSEUDO_TYPE = 272;
+    public const T_CLASS_STRING = 273;
 
     public function __construct()
     {
@@ -77,7 +89,8 @@ final class TypeLexer extends AbstractLexer
     {
         return [
             '\$this', // only keyword allowed with a special character
-            '[a-zA-Z_\\x80-\\xff\\\][a-zA-Z0-9_\\x80-\\xff]*(?:\\\[a-zA-Z_\\x80-\\xff][a-zA-Z0-9_\\x80-\\xff]*)*', // keyword or QSEN
+            //phpcs:ignore Generic.Files.LineLength.TooLong
+            '[a-zA-Z_\\x80-\\x{fffff}\\\][a-zA-Z0-9_\\x80-\\x{fffff}-]*(?:\\\[a-zA-Z_\\x80-\\x{fffff}][a-zA-Z0-9_\\x80-\\x{fffff}]*)*', // keyword or QSEN
         ];
     }
 
@@ -92,24 +105,34 @@ final class TypeLexer extends AbstractLexer
         ];
     }
 
+    public function addPseudoType(string $type) : void
+    {
+        $this->pseudoTypes[$type] = count($this->pseudoTypes);
+    }
+
     /**
      * @inheritDoc
      */
     protected function getType(&$value)
     {
         if (isset($this->primitives[$value])) {
-            return static::T_PRIMITIVE_TYPE;
+            return self::T_PRIMITIVE_TYPE;
         }
+
         if (isset($this->collections[$value])) {
-            return static::T_COLLECTION_TYPE;
+            return self::T_COLLECTION_TYPE;
         }
 
         if ($value === 'void') {
-            return static::T_VOID;
+            return self::T_VOID;
         }
 
         if (isset($this->pseudoTypes[$value])) {
-            return static::T_PSEUDO_TYPE;
+            return self::T_PSEUDO_TYPE;
+        }
+
+        if ($value === 'class-string') {
+            return self::T_CLASS_STRING;
         }
 
         if (ctype_alpha($value[0]) || $value[0] === '\\') {

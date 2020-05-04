@@ -6,24 +6,31 @@
  *  file that was distributed with this source code.
  *
  *  @link      http://phpdoc.org
- *
  */
 
 declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
+use RangeException;
 use RuntimeException;
+use function class_exists;
+use function class_implements;
+use function count;
+use function implode;
+use function in_array;
+use function sprintf;
+use function strtolower;
 
-abstract class ParserAbstract
+abstract class BaseParser
 {
     private const SYMBOL_NONE = -1;
 
@@ -46,7 +53,7 @@ abstract class ParserAbstract
     protected $defaultAction;
     /** @var int Rule number signifying that an unexpected token was encountered */
     protected $unexpectedTokenRule;
-
+    /** @var int states */
     protected $YY2TBLSTATE;
     /** @var int Number of non-leaf states */
     protected $numNonLeafStates;
@@ -55,17 +62,21 @@ abstract class ParserAbstract
     protected $tokenToSymbol;
     /** @var string[] Map of symbols to their names */
     protected $symbolToName;
-    /** @var array Names of the production rules (only necessary for debugging) */
+    /** @var string[] Names of the production rules (only necessary for debugging) */
     protected $productions;
 
-    /** @var int[] Map of states to a displacement into the $action table. The corresponding action for this
+    /**
+     * @var int[] Map of states to a displacement into the $action table. The corresponding action for this
      *             state/symbol pair is $action[$actionBase[$state] + $symbol]. If $actionBase[$state] is 0, the
-    action is defaulted, i.e. $actionDefault[$state] should be used instead. */
+     * action is defaulted, i.e. $actionDefault[$state] should be used instead.
+     */
     protected $actionBase;
     /** @var int[] Table of actions. Indexed according to $actionBase comment. */
     protected $action;
-    /** @var int[] Table indexed analogously to $action. If $actionCheck[$actionBase[$state] + $symbol] != $symbol
-     *             then the action is defaulted, i.e. $actionDefault[$state] should be used instead. */
+    /**
+     * @var int[] Table indexed analogously to $action. If $actionCheck[$actionBase[$state] + $symbol] != $symbol
+     *             then the action is defaulted, i.e. $actionDefault[$state] should be used instead.
+     */
     protected $actionCheck;
     /** @var int[] Map of states to their default action */
     protected $actionDefault;
@@ -73,20 +84,16 @@ abstract class ParserAbstract
     protected $reduceCallbacks;
 
 
-    /**
-     * @var TypeLexer
-     */
+    /** @var TypeLexer */
     private $lexer;
 
-    /**
-     * @var FqsenResolver
-     */
+    /** @var FqsenResolver */
     protected $fqsenResolver;
 
     /** @var Context */
     protected $context;
 
-    /** @var Type Temporary value containing the result of last semantic action (reduction) */
+    /** @var Type|Type[]|null Temporary value containing the result of last semantic action (reduction) */
     protected $semValue;
 
     /** @var Type[] Semantic value stack (contains values of tokens and semantic action results) */
@@ -124,18 +131,20 @@ abstract class ParserAbstract
         'iterable' => Iterable_::class,
     ];
 
-    protected $errorState = 0;
-
+    /**
+     * @return void
+     */
+    //phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     abstract protected function initReduceCallbacks();
 
-    public function __construct()
+    public function __construct(?FqsenResolver $fqsenResolver)
     {
         $this->lexer = new TypeLexer();
-        $this->fqsenResolver = new FqsenResolver();
+        $this->fqsenResolver = $fqsenResolver ?? new FqsenResolver();
         $this->initReduceCallbacks();
     }
 
-    public function parse(string $type, Context $context)
+    public function parse(string $type, Context $context) : Type
     {
         $this->context = $context;
         $this->lexer->setInput($type);
@@ -153,7 +162,7 @@ abstract class ParserAbstract
         $stackPos = 0;
 
         while (true) {
-            $this->traceNewState($state, $symbol);
+            //$this->traceNewState($state, $symbol);
             if ($this->actionBase[$state] === 0) {
                 $rule = $this->actionDefault[$state];
             } else {
@@ -168,13 +177,14 @@ abstract class ParserAbstract
                         : $this->invalidSymbol;
 
                     if ($symbol === $this->invalidSymbol) {
-                        throw new \RangeException(sprintf(
+                        throw new RangeException(sprintf(
                             'The lexer returned an invalid token (id=%d, value=%s)',
-                            $tokenId, $tokenValue
+                            $tokenId,
+                            $tokenValue
                         ));
                     }
 
-                    $this->traceRead($symbol);
+                    //$this->traceRead($symbol);
                 }
 
                 $idx = $this->actionBase[$state] + $symbol;
@@ -183,19 +193,14 @@ abstract class ParserAbstract
                             && ($idx = $this->actionBase[$state + $this->numNonLeafStates] + $symbol) >= 0
                             && $idx < $this->actionTableSize && $this->actionCheck[$idx] === $symbol))
                     && ($action = $this->action[$idx]) !== $this->defaultAction) {
-
                     if ($action > 0) {
                         /** shift */
-                        $this->traceShift($symbol);
+                        //$this->traceShift($symbol);
 
                         ++$stackPos;
                         $stateStack[$stackPos] = $state = $action;
                         $this->semStack[$stackPos] = $tokenValue;
                         $symbol = self::SYMBOL_NONE;
-
-                        if ($this->errorState) {
-                            --$this->errorState;
-                        }
 
                         if ($action < $this->numNonLeafStates) {
                             continue;
@@ -214,68 +219,34 @@ abstract class ParserAbstract
             for (;;) {
                 if ($rule === 0) {
                     /* accept */
-                    $this->traceAccept();
+                    // $this->traceAccept();
+
                     return $this->semValue;
-                } elseif ($rule !== $this->unexpectedTokenRule) {
-                    /* reduce */
-                    $this->traceReduce($rule);
-                    $this->reduceCallbacks[$rule]($stackPos);
-
-                    $stackPos    -= $this->ruleToLength[$rule];
-                    $nonTerminal = $this->ruleToNonTerminal[$rule];
-                    $idx         = $this->gotoBase[$nonTerminal] + $stateStack[$stackPos];
-                    if ($idx >= 0 && $idx < $this->gotoTableSize && $this->gotoCheck[$idx] === $nonTerminal) {
-                        $state = $this->goto[$idx];
-                    } else {
-                        $state = $this->gotoDefault[$nonTerminal];
-                    }
-
-                    ++$stackPos;
-                    $stateStack[$stackPos]     = $state;
-                    $this->semStack[$stackPos] = $this->semValue;
-                } else {
-                    /* error */
-                    switch ($this->errorState) {
-                        case 0:
-                            $msg = $this->getErrorMessage($symbol, $state);
-                            throw new \RuntimeException($msg);
-                        // Break missing intentionally
-                        case 1:
-                        case 2:
-                            $this->errorState = 3;
-
-                            // Pop until error-expecting state uncovered
-                            while (!(
-                                    (($idx = $this->actionBase[$state] + $this->errorSymbol) >= 0
-                                        && $idx < $this->actionTableSize && $this->actionCheck[$idx] === $this->errorSymbol)
-                                    || ($state < $this->YY2TBLSTATE
-                                        && ($idx = $this->actionBase[$state + $this->numNonLeafStates] + $this->errorSymbol) >= 0
-                                        && $idx < $this->actionTableSize && $this->actionCheck[$idx] === $this->errorSymbol)
-                                ) || ($action = $this->action[$idx]) === $this->defaultAction) { // Not totally sure about this
-                                if ($stackPos <= 0) {
-                                    // Could not recover from error
-                                    return null;
-                                }
-                                $state = $stateStack[--$stackPos];
-                                $this->tracePop($state);
-                            }
-
-                            $this->traceShift($this->errorSymbol);
-                            ++$stackPos;
-                            $stateStack[$stackPos] = $state = $action;
-                            break;
-
-                        case 3:
-                            if ($symbol === 0) {
-                                // Reached EOF without recovering from error
-                                return null;
-                            }
-
-                            $this->traceDiscard($symbol);
-                            $symbol = self::SYMBOL_NONE;
-                            break 2;
-                    }
                 }
+
+                if ($rule === $this->unexpectedTokenRule) {
+                    /* error */
+                    $msg = $this->getErrorMessage($symbol, $state);
+
+                    throw new RuntimeException($msg);
+                }
+
+                /* reduce */
+                // $this->traceReduce($rule);
+                $this->reduceCallbacks[$rule]($stackPos);
+
+                $stackPos    -= $this->ruleToLength[$rule];
+                $nonTerminal = $this->ruleToNonTerminal[$rule];
+                $idx         = $this->gotoBase[$nonTerminal] + $stateStack[$stackPos];
+                if ($idx >= 0 && $idx < $this->gotoTableSize && $this->gotoCheck[$idx] === $nonTerminal) {
+                    $state = $this->goto[$idx];
+                } else {
+                    $state = $this->gotoDefault[$nonTerminal];
+                }
+
+                ++$stackPos;
+                $stateStack[$stackPos]     = $state;
+                $this->semStack[$stackPos] = $this->semValue;
 
                 if ($state < $this->numNonLeafStates) {
                     break;
@@ -286,8 +257,7 @@ abstract class ParserAbstract
             }
         }
 
-
-        throw new \RuntimeException('Reached end of parser loop');
+        throw new RuntimeException('Reached end of parser loop');
     }
 
     /**
@@ -298,7 +268,8 @@ abstract class ParserAbstract
      *
      * @return string Formatted error message
      */
-    protected function getErrorMessage(int $symbol, int $state) : string {
+    protected function getErrorMessage(int $symbol, int $state) : string
+    {
         $expectedString = '';
         if ($expected = $this->getExpectedTokens($state)) {
             $expectedString = ', expecting ' . implode(' or ', $expected);
@@ -314,29 +285,41 @@ abstract class ParserAbstract
      *
      * @return string[] Expected tokens. If too many, an empty array is returned.
      */
-    protected function getExpectedTokens(int $state) : array {
+    protected function getExpectedTokens(int $state) : array
+    {
         $expected = [];
 
         $base = $this->actionBase[$state];
         foreach ($this->symbolToName as $symbol => $name) {
             $idx = $base + $symbol;
-            if ($idx >= 0 && $idx < $this->actionTableSize && $this->actionCheck[$idx] === $symbol
-                || $state < $this->YY2TBLSTATE
-                && ($idx = $this->actionBase[$state + $this->numNonLeafStates] + $symbol) >= 0
-                && $idx < $this->actionTableSize && $this->actionCheck[$idx] === $symbol
+            if ($idx < 0 || $idx >= $this->actionTableSize || ($this->actionCheck[$idx] !== $symbol
+                && $state >= $this->YY2TBLSTATE)
+                || (isset($this->actionBase[$state + $this->numNonLeafStates]) &&
+                    $idx = $this->actionBase[$state + $this->numNonLeafStates] + $symbol) < 0
+                || $idx >= $this->actionTableSize ||
+                (isset($this->actionCheck[$idx]) && $this->actionCheck[$idx] !== $symbol)
             ) {
-                if ($this->action[$idx] !== $this->unexpectedTokenRule
-                    && $this->action[$idx] !== $this->defaultAction
-                    && $symbol !== $this->errorSymbol
-                ) {
-                    if (count($expected) === 4) {
-                        /* Too many expected tokens */
-                        return [];
-                    }
-
-                    $expected[] = $name;
-                }
+                continue;
             }
+
+            if (
+                (isset($this->action[$idx]) &&
+                    (
+                        $this->action[$idx] === $this->unexpectedTokenRule
+                        || $this->action[$idx] === $this->defaultAction
+                    )
+                )
+                || $symbol === $this->errorSymbol
+            ) {
+                continue;
+            }
+
+            if (count($expected) === 4) {
+                /* Too many expected tokens */
+                return [];
+            }
+
+            $expected[] = $name;
         }
 
         return $expected;
@@ -409,26 +392,64 @@ abstract class ParserAbstract
         throw new RuntimeException('Invalid $classType provided');
     }
 
-    protected function traceNewState($state, $symbol) {
-        echo '% State ' . $state
-            . ', Lookahead ' . ($symbol == self::SYMBOL_NONE ? '--none--' : $this->symbolToName[$symbol]) . "\n";
+    /**
+     * Adds a keyword to the list of Keywords and associates it with a specific Value Object.
+     *
+     * @psalm-param class-string<Type> $typeClassName
+     */
+    public function addKeyword(string $keyword, string $typeClassName) : void
+    {
+        if (!class_exists($typeClassName)) {
+            throw new InvalidArgumentException(
+                'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
+                . ' but we could not find the class ' . $typeClassName
+            );
+        }
+
+        if (!in_array(Type::class, class_implements($typeClassName), true)) {
+            throw new InvalidArgumentException(
+                'The class "' . $typeClassName . '" must implement the interface "phpDocumentor\Reflection\Type"'
+            );
+        }
+
+        $this->lexer->addPseudoType($keyword);
+
+        $this->keywords[$keyword] = $typeClassName;
     }
-    protected function traceRead($symbol) {
-        echo '% Reading ' . $this->symbolToName[$symbol] . "\n";
-    }
-    protected function traceShift($symbol) {
-        echo '% Shift ' . $this->symbolToName[$symbol] . "\n";
-    }
-    protected function traceAccept() {
-        echo "% Accepted.\n";
-    }
-    protected function traceReduce($n) {
-        echo '% Reduce by (' . $n . ') ' . $this->productions[$n] . "\n";
-    }
-    protected function tracePop($state) {
-        echo '% Recovering, uncovered state ' . $state . "\n";
-    }
-    protected function traceDiscard($symbol) {
-        echo '% Discard ' . $this->symbolToName[$symbol] . "\n";
-    }
+
+//    protected function traceNewState($state, $symbol) : void
+//    {
+//        echo '% State ' . $state
+//            . ', Lookahead ' . ($symbol === self::SYMBOL_NONE ? '--none--' : $this->symbolToName[$symbol]) . "\n";
+//    }
+//
+//    protected function traceRead($symbol) : void
+//    {
+//        echo '% Reading ' . $this->symbolToName[$symbol] . "\n";
+//    }
+//
+//    protected function traceShift($symbol) : void
+//    {
+//        echo '% Shift ' . $this->symbolToName[$symbol] . "\n";
+//    }
+//
+//    protected function traceAccept() : void
+//    {
+//        echo "% Accepted.\n";
+//    }
+//
+//    protected function traceReduce($n) : void
+//    {
+//        echo '% Reduce by (' . $n . ') ' . $this->productions[$n] . "\n";
+//    }
+//
+//    protected function tracePop($state) : void
+//    {
+//        echo '% Recovering, uncovered state ' . $state . "\n";
+//    }
+//
+//    protected function traceDiscard($symbol) : void
+//    {
+//        echo '% Discard ' . $this->symbolToName[$symbol] . "\n";
+//    }
 }

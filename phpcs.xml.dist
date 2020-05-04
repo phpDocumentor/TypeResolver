@@ -5,6 +5,7 @@
     <file>src</file>
     <file>tests/unit</file>
     <exclude-pattern>*/tests/unit/Types/ContextFactoryTest.php</exclude-pattern>
+    <exclude-pattern>*/src/Parser.php</exclude-pattern>
     <arg value="p"/>
 
     <rule ref="phpDocumentor">
@@ -12,5 +13,9 @@
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix">
         <exclude-pattern>*/src/*/Abstract*.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition.AssignmentInCondition">
+        <exclude-pattern>*/src/BaseParser.php</exclude-pattern>
     </rule>
 </ruleset>

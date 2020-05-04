@@ -21,7 +21,7 @@ namespace phpDocumentor\Reflection;
 
 /* This is an automatically GENERATED file, which should not be manually edited.
  */
-class Parser extends \phpDocumentor\Reflection\ParserAbstract
+class Parser extends BaseParser
 {
     protected $tokenToSymbolMapSize = #(YYMAXLEX);
     protected $actionTableSize      = #(YYLAST);

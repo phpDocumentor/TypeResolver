@@ -12,6 +12,8 @@
 %token T_QUALIFIED_NAME
 %token T_VOID
 %token T_COLLECTION_TYPE
+%token T_PSEUDO_TYPE
+%token T_CLASS_STRING
 
 %%
 
@@ -22,12 +24,14 @@ DEFINITION:
 
 TYPE:
         T_TYPE { $$ = $this->resolveKeyword($1); }
+    |   T_PSEUDO_TYPE { $$ = $this->resolveKeyword($1); }
     |   NULLABLE
     |   COMPOUND
     |   INTERSECTION
     |   EXPRESSION
     |   ARRAY
     |   GENERIC
+    |   CLASS_STRING
 ;
 
 NULLABLE:
@@ -64,6 +68,11 @@ EXPRESSION:
 FQSEN:
       T_FULLY_QUALIFIED_NAME { $$ = new Fqsen($1); }
     | T_QUALIFIED_NAME { $$ = $this->fqsenResolver->resolve($1, $this->context); }
+;
+
+CLASS_STRING:
+       T_CLASS_STRING { $$ = new Types\ClassString(); }
+    |  T_CLASS_STRING T_LESS_THAN FQSEN T_GREATER_THAN { $$ = new Types\ClassString($3); }
 ;
 
 VOID:

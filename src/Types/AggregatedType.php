@@ -6,17 +6,17 @@
  *  file that was distributed with this source code.
  *
  *  @link      http://phpdoc.org
- *
  */
 
 declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\Types;
 
-
 use ArrayIterator;
 use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
+use function array_key_exists;
+use function implode;
 
 /**
  * Base class for aggregated types like Compound and Intersection
@@ -109,6 +109,7 @@ abstract class AggregatedType implements Type, IteratorAggregate
             foreach ($type->getIterator() as $subType) {
                 $this->add($subType);
             }
+
             return;
         }
 

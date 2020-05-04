@@ -38,7 +38,10 @@ class ArrayTest extends TestCase
             'simple array' => [new Array_(), 'array'],
             'array of mixed' => [new Array_(new Mixed_()), 'array'],
             'array of single type' => [new Array_(new String_()), 'string[]'],
-            'array of compound type' => [new Array_(new Expression(new Compound([new Integer(), new String_()]))), '(int|string)[]'],
+            'array of compound type' => [
+                new Array_(new Expression(new Compound([new Integer(), new String_()]))),
+                '(int|string)[]',
+            ],
             'array with key type' => [new Array_(new String_(), new Integer()), 'array<int,string>'],
         ];
     }
