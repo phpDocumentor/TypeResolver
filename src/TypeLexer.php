@@ -90,8 +90,13 @@ final class TypeLexer extends AbstractLexer
         return [
             '\$this', // only keyword allowed with a special character
             //phpcs:ignore Generic.Files.LineLength.TooLong
-            '[a-zA-Z_\\x80-\\x{fffff}\\\][a-zA-Z0-9_\\x80-\\x{fffff}-]*(?:\\\[a-zA-Z_\\x80-\\x{fffff}][a-zA-Z0-9_\\x80-\\x{fffff}]*)*', // keyword or QSEN
+            '[a-zA-Z_\\x80-\\xff\\\][a-zA-Z0-9_\\x80-\\xff-]*(?:\\\[a-zA-Z_\\x80-\\xff][a-zA-Z0-9_\\x80-\\xff]*)*', // keyword or QSEN
         ];
+    }
+
+    protected function getModifiers()
+    {
+        return 'i';
     }
 
     /**
