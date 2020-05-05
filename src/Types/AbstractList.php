@@ -58,6 +58,10 @@ abstract class AbstractList implements Type
      */
     public function getValueType() : Type
     {
+        if ($this->valueType instanceof Expression) {
+            return $this->valueType->getValueType();
+        }
+
         return $this->valueType;
     }
 
@@ -72,10 +76,6 @@ abstract class AbstractList implements Type
 
         if ($this->valueType instanceof Mixed_) {
             return 'array';
-        }
-
-        if ($this->valueType instanceof Compound) {
-            return '(' . $this->valueType . ')[]';
         }
 
         return $this->valueType . '[]';

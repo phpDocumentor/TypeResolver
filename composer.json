@@ -11,11 +11,14 @@
     ],
     "require": {
         "php": "^7.2",
-        "phpdocumentor/reflection-common": "^2.0"
+        "ext-ctype": "*",
+        "phpdocumentor/reflection-common": "^2.0",
+        "doctrine/lexer": "^1.2"
     },
     "require-dev": {
         "mockery/mockery": "~1",
-        "ext-tokenizer": "^7.2"
+        "ext-tokenizer": "^7.2",
+        "ircmaxell/php-yacc": "^0.0.5"
     },
     "autoload": {
         "psr-4": {
