@@ -232,15 +232,15 @@ jobs:
   profile:
     runs-on: ubuntu-latest
     name: profile
-    needs: [setup, phpunit]
+    needs: [setup,  ser]
     services:
       blackfire:
         image: blackfire/blackfire
         ports:
           - 8707:8707
         env:
-          BLACKFIRE_SERVER_ID: "517a7aa6-1ec8-4d29-bff8-dddecf4333de"
-          BLACKFIRE_SERVER_TOKEN: "21795bdce7c0b5d24f0ccbb42e2a7518feb5359840752b163652899f927cbf2b"
+          BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
+          BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
 
     steps:
       - uses: actions/checkout@master
