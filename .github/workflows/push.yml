@@ -232,15 +232,10 @@ jobs:
   profile:
     runs-on: ubuntu-latest
     name: profile
-    needs: [setup, phpunit]
-    services:
-      blackfire:
-        image: blackfire/blackfire
-        ports:
-          - 8707:8707
-        env:
-          BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
-          BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
+    needs: [setup]
+    env:
+      BLACKFIRE_SERVER_ID: ${{ secrets.BLACKFIRE_SERVER_ID }}
+      BLACKFIRE_SERVER_TOKEN: ${{ secrets.BLACKFIRE_SERVER_TOKEN }}
 
     steps:
       - uses: actions/checkout@master
@@ -251,6 +246,7 @@ jobs:
           php-version: 7.2
           extensions: blackfire
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1, blackfire.agent_socket=tcp://localhost:8707
+          tools: blackfire
           coverage: none
 
       - name: Get Composer Cache Directory
