@@ -232,7 +232,7 @@ jobs:
   profile:
     runs-on: ubuntu-latest
     name: profile
-    needs: [setup,  ser]
+    needs: [setup, phpunit]
     services:
       blackfire:
         image: blackfire/blackfire
