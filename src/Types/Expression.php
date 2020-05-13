@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Type;
  *
  * @psalm-immutable
  */
-final class Expression_ implements Type
+final class Expression implements Type
 {
     /** @var Type */
     protected $valueType;

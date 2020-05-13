@@ -20,8 +20,9 @@ use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\Expression_;
+use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -220,7 +221,7 @@ final class TypeResolver
 
                 $tokens->next();
 
-                $resolvedType = new Expression_($type);
+                $resolvedType = new Expression($type);
 
                 $types[] = $resolvedType;
             } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
@@ -250,7 +251,7 @@ final class TypeResolver
                 end($types);
                 $last = key($types);
                 $lastItem = $types[$last];
-                if ($lastItem instanceof Expression_) {
+                if ($lastItem instanceof Expression) {
                     $lastItem = $lastItem->getValueType();
                 }
 
@@ -296,7 +297,11 @@ final class TypeResolver
             return $types[0];
         }
 
-        return new Compound(array_values($types), $compoundToken);
+        if ($compoundToken === '|') {
+            return new Compound(array_values($types));
+        }
+
+        return new Intersection(array_values($types));
     }
 
     /**
