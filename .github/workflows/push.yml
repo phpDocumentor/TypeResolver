@@ -1,14 +1,14 @@
 on:
   push:
     branches:
-      - master
+      - 1.x
   pull_request:
 name: Qa workflow
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Restore/cache tools folder
         uses: actions/cache@v1
@@ -44,7 +44,7 @@ jobs:
     name: Unit tests
     needs: setup
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -94,7 +94,7 @@ jobs:
       - setup
       - phpunit-with-coverage
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
@@ -144,7 +144,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
         with:
@@ -154,7 +154,7 @@ jobs:
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
       - name: Code style check
-        uses: phpDocumentor/coding-standard@master
+        uses: phpDocumentor/coding-standard@latest
         with:
           args: -s
 
@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
         with:
@@ -182,7 +182,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -215,7 +215,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Restore/cache vendor folder
@@ -243,7 +243,7 @@ jobs:
           BLACKFIRE_SERVER_TOKEN: "21795bdce7c0b5d24f0ccbb42e2a7518feb5359840752b163652899f927cbf2b"
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
