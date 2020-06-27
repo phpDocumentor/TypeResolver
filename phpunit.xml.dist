@@ -27,8 +27,4 @@
         <log type="coverage-clover" target="build/logs/clover.xml"/>
         <log type="junit" target="build/logs/junit.xml"/>
     </logging>
-    <listeners>
-        <listener class="Mockery\Adapter\Phpunit\TestListener"
-            file="vendor/mockery/mockery/library/Mockery/Adapter/Phpunit/TestListener.php"></listener>
-    </listeners>
 </phpunit>
