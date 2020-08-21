@@ -15,5 +15,5 @@ namespace phpDocumentor\Reflection;
 
 interface PseudoType extends Type
 {
-    public function underlyingType(): Type;
+    public function underlyingType() : Type;
 }
