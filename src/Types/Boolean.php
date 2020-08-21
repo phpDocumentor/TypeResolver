@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Type;
 /**
  * Value Object representing a Boolean type.
  */
-final class Boolean implements Type
+class Boolean implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
