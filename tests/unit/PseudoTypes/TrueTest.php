@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\True_
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\True_
  */
 class TrueTest extends TestCase
 {

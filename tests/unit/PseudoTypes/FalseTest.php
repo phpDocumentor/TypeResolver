@@ -17,9 +17,9 @@ use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\False_
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\False_
  */
-class FalseTest extends TestCase
+final class FalseTest extends TestCase
 {
     /**
      * @covers ::underlyingType
