@@ -88,7 +88,7 @@ final class TypeResolver
         'callback' => Types\Callable_::class,
         'callable' => Types\Callable_::class,
         'false' => PseudoTypes\False_::class,
-        'true' => PseudoTypes\False_::class,
+        'true' => PseudoTypes\True_::class,
         'self' => Types\Self_::class,
         '$this' => Types\This::class,
         'static' => Types\Static_::class,
