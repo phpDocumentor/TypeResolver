@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
-use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\ClassString;
@@ -35,14 +34,6 @@ use function get_class;
  */
 class TypeResolverTest extends TestCase
 {
-    /**
-     * Call Mockery::close after each test.
-     */
-    public function tearDown() : void
-    {
-        m::close();
-    }
-
     /**
      * @uses         \phpDocumentor\Reflection\Types\Context
      * @uses         \phpDocumentor\Reflection\Types\Array_
@@ -146,13 +137,13 @@ class TypeResolverTest extends TestCase
         $fixture = new TypeResolver();
 
         $resolvedType = $fixture->resolve(
-            'm\MockInterface',
-            new Context('phpDocumentor\Reflection', ['m' => m::class])
+            'm\Array_',
+            new Context('phpDocumentor\Reflection', ['m' => '\phpDocumentor\Reflection\Types'])
         );
 
         $this->assertInstanceOf(Object_::class, $resolvedType);
         $this->assertInstanceOf(Fqsen::class, $resolvedType->getFqsen());
-        $this->assertSame('\Mockery\MockInterface', (string) $resolvedType);
+        $this->assertSame('\phpDocumentor\Reflection\Types\Array_', (string) $resolvedType);
     }
 
     /**
@@ -645,7 +636,7 @@ class TypeResolverTest extends TestCase
     public function testAddingAKeyword() : void
     {
         // Assign
-        $typeMock = m::mock(Type::class);
+        $typeMock = self::createStub(Type::class);
 
         // Act
         $fixture = new TypeResolver();
@@ -712,6 +703,10 @@ class TypeResolverTest extends TestCase
             ['double', Types\Float_::class],
             ['bool', Types\Boolean::class],
             ['boolean', Types\Boolean::class],
+            ['true', Types\Boolean::class],
+            ['true', Types\True_::class],
+            ['false', Types\Boolean::class],
+            ['false', Types\False_::class],
             ['resource', Types\Resource_::class],
             ['null', Types\Null_::class],
             ['callable', Types\Callable_::class],

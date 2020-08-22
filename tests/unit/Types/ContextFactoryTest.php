@@ -11,7 +11,7 @@
 namespace phpDocumentor\Reflection\Types {
 
 // Added imports on purpose as mock for the unit tests, please do not remove.
-    use Mockery as m, phpDocumentor;
+    use phpDocumentor\Reflection\Fqsen as m, phpDocumentor;
     use phpDocumentor\Reflection\DocBlock;
     use phpDocumentor\Reflection\DocBlock\Tag;
     use PHPUnit\Framework\TestCase; // yes, the slash is part of the test
@@ -190,11 +190,6 @@ PHP
             asort($actual);
 
             $this->assertSame($expected, $actual);
-        }
-
-        public function tearDown() : void
-        {
-            m::close();
         }
     }
 }

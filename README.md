@@ -1,8 +1,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![](https://github.com/phpdocumentor/typeresolver/workflows/Qa%20workflow/badge.svg?branch=master)
-[![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/TypeResolver.svg)](https://coveralls.io/github/phpDocumentor/TypeResolver?branch=master)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=master)
+![](https://github.com/phpdocumentor/typeresolver/workflows/Qa%20workflow/badge.svg?branch=1.x)
+[![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/TypeResolver.svg)](https://coveralls.io/github/phpDocumentor/TypeResolver?branch=1.x)
+[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=1.x)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/TypeResolver.svg)](https://scrutinizer-ci.com/g/phpDocumentor/TypeResolver/?branch=1.x)
 ![Packagist Version](https://img.shields.io/packagist/v/phpdocumentor/type-resolver?label=Packagist%20stable)
 ![Packagist Version](https://img.shields.io/packagist/vpre/phpdocumentor/type-resolver?label=Packagist%20unstable)
 
