@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\Types;
 
-use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
 
 /**

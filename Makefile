@@ -19,14 +19,14 @@ phpcs:
 phpcbf:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpcs-ga:latest phpcbf
 
-
 .PHONY: phpstan
 phpstan:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project phpdoc/phpstan-ga:latest analyse src --no-progress --configuration phpstan.neon
 
-.PHONY: psaml
+.PHONY: psalm
 psalm:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/psalm
+
 .PHONY: test
 test:
 	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.2 tools/phpunit
