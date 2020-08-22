@@ -19,6 +19,8 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Value Object representing the PseudoType 'False', which is a Boolean type.
+ *
+ * @psalm-immutable
  */
 final class False_ extends Boolean implements PseudoType
 {
