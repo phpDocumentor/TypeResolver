@@ -1,18 +1,15 @@
-on: push
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 name: Qa workflow
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
-        with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -21,22 +18,26 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
+
       - name: composer
         uses: docker://composer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: composer-require-checker
         uses: docker://phpga/composer-require-checker-ga
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: check --config-file ./composer-require-config.json composer.json
+
       - name: Install phive
         run: make install-phive
+
       - name: Install PHAR dependencies
-        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,D2CCAC42F6295E7D,E82B2FB314E9906E,8E730BA25823D8B5 --force-accept-unsigned
+        run: tools/phive.phar --no-progress install --copy --trust-gpg-keys 4AA394086372C20A,8A03EA3B385DBAA1 --force-accept-unsigned
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -44,14 +45,14 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
-        uses: actions/cache@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
+          php-version: 7.2
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          coverage: pcov
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -60,14 +61,22 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@master
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
         with:
-          php-version: 7.2
-          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
-          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          coverage: xdebug
-          pecl: false
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ubuntu-latest-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ubuntu-latest-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Run PHPUnit
         run: php tools/phpunit
 
@@ -86,6 +95,7 @@ jobs:
       - phpunit-with-coverage
     steps:
       - uses: actions/checkout@master
+
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
         with:
@@ -94,6 +104,7 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
+
       - name: Restore/cache tools folder
         uses: actions/cache@v1
         with:
@@ -102,13 +113,29 @@ jobs:
           restore-keys: |
             all-tools-${{ github.sha }}-
             all-tools-
+
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extension-csv: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib
-          ini-values-csv: memory_limit=2G, display_errors=On, error_reporting=-1
-          pecl: false
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Run PHPUnit
         continue-on-error: true
         run: php tools/phpunit
@@ -126,20 +153,10 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
       - name: Code style check
-        uses: docker://phpdoc/phpcs-ga:latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: phpDocumentor/coding-standard@master
         with:
-          args: -d memory_limit=1024M
+          args: -s
 
   phpstan:
     runs-on: ubuntu-latest
@@ -154,46 +171,44 @@ jobs:
           restore-keys: |
             all-build-${{ hashFiles('**/composer.lock') }}
             all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
       - name: PHPStan
-        uses: docker://phpdoc/phpstan-ga:latest
+        uses: phpDocumentor/phpstan-ga@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: analyse src --level max --configuration phpstan.neon
+          args: analyse src --configuration phpstan.neon
 
   psalm:
     runs-on: ubuntu-latest
     needs: [setup, phpunit]
     steps:
       - uses: actions/checkout@master
-      - name: Restore/cache vendor folder
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
+          tools: psalm
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
         uses: actions/cache@v1
         with:
-          path: vendor
-          key: all-build-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            all-build-${{ hashFiles('**/composer.lock') }}
-            all-build-
-      - name: Restore/cache tools folder
-        uses: actions/cache@v1
-        with:
-          path: tools
-          key: all-tools-${{ github.sha }}
-          restore-keys: |
-            all-tools-${{ github.sha }}-
-            all-tools-
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
       - name: Psalm
-        uses: docker://mickaelandrieu/psalm-ga
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: psalm --output-format=github
 
   bc_check:
     name: BC Check
@@ -201,6 +216,8 @@ jobs:
     needs: [setup, phpunit]
     steps:
       - uses: actions/checkout@master
+      - name: fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Restore/cache vendor folder
         uses: actions/cache@v1
         with:
@@ -211,3 +228,52 @@ jobs:
             all-build-
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
+
+  profile:
+    runs-on: ubuntu-latest
+    name: profile
+    needs: [setup, phpunit]
+    services:
+      blackfire:
+        image: blackfire/blackfire
+        ports:
+          - 8707:8707
+        env:
+          BLACKFIRE_SERVER_ID: "517a7aa6-1ec8-4d29-bff8-dddecf4333de"
+          BLACKFIRE_SERVER_TOKEN: "21795bdce7c0b5d24f0ccbb42e2a7518feb5359840752b163652899f927cbf2b"
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.2
+          extensions: blackfire
+          ini-values: memory_limit=2G, display_errors=On, error_reporting=-1, blackfire.agent_socket=tcp://localhost:8707
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Install phpbench
+        run: |
+          composer global require jaapio/phpbench-blackfire:1.x-dev@dev && \
+          sudo ln -sf "$(composer -q global config home)"/vendor/bin/phpbench /usr/local/bin/phpbench
+
+      - name: Run phpbench
+        run: phpbench run -l blackfire --revs=1 --tag="Build_PR_${{ github.event.number }}"
+        env:
+          BLACKFIRE_CLIENT_ID: ${{ secrets.BLACKFIRE_CLIENT_ID }}
+          BLACKFIRE_CLIENT_TOKEN: ${{ secrets.BLACKFIRE_CLIENT_TOKEN }}

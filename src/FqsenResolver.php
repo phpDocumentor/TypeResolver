@@ -19,6 +19,11 @@ use function explode;
 use function implode;
 use function strpos;
 
+/**
+ * Resolver for Fqsen using Context information
+ *
+ * @psalm-immutable
+ */
 class FqsenResolver
 {
     /** @var string Definition of the NAMESPACE operator in PHP */

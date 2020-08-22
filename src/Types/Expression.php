@@ -16,29 +16,29 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Type;
 
 /**
- * Value Object representing a nullable type. The real type is wrapped.
+ * Represents an expression type as described in the PSR-5, the PHPDoc Standard.
  *
  * @psalm-immutable
  */
-final class Nullable implements Type
+final class Expression implements Type
 {
-    /** @var Type The actual type that is wrapped */
-    private $realType;
+    /** @var Type */
+    protected $valueType;
 
     /**
-     * Initialises this nullable type using the real type embedded
+     * Initializes this representation of an array with the given Type.
      */
-    public function __construct(Type $realType)
+    public function __construct(Type $valueType)
     {
-        $this->realType = $realType;
+        $this->valueType = $valueType;
     }
 
     /**
-     * Provide access to the actual type directly, if needed.
+     * Returns the value for the keys of this array.
      */
-    public function getActualType() : Type
+    public function getValueType() : Type
     {
-        return $this->realType;
+        return $this->valueType;
     }
 
     /**
@@ -46,6 +46,6 @@ final class Nullable implements Type
      */
     public function __toString() : string
     {
-        return '?' . $this->realType->__toString();
+        return '(' . $this->valueType . ')';
     }
 }

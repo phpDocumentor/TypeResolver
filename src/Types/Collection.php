@@ -26,6 +26,8 @@ use phpDocumentor\Reflection\Type;
  *
  * - ACollectionObject can be 'array' or an object that can act as an array
  * - aValueType and aKeyType can be any type expression
+ *
+ * @psalm-immutable
  */
 final class Collection extends AbstractList
 {
