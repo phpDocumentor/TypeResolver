@@ -40,4 +40,14 @@ class TrueTest extends TestCase
 
         $this->assertSame('true', (string) $true);
     }
+
+    /**
+     * @covers \phpDocumentor\Reflection\PseudoTypes\True_
+     */
+    public function testCanBeInstantiatedUsingDeprecatedFqsen() : void
+    {
+        $true = new \phpDocumentor\Reflection\Types\True_();
+
+        $this->assertSame('true', (string) $true);
+    }
 }

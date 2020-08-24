@@ -40,4 +40,14 @@ final class FalseTest extends TestCase
 
         $this->assertSame('false', (string) $false);
     }
+
+    /**
+     * @covers \phpDocumentor\Reflection\PseudoTypes\False_
+     */
+    public function testCanBeInstantiatedUsingDeprecatedFqsen() : void
+    {
+        $false = new \phpDocumentor\Reflection\Types\False_();
+
+        $this->assertSame('false', (string) $false);
+    }
 }

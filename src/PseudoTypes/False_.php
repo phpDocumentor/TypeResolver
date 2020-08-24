@@ -34,3 +34,5 @@ final class False_ extends Boolean implements PseudoType
         return 'false';
     }
 }
+
+class_alias('\phpDocumentor\Reflection\PseudoTypes\False_', 'phpDocumentor\Reflection\Types\False_', false);
