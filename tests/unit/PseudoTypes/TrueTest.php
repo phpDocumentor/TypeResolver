@@ -49,5 +49,7 @@ class TrueTest extends TestCase
         $true = new \phpDocumentor\Reflection\Types\True_();
 
         $this->assertSame('true', (string) $true);
+        $this->assertInstanceOf(True_::class, $true);
+        $this->assertInstanceOf(\phpDocumentor\Reflection\Types\True_::class, $true);
     }
 }

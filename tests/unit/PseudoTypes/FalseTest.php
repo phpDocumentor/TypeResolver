@@ -49,5 +49,7 @@ final class FalseTest extends TestCase
         $false = new \phpDocumentor\Reflection\Types\False_();
 
         $this->assertSame('false', (string) $false);
+        $this->assertInstanceOf(False_::class, $false);
+        $this->assertInstanceOf(\phpDocumentor\Reflection\Types\False_::class, $false);
     }
 }
