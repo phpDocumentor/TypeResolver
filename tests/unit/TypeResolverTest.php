@@ -19,6 +19,7 @@ use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
@@ -750,5 +751,19 @@ class TypeResolverTest extends TestCase
             'class' => ['\phpDocumentor\Reflection\DocBlock'],
             'class with emoji' => ['\My😁Class'],
         ];
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     */
+    public function testArrayKeyValueSpecification() : void
+    {
+        $fixture = new TypeResolver();
+        $type = $fixture->resolve('array<string,array<int,string>>', new Context(''));
+
+        $this->assertEquals(new Array_(new Array_(new String_(), new Integer()), new String_()), $type);
     }
 }
