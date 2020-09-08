@@ -221,7 +221,7 @@ final class ContextFactory
         $this->skipToNextStringOrNamespaceSeparator($tokens);
 
         $name = '';
-        while ($tokens->valid() && in_array($tokens->current()[0], [T_STRING, T_NS_SEPARATOR], true)) {
+        while ($tokens->valid() && (in_array($tokens->current()[0], [T_STRING, T_NS_SEPARATOR], true) || defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $tokens->current()[0])) {
             $name .= $tokens->current()[1];
             $tokens->next();
         }
@@ -265,6 +265,14 @@ final class ContextFactory
         while ($tokens->valid()) {
             $currentToken = $tokens->current();
             if (in_array($currentToken[0], [T_STRING, T_NS_SEPARATOR], true)) {
+                break;
+            }
+
+            if (defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $currentToken[0]) {
+                break;
+            }
+
+            if (defined('T_NAME_FULLY_QUALIFIED') && T_NAME_FULLY_QUALIFIED === $currentToken[0]) {
                 break;
             }
 
@@ -317,6 +325,13 @@ final class ContextFactory
                             $state = 'end';
                             break;
                         default:
+                            if (defined('T_NAME_QUALIFIED') && T_NAME_QUALIFIED === $tokenId) {
+                                $currentNs .= (string)$tokenValue;
+                                $currentAlias = substr($tokenValue, strrpos($tokenValue, '\\') + 1);
+                            } elseif (defined('T_NAME_FULLY_QUALIFIED') && T_NAME_FULLY_QUALIFIED === $tokenId) {
+                                $currentNs   .= (string) $tokenValue;
+                                $currentAlias =  substr($tokenValue, strrpos($tokenValue, '\\') + 1);
+                            }
                             break;
                     }
 
