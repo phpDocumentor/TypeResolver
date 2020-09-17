@@ -311,7 +311,7 @@ final class TypeResolver
      *
      * @return Type|Array_|Object_
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function resolveSingleType(string $type, Context $context) : object
     {
@@ -362,7 +362,7 @@ final class TypeResolver
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function isKeyword(string $type) : bool
     {
@@ -374,7 +374,7 @@ final class TypeResolver
      *
      * @param string $type A relative or absolute type as defined in the phpDocumentor documentation.
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function isPartialStructuralElementName(string $type) : bool
     {
@@ -384,7 +384,7 @@ final class TypeResolver
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function isFqsen(string $type) : bool
     {
@@ -394,7 +394,7 @@ final class TypeResolver
     /**
      * Resolves the given keyword (such as `string`) into a Type object representing that keyword.
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function resolveKeyword(string $type) : Type
     {
@@ -406,7 +406,7 @@ final class TypeResolver
     /**
      * Resolves the given FQSEN string into an FQSEN object.
      *
-     * @psalm-pure
+     * @psalm-mutation-free
      */
     private function resolveTypedObject(string $type, ?Context $context = null) : Object_
     {
