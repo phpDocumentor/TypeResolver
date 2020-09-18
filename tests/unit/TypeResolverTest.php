@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
@@ -77,6 +78,30 @@ class TypeResolverTest extends TestCase
         $resolvedType = $fixture->resolve($classString, new Context(''));
 
         $this->assertInstanceOf(ClassString::class, $resolvedType);
+    }
+
+    /**
+     * @uses         \phpDocumentor\Reflection\Types\Context
+     * @uses         \phpDocumentor\Reflection\Types\Object_
+     * @uses         \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @dataProvider provideInterfaceStrings
+     */
+    public function testResolvingInterfaceStrings(string $interfaceString, bool $throwsException) : void
+    {
+        $fixture = new TypeResolver();
+
+        if ($throwsException) {
+            $this->expectException('RuntimeException');
+        }
+
+        $resolvedType = $fixture->resolve($interfaceString, new Context(''));
+
+        $this->assertInstanceOf(InterfaceString::class, $resolvedType);
     }
 
     /**
@@ -745,6 +770,20 @@ class TypeResolverTest extends TestCase
             ['class-string<\phpDocumentor\Reflection>', false],
             ['class-string<\phpDocumentor\Reflection\DocBlock>', false],
             ['class-string<string>', true],
+        ];
+    }
+
+    /**
+     * Returns a list of interface string types and whether they throw an exception.
+     *
+     * @return (string|bool)[][]
+     */
+    public function provideInterfaceStrings() : array
+    {
+        return [
+            ['interface-string<\phpDocumentor\Reflection>', false],
+            ['interface-string<\phpDocumentor\Reflection\DocBlock>', false],
+            ['interface-string<string>', true],
         ];
     }
 

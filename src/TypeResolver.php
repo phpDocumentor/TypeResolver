@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -71,6 +72,7 @@ final class TypeResolver
     private $keywords = [
         'string' => Types\String_::class,
         'class-string' => Types\ClassString::class,
+        'interface-string' => Types\InterfaceString::class,
         'html-escaped-string' => PseudoTypes\HtmlEscapedString::class,
         'lowercase-string' => PseudoTypes\LowercaseString::class,
         'non-empty-lowercase-string' => PseudoTypes\NonEmptyLowercaseString::class,
@@ -246,6 +248,8 @@ final class TypeResolver
                 if ($classType !== null) {
                     if ((string) $classType === 'class-string') {
                         $types[] = $this->resolveClassString($tokens, $context);
+                    } elseif ((string) $classType === 'interface-string') {
+                        $types[] = $this->resolveInterfaceString($tokens, $context);
                     } else {
                         $types[] = $this->resolveCollection($tokens, $classType, $context);
                     }
@@ -453,6 +457,39 @@ final class TypeResolver
         }
 
         return new ClassString($classType->getFqsen());
+    }
+
+    /**
+     * Resolves class string
+     *
+     * @param ArrayIterator<int, (string|null)> $tokens
+     */
+    private function resolveInterfaceString(ArrayIterator $tokens, Context $context) : Type
+    {
+        $tokens->next();
+
+        $classType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
+
+        if (!$classType instanceof Object_ || $classType->getFqsen() === null) {
+            throw new RuntimeException(
+                $classType . ' is not a interface string'
+            );
+        }
+
+        $token = $tokens->current();
+        if ($token !== '>') {
+            if (empty($token)) {
+                throw new RuntimeException(
+                    'interface-string: ">" is missing'
+                );
+            }
+
+            throw new RuntimeException(
+                'Unexpected character "' . $token . '", ">" is missing'
+            );
+        }
+
+        return new InterfaceString($classType->getFqsen());
     }
 
     /**
