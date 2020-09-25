@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class CallableString extends String_ implements PseudoType
 {
-    public function underlyingType(): Type
+    public function underlyingType() : Type
     {
         return new String_();
     }

@@ -16,7 +16,6 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Value Object representing the type 'string'.
@@ -25,7 +24,7 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class PositiveInteger extends Integer implements PseudoType
 {
-    public function underlyingType(): Type
+    public function underlyingType() : Type
     {
         return new Integer();
     }
