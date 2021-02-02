@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Type;
  *
  * @psalm-immutable
  */
-final class Integer implements Type
+class Integer implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.

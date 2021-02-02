@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Null_;
@@ -77,6 +78,30 @@ class TypeResolverTest extends TestCase
         $resolvedType = $fixture->resolve($classString, new Context(''));
 
         $this->assertInstanceOf(ClassString::class, $resolvedType);
+    }
+
+    /**
+     * @uses         \phpDocumentor\Reflection\Types\Context
+     * @uses         \phpDocumentor\Reflection\Types\Object_
+     * @uses         \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::<private>
+     *
+     * @dataProvider provideInterfaceStrings
+     */
+    public function testResolvingInterfaceStrings(string $interfaceString, bool $throwsException) : void
+    {
+        $fixture = new TypeResolver();
+
+        if ($throwsException) {
+            $this->expectException('RuntimeException');
+        }
+
+        $resolvedType = $fixture->resolve($interfaceString, new Context(''));
+
+        $this->assertInstanceOf(InterfaceString::class, $resolvedType);
     }
 
     /**
@@ -698,8 +723,15 @@ class TypeResolverTest extends TestCase
         return [
             ['string', Types\String_::class],
             ['class-string', Types\ClassString::class],
+            ['html-escaped-string', PseudoTypes\HtmlEscapedString::class],
+            ['lowercase-string', PseudoTypes\LowercaseString::class],
+            ['non-empty-lowercase-string', PseudoTypes\NonEmptyLowercaseString::class],
+            ['non-empty-string', PseudoTypes\NonEmptyString::class],
+            ['numeric-string', PseudoTypes\NumericString::class],
+            ['trait-string', PseudoTypes\TraitString::class],
             ['int', Types\Integer::class],
             ['integer', Types\Integer::class],
+            ['positive-int', PseudoTypes\PositiveInteger::class],
             ['float', Types\Float_::class],
             ['double', Types\Float_::class],
             ['bool', Types\Boolean::class],
@@ -711,17 +743,19 @@ class TypeResolverTest extends TestCase
             ['resource', Types\Resource_::class],
             ['null', Types\Null_::class],
             ['callable', Types\Callable_::class],
+            ['callable-string', PseudoTypes\CallableString::class],
             ['callback', Types\Callable_::class],
-            ['array', Array_::class],
+            ['array', Types\Array_::class],
+            ['array-key', Types\ArrayKey::class],
             ['scalar', Types\Scalar::class],
-            ['object', Object_::class],
+            ['object', Types\Object_::class],
             ['mixed', Types\Mixed_::class],
             ['void', Types\Void_::class],
             ['$this', Types\This::class],
             ['static', Types\Static_::class],
             ['self', Types\Self_::class],
             ['parent', Types\Parent_::class],
-            ['iterable', Iterable_::class],
+            ['iterable', Types\Iterable_::class],
         ];
     }
 
@@ -736,6 +770,20 @@ class TypeResolverTest extends TestCase
             ['class-string<\phpDocumentor\Reflection>', false],
             ['class-string<\phpDocumentor\Reflection\DocBlock>', false],
             ['class-string<string>', true],
+        ];
+    }
+
+    /**
+     * Returns a list of interface string types and whether they throw an exception.
+     *
+     * @return (string|bool)[][]
+     */
+    public function provideInterfaceStrings() : array
+    {
+        return [
+            ['interface-string<\phpDocumentor\Reflection>', false],
+            ['interface-string<\phpDocumentor\Reflection\DocBlock>', false],
+            ['interface-string<string>', true],
         ];
     }
 
