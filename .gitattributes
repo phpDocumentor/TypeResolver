@@ -6,7 +6,7 @@
 /.scrutinizer.yml export-ignore
 /Makefile export-ignore
 /composer-require-config.json export-ignore
-/composer.lock
+/composer.lock export-ignore
 /phive.xml export-ignore
 /phpbench.json export-ignore
 /phpcs.xml.dist export-ignore
