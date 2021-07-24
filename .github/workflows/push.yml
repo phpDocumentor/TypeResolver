@@ -59,6 +59,7 @@ jobs:
   phpunit:
     name: Unit tests for PHP version ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     runs-on: ${{ matrix.operating-system }}
+    continue-on-error: ${{ matrix.php-versions == '8.1' }}
     strategy:
       matrix:
         operating-system:
