@@ -108,16 +108,11 @@ final class ContextFactory
             throw new InvalidArgumentException('Unable to get class of ' . $parameter->getName());
         }
 
-        //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
-
         return $this->createFromReflectionClass($class);
     }
 
     private function createFromReflectionMethod(ReflectionMethod $method) : Context
     {
-        //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
         $class = $method->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
@@ -125,8 +120,6 @@ final class ContextFactory
 
     private function createFromReflectionProperty(ReflectionProperty $property) : Context
     {
-        //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
         $class = $property->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
@@ -135,14 +128,14 @@ final class ContextFactory
     private function createFromReflectionClassConstant(ReflectionClassConstant $constant) : Context
     {
         //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
+        /** @phpstan-var ReflectionClass<object> $class */
         $class = $constant->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
     }
 
     /**
-     * @param ReflectionClass<object> $class
+     * @phpstan-param ReflectionClass<object> $class
      */
     private function createFromReflectionClass(ReflectionClass $class) : Context
     {
