@@ -22,6 +22,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Nullable;
@@ -71,29 +72,39 @@ final class TypeResolver
     private $keywords = [
         'string' => Types\String_::class,
         'class-string' => Types\ClassString::class,
+        'interface-string' => Types\InterfaceString::class,
+        'html-escaped-string' => PseudoTypes\HtmlEscapedString::class,
+        'lowercase-string' => PseudoTypes\LowercaseString::class,
+        'non-empty-lowercase-string' => PseudoTypes\NonEmptyLowercaseString::class,
+        'non-empty-string' => PseudoTypes\NonEmptyString::class,
+        'numeric-string' => PseudoTypes\NumericString::class,
+        'trait-string' => PseudoTypes\TraitString::class,
         'int' => Types\Integer::class,
         'integer' => Types\Integer::class,
+        'positive-int' => PseudoTypes\PositiveInteger::class,
         'bool' => Types\Boolean::class,
         'boolean' => Types\Boolean::class,
         'real' => Types\Float_::class,
         'float' => Types\Float_::class,
         'double' => Types\Float_::class,
-        'object' => Object_::class,
+        'object' => Types\Object_::class,
         'mixed' => Types\Mixed_::class,
-        'array' => Array_::class,
+        'array' => Types\Array_::class,
+        'array-key' => Types\ArrayKey::class,
         'resource' => Types\Resource_::class,
         'void' => Types\Void_::class,
         'null' => Types\Null_::class,
         'scalar' => Types\Scalar::class,
         'callback' => Types\Callable_::class,
         'callable' => Types\Callable_::class,
+        'callable-string' => PseudoTypes\CallableString::class,
         'false' => PseudoTypes\False_::class,
         'true' => PseudoTypes\True_::class,
         'self' => Types\Self_::class,
         '$this' => Types\This::class,
         'static' => Types\Static_::class,
         'parent' => Types\Parent_::class,
-        'iterable' => Iterable_::class,
+        'iterable' => Types\Iterable_::class,
     ];
 
     /**
@@ -237,6 +248,8 @@ final class TypeResolver
                 if ($classType !== null) {
                     if ((string) $classType === 'class-string') {
                         $types[] = $this->resolveClassString($tokens, $context);
+                    } elseif ((string) $classType === 'interface-string') {
+                        $types[] = $this->resolveInterfaceString($tokens, $context);
                     } else {
                         $types[] = $this->resolveCollection($tokens, $classType, $context);
                     }
@@ -452,6 +465,39 @@ final class TypeResolver
         }
 
         return new ClassString($classType->getFqsen());
+    }
+
+    /**
+     * Resolves class string
+     *
+     * @param ArrayIterator<int, (string|null)> $tokens
+     */
+    private function resolveInterfaceString(ArrayIterator $tokens, Context $context) : Type
+    {
+        $tokens->next();
+
+        $classType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
+
+        if (!$classType instanceof Object_ || $classType->getFqsen() === null) {
+            throw new RuntimeException(
+                $classType . ' is not a interface string'
+            );
+        }
+
+        $token = $tokens->current();
+        if ($token !== '>') {
+            if (empty($token)) {
+                throw new RuntimeException(
+                    'interface-string: ">" is missing'
+                );
+            }
+
+            throw new RuntimeException(
+                'Unexpected character "' . $token . '", ">" is missing'
+            );
+        }
+
+        return new InterfaceString($classType->getFqsen());
     }
 
     /**

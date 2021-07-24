@@ -17,15 +17,15 @@ use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\ClassString
+ * @coversDefaultClass \phpDocumentor\Reflection\Types\InterfaceString
  */
-class ClassStringTest extends TestCase
+class InterfaceStringTest extends TestCase
 {
     /**
-     * @dataProvider provideClassStrings
+     * @dataProvider provideInterfaceStrings
      * @covers ::__toString
      */
-    public function testClassStringStringifyCorrectly(ClassString $array, string $expectedString) : void
+    public function testInterfaceStringStringifyCorrectly(InterfaceString $array, string $expectedString) : void
     {
         $this->assertSame($expectedString, (string) $array);
     }
@@ -33,11 +33,11 @@ class ClassStringTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideClassStrings() : array
+    public function provideInterfaceStrings() : array
     {
         return [
-            'generic class string' => [new ClassString(), 'class-string'],
-            'typed class string' => [new ClassString(new Fqsen('\Foo\Bar')), 'class-string<\Foo\Bar>'],
+            'generic interface string' => [new InterfaceString(), 'interface-string'],
+            'typed interface string' => [new InterfaceString(new Fqsen('\Foo\Bar')), 'interface-string<\Foo\Bar>'],
         ];
     }
 }
