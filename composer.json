@@ -14,7 +14,8 @@
         "phpdocumentor/reflection-common": "^2.0"
     },
     "require-dev": {
-        "ext-tokenizer": "*"
+        "ext-tokenizer": "*",
+        "psalm/phar": "^4.8"
     },
     "autoload": {
         "psr-4": {

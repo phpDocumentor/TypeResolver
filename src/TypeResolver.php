@@ -348,7 +348,15 @@ final class TypeResolver
             );
         }
 
-        if (!in_array(Type::class, class_implements($typeClassName), true)) {
+        $interfaces = class_implements($typeClassName);
+        if ($interfaces === false) {
+            throw new InvalidArgumentException(
+                'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
+                . ' but we could not find the class ' . $typeClassName
+            );
+        }
+
+        if (!in_array(Type::class, $interfaces, true)) {
             throw new InvalidArgumentException(
                 'The class "' . $typeClassName . '" must implement the interface "phpDocumentor\Reflection\Type"'
             );

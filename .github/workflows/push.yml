@@ -177,7 +177,7 @@ jobs:
       matrix:
         operating-system:
           - ubuntu-latest
-        php-versions: ['7.2']
+        php-versions: ['7.3']
     env:
       extensions: mbstring
       key: cache-v1 # can be any string, change to clear the extension cache.
@@ -207,7 +207,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
-          tools: psalm
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
 
       - name: Get composer cache directory
@@ -225,7 +224,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Run psalm
-        run: psalm --output-format=github
+        run: vendor/bin/psalm.phar
 
   bc_check:
     name: BC Check
