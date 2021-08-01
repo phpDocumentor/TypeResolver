@@ -61,6 +61,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     continue-on-error: ${{ matrix.php-versions == '8.1' }}
     strategy:
+      fail-fast: false
       matrix:
         operating-system:
           - ubuntu-latest
@@ -125,7 +126,6 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Run PHPUnit
-        continue-on-error: true
         run: php tools/phpunit
 
   codestyle:
