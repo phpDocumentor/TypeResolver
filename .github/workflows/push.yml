@@ -45,13 +45,10 @@ jobs:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} --force-accept-unsigned
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: --optimize-autoloader
 
       - name: Run PHPUnit
         run: php tools/phpunit
@@ -110,19 +107,10 @@ jobs:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: phive --no-progress install --copy --trust-gpg-keys ${{ env.phiveGPGKeys }} phpunit:^8.5
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Run PHPUnit
         continue-on-error: true
@@ -210,19 +198,10 @@ jobs:
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Run psalm
         run: vendor/bin/psalm.phar
@@ -276,19 +255,10 @@ jobs:
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1, blackfire.agent_socket=tcp://localhost:8707
           coverage: none
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+          composer-options: --optimize-autoloader
 
       - name: Install phpbench
         run: |
