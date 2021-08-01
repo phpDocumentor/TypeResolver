@@ -35,7 +35,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.2
+          php-version: 7.3
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           coverage: pcov
           tools: phive
