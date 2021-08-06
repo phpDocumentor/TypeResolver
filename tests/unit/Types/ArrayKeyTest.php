@@ -30,7 +30,7 @@ final class ArrayKeyTest extends TestCase
     }
 
     /**
-     * @uses ::__construct
+     * @uses \phpDocumentor\Reflection\Types\ArrayKey::__construct
      *
      * @covers ::getIterator
      */
