@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection\Types;
 use ArrayIterator;
 use IteratorAggregate;
 use phpDocumentor\Reflection\Type;
+
 use function array_key_exists;
 use function implode;
 

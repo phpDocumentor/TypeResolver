@@ -29,6 +29,7 @@ use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use RuntimeException;
+
 use function array_key_exists;
 use function array_pop;
 use function array_values;
@@ -42,6 +43,7 @@ use function preg_split;
 use function strpos;
 use function strtolower;
 use function trim;
+
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
 

@@ -23,6 +23,7 @@ use ReflectionProperty;
 use Reflector;
 use RuntimeException;
 use UnexpectedValueException;
+
 use function define;
 use function defined;
 use function file_exists;
@@ -34,6 +35,7 @@ use function strrpos;
 use function substr;
 use function token_get_all;
 use function trim;
+
 use const T_AS;
 use const T_CLASS;
 use const T_CURLY_OPEN;

@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 use TypeError;
+
 use function iterator_to_array;
 
 /**

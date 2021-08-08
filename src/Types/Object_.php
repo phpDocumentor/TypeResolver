@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+
 use function strpos;
 
 /**
