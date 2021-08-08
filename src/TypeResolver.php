@@ -195,11 +195,12 @@ final class TypeResolver
                     );
                 }
 
-                if (!in_array($parserContext, [
-                    self::PARSER_IN_COMPOUND,
-                    self::PARSER_IN_ARRAY_EXPRESSION,
-                    self::PARSER_IN_COLLECTION_EXPRESSION,
-                ], true)
+                if (
+                    !in_array($parserContext, [
+                        self::PARSER_IN_COMPOUND,
+                        self::PARSER_IN_ARRAY_EXPRESSION,
+                        self::PARSER_IN_COLLECTION_EXPRESSION,
+                    ], true)
                 ) {
                     throw new RuntimeException(
                         'Unexpected type separator'
@@ -209,11 +210,12 @@ final class TypeResolver
                 $compoundToken = $token;
                 $tokens->next();
             } elseif ($token === '?') {
-                if (!in_array($parserContext, [
-                    self::PARSER_IN_COMPOUND,
-                    self::PARSER_IN_ARRAY_EXPRESSION,
-                    self::PARSER_IN_COLLECTION_EXPRESSION,
-                ], true)
+                if (
+                    !in_array($parserContext, [
+                        self::PARSER_IN_COMPOUND,
+                        self::PARSER_IN_ARRAY_EXPRESSION,
+                        self::PARSER_IN_COLLECTION_EXPRESSION,
+                    ], true)
                 ) {
                     throw new RuntimeException(
                         'Unexpected nullable character'
@@ -258,7 +260,8 @@ final class TypeResolver
                 }
 
                 $tokens->next();
-            } elseif ($parserContext === self::PARSER_IN_COLLECTION_EXPRESSION
+            } elseif (
+                $parserContext === self::PARSER_IN_COLLECTION_EXPRESSION
                 && ($token === '>' || trim($token) === ',')
             ) {
                 break;
@@ -333,8 +336,10 @@ final class TypeResolver
         switch (true) {
             case $this->isKeyword($type):
                 return $this->resolveKeyword($type);
+
             case $this->isFqsen($type):
                 return $this->resolveTypedObject($type);
+
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
 
@@ -515,8 +520,10 @@ final class TypeResolver
         $isIterable = ((string) $classType === 'iterable');
 
         // allow only "array", "iterable" or class name before "<"
-        if (!$isArray && !$isIterable
-            && (!$classType instanceof Object_ || $classType->getFqsen() === null)) {
+        if (
+            !$isArray && !$isIterable
+            && (!$classType instanceof Object_ || $classType->getFqsen() === null)
+        ) {
             throw new RuntimeException(
                 $classType . ' is not a collection'
             );
@@ -534,7 +541,8 @@ final class TypeResolver
             if ($isArray) {
                 // check the key type for an "array" collection. We allow only
                 // strings or integers.
-                if (!$keyType instanceof String_ &&
+                if (
+                    !$keyType instanceof String_ &&
                     !$keyType instanceof Integer &&
                     !$keyType instanceof Compound
                 ) {
@@ -545,7 +553,8 @@ final class TypeResolver
 
                 if ($keyType instanceof Compound) {
                     foreach ($keyType->getIterator() as $item) {
-                        if (!$item instanceof String_ &&
+                        if (
+                            !$item instanceof String_ &&
                             !$item instanceof Integer
                         ) {
                             throw new RuntimeException(

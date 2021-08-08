@@ -188,8 +188,10 @@ final class ContextFactory
                     $firstBraceFound = false;
                     while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
                         $currentToken = $tokens->current();
-                        if ($currentToken === '{'
-                            || in_array($currentToken[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true)) {
+                        if (
+                            $currentToken === '{'
+                            || in_array($currentToken[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true)
+                        ) {
                             if (!$firstBraceFound) {
                                 $firstBraceFound = true;
                             }
