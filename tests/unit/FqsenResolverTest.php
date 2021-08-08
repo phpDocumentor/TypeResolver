@@ -25,7 +25,7 @@ final class FqsenResolverTest extends TestCase
     /**
      * @covers ::resolve
      */
-    public function testResolveFqsen() : void
+    public function testResolveFqsen(): void
     {
         $fqsenResolver = new FqsenResolver();
 
@@ -38,7 +38,7 @@ final class FqsenResolverTest extends TestCase
     /**
      * @covers ::resolve
      */
-    public function testResolveFqsenWithEmoji() : void
+    public function testResolveFqsenWithEmoji(): void
     {
         $fqsenResolver = new FqsenResolver();
 
@@ -51,7 +51,7 @@ final class FqsenResolverTest extends TestCase
     /**
      * @covers ::resolve
      */
-    public function testResolveWithoutContext() : void
+    public function testResolveWithoutContext(): void
     {
         $fqsenResolver = new FqsenResolver();
 
@@ -62,7 +62,7 @@ final class FqsenResolverTest extends TestCase
     /**
      * @covers ::resolve
      */
-    public function testResolveFromAlias() : void
+    public function testResolveFromAlias(): void
     {
         $fqsenResolver = new FqsenResolver();
 
@@ -75,7 +75,7 @@ final class FqsenResolverTest extends TestCase
     /**
      * @covers ::resolve
      */
-    public function testResolveFromPartialAlias() : void
+    public function testResolveFromPartialAlias(): void
     {
         $fqsenResolver = new FqsenResolver();
 
@@ -85,7 +85,7 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\some\other\ns', (string) $result);
     }
 
-    public function testResolveThrowsExceptionWhenGarbageInputIsPassed() : void
+    public function testResolveThrowsExceptionWhenGarbageInputIsPassed(): void
     {
         $this->expectException('InvalidArgumentException');
         $fqsenResolver = new FqsenResolver();

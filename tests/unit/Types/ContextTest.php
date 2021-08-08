@@ -24,7 +24,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testProvidesANormalizedNamespace() : void
+    public function testProvidesANormalizedNamespace(): void
     {
         $fixture = new Context('\My\Space');
         $this->assertSame('My\Space', $fixture->getNamespace());
@@ -34,7 +34,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedGlobalAsRootNamespace() : void
+    public function testInterpretsNamespaceNamedGlobalAsRootNamespace(): void
     {
         $fixture = new Context('global');
         $this->assertSame('', $fixture->getNamespace());
@@ -44,7 +44,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedDefaultAsRootNamespace() : void
+    public function testInterpretsNamespaceNamedDefaultAsRootNamespace(): void
     {
         $fixture = new Context('default');
         $this->assertSame('', $fixture->getNamespace());
@@ -54,7 +54,7 @@ class ContextTest extends TestCase
      * @covers ::__construct
      * @covers ::getNamespaceAliases
      */
-    public function testProvidesNormalizedNamespaceAliases() : void
+    public function testProvidesNormalizedNamespaceAliases(): void
     {
         $fixture = new Context('', ['Space' => '\My\Space']);
         $this->assertSame(['Space' => 'My\Space'], $fixture->getNamespaceAliases());

@@ -24,7 +24,7 @@ final class ArrayKeyTest extends TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testArrayKeyCanBeConstructedAndStringifiedCorrectly() : void
+    public function testArrayKeyCanBeConstructedAndStringifiedCorrectly(): void
     {
         $this->assertSame('array-key', (string) (new ArrayKey()));
     }
@@ -34,7 +34,7 @@ final class ArrayKeyTest extends TestCase
      *
      * @covers ::getIterator
      */
-    public function testArrayKeyCanBeIterated() : void
+    public function testArrayKeyCanBeIterated(): void
     {
         $types = [String_::class, Integer::class];
 

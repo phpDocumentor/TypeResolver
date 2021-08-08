@@ -27,7 +27,7 @@ final class ArrayKey extends AggregatedType
         parent::__construct([new String_(), new Integer()], '|');
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return 'array-key';
     }

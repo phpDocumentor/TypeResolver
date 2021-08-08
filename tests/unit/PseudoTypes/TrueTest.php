@@ -24,7 +24,7 @@ class TrueTest extends TestCase
     /**
      * @covers ::underlyingType
      */
-    public function testExposesUnderlyingType() : void
+    public function testExposesUnderlyingType(): void
     {
         $true = new True_();
 
@@ -34,7 +34,7 @@ class TrueTest extends TestCase
     /**
      * @covers ::__toString
      */
-    public function testTrueStringifyCorrectly() : void
+    public function testTrueStringifyCorrectly(): void
     {
         $true = new True_();
 
@@ -44,7 +44,7 @@ class TrueTest extends TestCase
     /**
      * @covers \phpDocumentor\Reflection\PseudoTypes\True_
      */
-    public function testCanBeInstantiatedUsingDeprecatedFqsen() : void
+    public function testCanBeInstantiatedUsingDeprecatedFqsen(): void
     {
         $true = new \phpDocumentor\Reflection\Types\True_();
 

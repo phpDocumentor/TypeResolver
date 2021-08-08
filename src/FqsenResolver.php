@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection;
 
 use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Context;
+
 use function explode;
 use function implode;
 use function strpos;
@@ -29,7 +30,7 @@ class FqsenResolver
     /** @var string Definition of the NAMESPACE operator in PHP */
     private const OPERATOR_NAMESPACE = '\\';
 
-    public function resolve(string $fqsen, ?Context $context = null) : Fqsen
+    public function resolve(string $fqsen, ?Context $context = null): Fqsen
     {
         if ($context === null) {
             $context = new Context('');
@@ -45,7 +46,7 @@ class FqsenResolver
     /**
      * Tests whether the given type is a Fully Qualified Structural Element Name.
      */
-    private function isFqsen(string $type) : bool
+    private function isFqsen(string $type): bool
     {
         return strpos($type, self::OPERATOR_NAMESPACE) === 0;
     }
@@ -56,7 +57,7 @@ class FqsenResolver
      *
      * @throws InvalidArgumentException When type is not a valid FQSEN.
      */
-    private function resolvePartialStructuralElementName(string $type, Context $context) : Fqsen
+    private function resolvePartialStructuralElementName(string $type, Context $context): Fqsen
     {
         $typeParts = explode(self::OPERATOR_NAMESPACE, $type, 2);
 

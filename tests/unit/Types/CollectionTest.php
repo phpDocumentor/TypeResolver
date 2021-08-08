@@ -25,7 +25,7 @@ class CollectionTest extends TestCase
      * @dataProvider provideCollections
      * @covers ::__toString
      */
-    public function testCollectionStringifyCorrectly(Collection $collection, string $expectedString) : void
+    public function testCollectionStringifyCorrectly(Collection $collection, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $collection);
     }
@@ -33,7 +33,7 @@ class CollectionTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideCollections() : array
+    public function provideCollections(): array
     {
         return [
             'simple collection' => [

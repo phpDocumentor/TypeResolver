@@ -33,7 +33,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::__construct
      */
-    public function testResolvingCollection() : void
+    public function testResolvingCollection(): void
     {
         $fixture = new TypeResolver();
 
@@ -61,7 +61,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingCollectionWithKeyType() : void
+    public function testResolvingCollectionWithKeyType(): void
     {
         $fixture = new TypeResolver();
 
@@ -91,7 +91,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingArrayCollection() : void
+    public function testResolvingArrayCollection(): void
     {
         $fixture = new TypeResolver();
 
@@ -117,7 +117,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKey() : void
+    public function testResolvingArrayCollectionWithKey(): void
     {
         $fixture = new TypeResolver();
 
@@ -143,7 +143,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKeyAndWhitespace() : void
+    public function testResolvingArrayCollectionWithKeyAndWhitespace(): void
     {
         $fixture = new TypeResolver();
 
@@ -169,7 +169,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace() : void
+    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace(): void
     {
         $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
@@ -186,7 +186,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingCollectionOfCollection() : void
+    public function testResolvingCollectionOfCollection(): void
     {
         $fixture = new TypeResolver();
 
@@ -215,7 +215,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testBadArrayCollectionKey() : void
+    public function testBadArrayCollectionKey(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('An array can have only integers or strings as keys');
@@ -227,7 +227,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testMissingStartCollection() : void
+    public function testMissingStartCollection(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Unexpected collection operator "<", class name is missing');
@@ -239,7 +239,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testMissingEndCollection() : void
+    public function testMissingEndCollection(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('Collection: ">" is missing');
@@ -251,7 +251,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testBadCollectionClass() : void
+    public function testBadCollectionClass(): void
     {
         $this->expectException('RuntimeException');
         $this->expectExceptionMessage('string is not a collection');
@@ -268,7 +268,7 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingCollectionAsArray() : void
+    public function testResolvingCollectionAsArray(): void
     {
         $fixture = new TypeResolver();
 

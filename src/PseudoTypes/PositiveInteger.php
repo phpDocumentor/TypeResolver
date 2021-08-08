@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\Types\Integer;
  */
 final class PositiveInteger extends Integer implements PseudoType
 {
-    public function underlyingType() : Type
+    public function underlyingType(): Type
     {
         return new Integer();
     }
@@ -32,7 +32,7 @@ final class PositiveInteger extends Integer implements PseudoType
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return 'positive-int';
     }

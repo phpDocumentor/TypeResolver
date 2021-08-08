@@ -1,21 +1,35 @@
 <?xml version="1.0"?>
-<ruleset name="phpDocumentor">
-    <description>The coding standard for phpDocumentor.</description>
+<ruleset name="TypeResolver">
+    <description>The coding standard for this library.</description>
 
     <file>src</file>
     <file>tests/unit</file>
-    <exclude-pattern>*/tests/unit/Types/ContextFactoryTest.php</exclude-pattern>
+    <exclude-pattern>*/tests/unit/Types/ContextFactoryTest\.php</exclude-pattern>
     <arg value="p"/>
 
+    <!-- Set the minimum PHP version for PHPCompatibility.
+         This should be kept in sync with the requirements in the composer.json file. -->
+    <config name="testVersion" value="7.2-"/>
+
     <rule ref="phpDocumentor">
+        <!-- Property type declarations are a PHP 7.4 feature. -->
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint"/>
     </rule>
 
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix">
-        <exclude-pattern>*/src/*/Abstract*.php</exclude-pattern>
+        <exclude-pattern>*/src/*/Abstract*\.php</exclude-pattern>
     </rule>
 
     <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
-        <exclude-pattern>*/src/PseudoTypes/False_.php</exclude-pattern>
-        <exclude-pattern>*/src/PseudoTypes/True_.php</exclude-pattern>
+        <exclude-pattern>*/src/PseudoTypes/False_\.php</exclude-pattern>
+        <exclude-pattern>*/src/PseudoTypes/True_\.php</exclude-pattern>
+    </rule>
+
+	<!-- Ignore two PHP 8.0 constants which are being polyfilled in the file using them. -->
+    <rule ref="PHPCompatibility.Constants.NewConstants.t_name_qualifiedFound">
+        <exclude-pattern>*/src/Types/ContextFactory\.php</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibility.Constants.NewConstants.t_name_fully_qualifiedFound">
+        <exclude-pattern>*/src/Types/ContextFactory\.php</exclude-pattern>
     </rule>
 </ruleset>

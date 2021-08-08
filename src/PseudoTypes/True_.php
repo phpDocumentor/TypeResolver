@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Boolean;
+
 use function class_alias;
 
 /**
@@ -25,12 +26,12 @@ use function class_alias;
  */
 final class True_ extends Boolean implements PseudoType
 {
-    public function underlyingType() : Type
+    public function underlyingType(): Type
     {
         return new Boolean();
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return 'true';
     }

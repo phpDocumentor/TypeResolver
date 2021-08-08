@@ -24,7 +24,7 @@ final class FalseTest extends TestCase
     /**
      * @covers ::underlyingType
      */
-    public function testExposesUnderlyingType() : void
+    public function testExposesUnderlyingType(): void
     {
         $false = new False_();
 
@@ -34,7 +34,7 @@ final class FalseTest extends TestCase
     /**
      * @covers ::__toString
      */
-    public function testFalseStringifyCorrectly() : void
+    public function testFalseStringifyCorrectly(): void
     {
         $false = new False_();
 
@@ -44,7 +44,7 @@ final class FalseTest extends TestCase
     /**
      * @covers \phpDocumentor\Reflection\PseudoTypes\False_
      */
-    public function testCanBeInstantiatedUsingDeprecatedFqsen() : void
+    public function testCanBeInstantiatedUsingDeprecatedFqsen(): void
     {
         $false = new \phpDocumentor\Reflection\Types\False_();
 

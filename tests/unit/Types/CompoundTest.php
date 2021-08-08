@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 use TypeError;
+
 use function iterator_to_array;
 
 /**
@@ -25,7 +26,7 @@ final class CompoundTest extends TestCase
     /**
      * @covers ::__construct
      */
-    public function testCompoundCannotBeConstructedFromType() : void
+    public function testCompoundCannotBeConstructedFromType(): void
     {
         $this->expectException(TypeError::class);
         new Compound(['foo']);
@@ -38,7 +39,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::get
      */
-    public function testCompoundGetType() : void
+    public function testCompoundGetType(): void
     {
         $integer = new Integer();
 
@@ -51,7 +52,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::get
      */
-    public function testCompoundGetNotExistingType() : void
+    public function testCompoundGetNotExistingType(): void
     {
         $this->assertNull((new Compound([]))->get(0));
     }
@@ -62,7 +63,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::has
      */
-    public function testCompoundHasIndex() : void
+    public function testCompoundHasIndex(): void
     {
         $this->assertTrue((new Compound([new Integer()]))->has(0));
     }
@@ -72,7 +73,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::has
      */
-    public function testCompoundDoesNotHasIndex() : void
+    public function testCompoundDoesNotHasIndex(): void
     {
         $this->assertFalse((new Compound([]))->has(0));
     }
@@ -83,7 +84,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::contains
      */
-    public function testCompoundContainsType() : void
+    public function testCompoundContainsType(): void
     {
         $this->assertTrue((new Compound([new Integer()]))->contains(new Integer()));
     }
@@ -95,7 +96,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::contains
      */
-    public function testCompoundDoesNotContainType() : void
+    public function testCompoundDoesNotContainType(): void
     {
         $this->assertFalse((new Compound([new Integer()]))->contains(new String_()));
     }
@@ -107,7 +108,7 @@ final class CompoundTest extends TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testCompoundCanBeConstructedAndStringifiedCorrectly() : void
+    public function testCompoundCanBeConstructedAndStringifiedCorrectly(): void
     {
         $this->assertSame('int|bool', (string) (new Compound([new Integer(), new Boolean()])));
     }
@@ -119,7 +120,7 @@ final class CompoundTest extends TestCase
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testCompoundDoesNotContainDuplicates() : void
+    public function testCompoundDoesNotContainDuplicates(): void
     {
         $compound = new Compound([new Integer(), new Integer(), new Boolean()]);
 
@@ -134,7 +135,7 @@ final class CompoundTest extends TestCase
      *
      * @covers ::getIterator
      */
-    public function testCompoundCanBeIterated() : void
+    public function testCompoundCanBeIterated(): void
     {
         $types = [new Integer(), new Boolean()];
 

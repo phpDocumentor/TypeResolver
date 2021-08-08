@@ -29,6 +29,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+
 use function get_class;
 
 /**
@@ -47,7 +48,7 @@ class TypeResolverTest extends TestCase
      *
      * @dataProvider provideKeywords
      */
-    public function testResolvingKeywords(string $keyword, string $expectedClass) : void
+    public function testResolvingKeywords(string $keyword, string $expectedClass): void
     {
         $fixture = new TypeResolver();
 
@@ -67,7 +68,7 @@ class TypeResolverTest extends TestCase
      *
      * @dataProvider provideClassStrings
      */
-    public function testResolvingClassStrings(string $classString, bool $throwsException) : void
+    public function testResolvingClassStrings(string $classString, bool $throwsException): void
     {
         $fixture = new TypeResolver();
 
@@ -91,7 +92,7 @@ class TypeResolverTest extends TestCase
      *
      * @dataProvider provideInterfaceStrings
      */
-    public function testResolvingInterfaceStrings(string $interfaceString, bool $throwsException) : void
+    public function testResolvingInterfaceStrings(string $interfaceString, bool $throwsException): void
     {
         $fixture = new TypeResolver();
 
@@ -116,7 +117,7 @@ class TypeResolverTest extends TestCase
      *
      * @dataProvider provideFqcn
      */
-    public function testResolvingFQSENs(string $fqsen) : void
+    public function testResolvingFQSENs(string $fqsen): void
     {
         $fixture = new TypeResolver();
 
@@ -137,7 +138,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingRelativeQSENsBasedOnNamespace() : void
+    public function testResolvingRelativeQSENsBasedOnNamespace(): void
     {
         $fixture = new TypeResolver();
 
@@ -158,7 +159,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingRelativeQSENsBasedOnNamespaceAlias() : void
+    public function testResolvingRelativeQSENsBasedOnNamespaceAlias(): void
     {
         $fixture = new TypeResolver();
 
@@ -181,7 +182,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingTypedArrays() : void
+    public function testResolvingTypedArrays(): void
     {
         $fixture = new TypeResolver();
 
@@ -202,7 +203,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingNullableTypes() : void
+    public function testResolvingNullableTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -222,7 +223,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingNestedTypedArrays() : void
+    public function testResolvingNestedTypedArrays(): void
     {
         $fixture = new TypeResolver();
 
@@ -253,7 +254,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingCompoundTypes() : void
+    public function testResolvingCompoundTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -283,7 +284,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingAmpersandCompoundTypes() : void
+    public function testResolvingAmpersandCompoundTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -320,7 +321,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingMixedCompoundTypes() : void
+    public function testResolvingMixedCompoundTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -369,7 +370,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingCompoundTypedArrayTypes() : void
+    public function testResolvingCompoundTypedArrayTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -402,7 +403,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingNullableCompoundTypes() : void
+    public function testResolvingNullableCompoundTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -423,7 +424,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingArrayExpressionObjectsTypes() : void
+    public function testResolvingArrayExpressionObjectsTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -456,7 +457,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingArrayExpressionSimpleTypes() : void
+    public function testResolvingArrayExpressionSimpleTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -492,7 +493,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingArrayOfArrayExpressionTypes() : void
+    public function testResolvingArrayOfArrayExpressionTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -527,7 +528,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType() : void
+    public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
     {
         $fixture = new TypeResolver();
 
@@ -549,7 +550,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingArrayExpressionOrCompoundTypes() : void
+    public function testResolvingArrayExpressionOrCompoundTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -590,7 +591,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingIterableExpressionSimpleTypes() : void
+    public function testResolvingIterableExpressionSimpleTypes(): void
     {
         $fixture = new TypeResolver();
 
@@ -632,7 +633,7 @@ class TypeResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::<private>
      */
-    public function testResolvingCompoundTypesWithTwoArrays() : void
+    public function testResolvingCompoundTypesWithTwoArrays(): void
     {
         $fixture = new TypeResolver();
 
@@ -659,7 +660,7 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::addKeyword
      */
-    public function testAddingAKeyword() : void
+    public function testAddingAKeyword(): void
     {
         // Assign
         $typeMock = self::createStub(Type::class);
@@ -680,7 +681,7 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::addKeyword
      */
-    public function testAddingAKeywordFailsIfTypeClassDoesNotExist() : void
+    public function testAddingAKeywordFailsIfTypeClassDoesNotExist(): void
     {
         $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
@@ -693,7 +694,7 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::addKeyword
      */
-    public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface() : void
+    public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface(): void
     {
         $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
@@ -706,7 +707,7 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testExceptionIsThrownIfTypeIsEmpty() : void
+    public function testExceptionIsThrownIfTypeIsEmpty(): void
     {
         $this->expectException('InvalidArgumentException');
         $fixture = new TypeResolver();
@@ -718,7 +719,7 @@ class TypeResolverTest extends TestCase
      *
      * @return string[][]
      */
-    public function provideKeywords() : array
+    public function provideKeywords(): array
     {
         return [
             ['string', Types\String_::class],
@@ -764,7 +765,7 @@ class TypeResolverTest extends TestCase
      *
      * @return (string|bool)[][]
      */
-    public function provideClassStrings() : array
+    public function provideClassStrings(): array
     {
         return [
             ['class-string<\phpDocumentor\Reflection>', false],
@@ -778,7 +779,7 @@ class TypeResolverTest extends TestCase
      *
      * @return (string|bool)[][]
      */
-    public function provideInterfaceStrings() : array
+    public function provideInterfaceStrings(): array
     {
         return [
             ['interface-string<\phpDocumentor\Reflection>', false],
@@ -792,7 +793,7 @@ class TypeResolverTest extends TestCase
      *
      * @return string[][]
      */
-    public function provideFqcn() : array
+    public function provideFqcn(): array
     {
         return [
             'namespace' => ['\phpDocumentor\Reflection'],
@@ -807,7 +808,7 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testArrayKeyValueSpecification() : void
+    public function testArrayKeyValueSpecification(): void
     {
         $fixture = new TypeResolver();
         $type = $fixture->resolve('array<string,array<int,string>>', new Context(''));

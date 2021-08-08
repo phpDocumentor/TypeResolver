@@ -23,7 +23,7 @@ final class BooleanTest extends TestCase
     /**
      * @covers ::__toString
      */
-    public function testBooleanStringifyCorrectly() : void
+    public function testBooleanStringifyCorrectly(): void
     {
         $type = new Boolean();
 
