@@ -50,7 +50,6 @@ final class Context
      *
      * @param string   $namespace        The namespace where this DocBlock resides in.
      * @param string[] $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
-     *
      * @psalm-param array<string, string> $namespaceAliases
      */
     public function __construct(string $namespace, array $namespaceAliases = [])
@@ -87,7 +86,6 @@ final class Context
      * the alias for the imported Namespace.
      *
      * @return string[]
-     *
      * @psalm-return array<string, string>
      */
     public function getNamespaceAliases(): array

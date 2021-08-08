@@ -247,7 +247,6 @@ final class ContextFactory
      * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      *
      * @return string[]
-     *
      * @psalm-return array<string, string>
      */
     private function parseUseStatement(ArrayIterator $tokens): array
@@ -299,10 +298,9 @@ final class ContextFactory
      * @param ArrayIterator<int, string|array{0:int,1:string,2:int}> $tokens
      *
      * @return string[]
+     * @psalm-return array<string, string>
      *
      * @psalm-suppress TypeDoesNotContainType
-     *
-     * @psalm-return array<string, string>
      */
     private function extractUseStatements(ArrayIterator $tokens): array
     {
