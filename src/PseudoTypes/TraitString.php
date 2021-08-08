@@ -24,7 +24,7 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class TraitString extends String_ implements PseudoType
 {
-    public function underlyingType() : Type
+    public function underlyingType(): Type
     {
         return new String_();
     }
@@ -32,7 +32,7 @@ final class TraitString extends String_ implements PseudoType
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return 'trait-string';
     }

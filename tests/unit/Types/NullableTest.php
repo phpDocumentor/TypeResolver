@@ -24,7 +24,7 @@ class NullableTest extends TestCase
      * @covers ::__construct
      * @covers ::getActualType
      */
-    public function testNullableTypeWrapsCorrectly() : void
+    public function testNullableTypeWrapsCorrectly(): void
     {
         $realType = new String_();
 
@@ -36,7 +36,7 @@ class NullableTest extends TestCase
     /**
      * @covers ::__toString
      */
-    public function testNullableStringifyCorrectly() : void
+    public function testNullableStringifyCorrectly(): void
     {
         $this->assertSame('?string', (string) new Nullable(new String_()));
     }

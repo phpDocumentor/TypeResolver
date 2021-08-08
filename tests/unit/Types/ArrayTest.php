@@ -24,7 +24,7 @@ class ArrayTest extends TestCase
      * @dataProvider provideArrays
      * @covers ::__toString
      */
-    public function testArrayStringifyCorrectly(Array_ $array, string $expectedString) : void
+    public function testArrayStringifyCorrectly(Array_ $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
@@ -32,7 +32,7 @@ class ArrayTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideArrays() : array
+    public function provideArrays(): array
     {
         return [
             'simple array' => [new Array_(), 'array'],

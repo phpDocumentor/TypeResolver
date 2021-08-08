@@ -25,7 +25,7 @@ class ClassStringTest extends TestCase
      * @dataProvider provideClassStrings
      * @covers ::__toString
      */
-    public function testClassStringStringifyCorrectly(ClassString $array, string $expectedString) : void
+    public function testClassStringStringifyCorrectly(ClassString $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
@@ -33,7 +33,7 @@ class ClassStringTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideClassStrings() : array
+    public function provideClassStrings(): array
     {
         return [
             'generic class string' => [new ClassString(), 'class-string'],

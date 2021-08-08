@@ -77,7 +77,7 @@ final class Context
     /**
      * Returns the Qualified Namespace Name (thus without `\` in front) where the associated element is in.
      */
-    public function getNamespace() : string
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
@@ -90,7 +90,7 @@ final class Context
      *
      * @psalm-return array<string, string>
      */
-    public function getNamespaceAliases() : array
+    public function getNamespaceAliases(): array
     {
         return $this->namespaceAliases;
     }

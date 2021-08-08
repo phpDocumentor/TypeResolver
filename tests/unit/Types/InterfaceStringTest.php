@@ -25,7 +25,7 @@ class InterfaceStringTest extends TestCase
      * @dataProvider provideInterfaceStrings
      * @covers ::__toString
      */
-    public function testInterfaceStringStringifyCorrectly(InterfaceString $array, string $expectedString) : void
+    public function testInterfaceStringStringifyCorrectly(InterfaceString $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
@@ -33,7 +33,7 @@ class InterfaceStringTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideInterfaceStrings() : array
+    public function provideInterfaceStrings(): array
     {
         return [
             'generic interface string' => [new InterfaceString(), 'interface-string'],

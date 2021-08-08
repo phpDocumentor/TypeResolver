@@ -24,7 +24,7 @@ class IterableTest extends TestCase
      * @covers ::__toString
      * @dataProvider provideIterables
      */
-    public function testIterableStringifyCorrectly(Iterable_ $iterable, string $expectedString) : void
+    public function testIterableStringifyCorrectly(Iterable_ $iterable, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $iterable);
     }
@@ -32,7 +32,7 @@ class IterableTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function provideIterables() : array
+    public function provideIterables(): array
     {
         return [
             'simple iterable' => [new Iterable_(), 'iterable'],
