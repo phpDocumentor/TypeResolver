@@ -40,6 +40,8 @@ use const T_AS;
 use const T_CLASS;
 use const T_CURLY_OPEN;
 use const T_DOLLAR_OPEN_CURLY_BRACES;
+use const T_NAME_FULLY_QUALIFIED;
+use const T_NAME_QUALIFIED;
 use const T_NAMESPACE;
 use const T_NS_SEPARATOR;
 use const T_STRING;
