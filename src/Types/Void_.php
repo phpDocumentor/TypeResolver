@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Type;
 
 /**
- * Value Object representing the pseudo-type 'void'.
+ * Value Object representing the return-type 'void'.
  *
  * Void is generally only used when working with return types as it signifies that the method intentionally does not
  * return any value.

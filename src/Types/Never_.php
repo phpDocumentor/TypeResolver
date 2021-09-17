@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Type;
 
 /**
- * Value Object representing the pseudo-type 'never'.
+ * Value Object representing the return-type 'never'.
  *
  * Never is generally only used when working with return types as it signifies that the method that only
  * ever throw or exit.
