@@ -757,6 +757,7 @@ class TypeResolverTest extends TestCase
             ['self', Types\Self_::class],
             ['parent', Types\Parent_::class],
             ['iterable', Types\Iterable_::class],
+            ['never', Types\Never_::class],
         ];
     }
 
