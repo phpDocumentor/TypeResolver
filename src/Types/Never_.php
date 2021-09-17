@@ -16,20 +16,20 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Type;
 
 /**
- * Value Object representing the return-type 'void'.
+ * Value Object representing the return-type 'never'.
  *
- * Void is generally only used when working with return types as it signifies that the method intentionally does not
- * return any value.
+ * Never is generally only used when working with return types as it signifies that the method that only
+ * ever throw or exit.
  *
  * @psalm-immutable
  */
-final class Void_ implements Type
+final class Never_ implements Type
 {
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
     public function __toString(): string
     {
-        return 'void';
+        return 'never';
     }
 }
