@@ -239,7 +239,7 @@ final class TypeResolver
                 $resolvedType = new Expression($type);
 
                 $types[] = $resolvedType;
-            } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && $token[0] === ')') {
+            } elseif ($parserContext === self::PARSER_IN_ARRAY_EXPRESSION && isset($token[0]) && $token[0] === ')') {
                 break;
             } elseif ($token === '<') {
                 if (count($types) === 0) {
@@ -406,7 +406,7 @@ final class TypeResolver
      */
     private function isPartialStructuralElementName(string $type): bool
     {
-        return ($type[0] !== self::OPERATOR_NAMESPACE) && !$this->isKeyword($type);
+        return (isset($type[0]) && $type[0] !== self::OPERATOR_NAMESPACE) && !$this->isKeyword($type);
     }
 
     /**
