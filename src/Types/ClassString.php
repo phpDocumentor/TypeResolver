@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\Type;
 
 /**
  * Value Object representing the type 'string'.
  *
  * @psalm-immutable
  */
-final class ClassString implements Type
+final class ClassString extends String_
 {
     /** @var Fqsen|null */
     private $fqsen;
