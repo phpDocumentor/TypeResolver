@@ -102,6 +102,7 @@ final class TypeResolver
         'callable-string' => PseudoTypes\CallableString::class,
         'false' => PseudoTypes\False_::class,
         'true' => PseudoTypes\True_::class,
+        'literal-string' => PseudoTypes\LiteralString::class,
         'self' => Types\Self_::class,
         '$this' => Types\This::class,
         'static' => Types\Static_::class,
