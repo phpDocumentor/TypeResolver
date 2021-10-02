@@ -32,7 +32,7 @@ final class ArrayKey extends AggregatedType implements PseudoType
 
     public function underlyingType(): Type
     {
-        return new String_();
+        return new Compound([new String_(), new Integer()]);
     }
 
     public function __toString(): string
