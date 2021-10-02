@@ -227,6 +227,19 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
+    public function testGoodArrayCollectionKey(): void
+    {
+        $fixture = new TypeResolver();
+        $fixture->resolve('array<array-key,string>', new Context(''));
+
+        $fixture = new TypeResolver();
+        $fixture->resolve('array<class-string,string>', new Context(''));
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     */
     public function testMissingStartCollection(): void
     {
         $this->expectException('RuntimeException');

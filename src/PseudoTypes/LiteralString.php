@@ -11,32 +11,29 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
- * Value Object representing a array-key Type.
- *
- * A array-key Type is the supertype (but not a union) of int and string.
+ * Value Object representing the type 'string'.
  *
  * @psalm-immutable
  */
-final class ArrayKey extends AggregatedType implements PseudoType
+final class LiteralString extends String_ implements PseudoType
 {
-    public function __construct()
-    {
-        parent::__construct([new String_(), new Integer()], '|');
-    }
-
     public function underlyingType(): Type
     {
-        return new Compound([new String_(), new Integer()]);
+        return new String_();
     }
 
+    /**
+     * Returns a rendered output of the Type as it would be used in a DocBlock.
+     */
     public function __toString(): string
     {
-        return 'array-key';
+        return 'literal-string';
     }
 }
