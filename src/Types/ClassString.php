@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\PseudoType;
+use phpDocumentor\Reflection\Type;
 
 /**
  * Value Object representing the type 'string'.
  *
  * @psalm-immutable
  */
-final class ClassString extends String_
+final class ClassString extends String_ implements PseudoType
 {
     /** @var Fqsen|null */
     private $fqsen;
@@ -31,6 +33,11 @@ final class ClassString extends String_
     public function __construct(?Fqsen $fqsen = null)
     {
         $this->fqsen = $fqsen;
+    }
+
+    public function underlyingType(): Type
+    {
+        return new String_();
     }
 
     /**
