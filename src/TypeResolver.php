@@ -26,6 +26,7 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
@@ -110,6 +111,7 @@ final class TypeResolver
         'parent' => Types\Parent_::class,
         'iterable' => Types\Iterable_::class,
         'never' => Types\Never_::class,
+        'list' => PseudoTypes\List_::class,
     ];
 
     /**
@@ -521,10 +523,11 @@ final class TypeResolver
     {
         $isArray    = ((string) $classType === 'array');
         $isIterable = ((string) $classType === 'iterable');
+        $isList     = ((string) $classType === 'list');
 
         // allow only "array", "iterable" or class name before "<"
         if (
-            !$isArray && !$isIterable
+            !$isArray && !$isIterable && !$isList
             && (!$classType instanceof Object_ || $classType->getFqsen() === null)
         ) {
             throw new RuntimeException(
@@ -538,7 +541,7 @@ final class TypeResolver
         $keyType   = null;
 
         $token = $tokens->current();
-        if ($token !== null && trim($token) === ',') {
+        if ($token !== null && trim($token) === ',' && !$isList) {
             // if we have a comma, then we just parsed the key type, not the value type
             $keyType = $valueType;
             if ($isArray) {
@@ -594,6 +597,10 @@ final class TypeResolver
 
         if ($isIterable) {
             return new Iterable_($valueType, $keyType);
+        }
+
+        if ($isList) {
+            return new List_($valueType);
         }
 
         if ($classType instanceof Object_) {

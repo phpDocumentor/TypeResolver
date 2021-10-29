@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Context;
@@ -296,5 +297,29 @@ class CollectionResolverTest extends TestCase
 
         $this->assertInstanceOf(Types\Float_::class, $valueType);
         $this->assertInstanceOf(Types\String_::class, $keyType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     */
+    public function testResolvingList(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('list<string>', new Context(''));
+
+        $this->assertInstanceOf(List_::class, $resolvedType);
+        $this->assertSame('list<string>', (string) $resolvedType);
+
+        $valueType = $resolvedType->getValueType();
+
+        $keyType = $resolvedType->getKeyType();
+
+        $this->assertInstanceOf(Types\String_::class, $valueType);
+        $this->assertInstanceOf(Types\Integer::class, $keyType);
     }
 }

@@ -759,6 +759,7 @@ class TypeResolverTest extends TestCase
             ['iterable', Types\Iterable_::class],
             ['never', Types\Never_::class],
             ['literal-string', PseudoTypes\LiteralString::class],
+            ['list', PseudoTypes\List_::class],
         ];
     }
 
