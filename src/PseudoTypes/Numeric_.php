@@ -15,18 +15,26 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\AggregatedType;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * Value Object representing the type 'int'.
+ * Value Object representing the 'numeric' pseudo-type, which is either a numeric-string, integer or float.
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class Numeric_ extends AggregatedType implements PseudoType
 {
+    public function __construct()
+    {
+        AggregatedType::__construct([new NumericString(), new Integer(), new Float_()], '|');
+    }
+
     public function underlyingType(): Type
     {
-        return new Integer();
+        return new Compound([new NumericString(), new Integer(), new Float_()]);
     }
 
     /**
@@ -34,6 +42,6 @@ final class PositiveInteger extends Integer implements PseudoType
      */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'numeric';
     }
 }

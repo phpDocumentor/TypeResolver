@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\Integer;
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class NegativeInteger extends Integer implements PseudoType
 {
     public function underlyingType(): Type
     {
@@ -34,6 +34,6 @@ final class PositiveInteger extends Integer implements PseudoType
      */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'negative-int';
     }
 }
