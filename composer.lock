@@ -59,16 +59,16 @@
     "packages-dev": [
         {
             "name": "psalm/phar",
-            "version": "4.13.0",
+            "version": "v4.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "2883fa6aaff05564365cb16435196616bd853e3a"
+                "reference": "61fd4f311a2637aeaa194266e930a1f5452f65ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/2883fa6aaff05564365cb16435196616bd853e3a",
-                "reference": "2883fa6aaff05564365cb16435196616bd853e3a",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/61fd4f311a2637aeaa194266e930a1f5452f65ec",
+                "reference": "61fd4f311a2637aeaa194266e930a1f5452f65ec",
                 "shasum": ""
             },
             "require": {
@@ -88,9 +88,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/4.13.0"
+                "source": "https://github.com/psalm/phar/tree/v4.15.0"
             },
-            "time": "2021-11-21T02:42:44+00:00"
+            "time": "2021-12-07T19:26:38+00:00"
         }
     ],
     "aliases": [],
