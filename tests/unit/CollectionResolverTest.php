@@ -231,10 +231,16 @@ class CollectionResolverTest extends TestCase
     public function testGoodArrayCollectionKey(): void
     {
         $fixture = new TypeResolver();
-        $fixture->resolve('array<array-key,string>', new Context(''));
+        $resolvedType = $fixture->resolve('array<array-key,string>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<array-key,string>', (string) $resolvedType);
 
         $fixture = new TypeResolver();
-        $fixture->resolve('array<class-string,string>', new Context(''));
+        $resolvedType = $fixture->resolve('array<class-string,string>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<class-string,string>', (string) $resolvedType);
     }
 
     /**

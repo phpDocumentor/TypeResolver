@@ -22,11 +22,33 @@ use phpDocumentor\Reflection\Types\Integer;
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class IntegerRange extends Integer implements PseudoType
 {
+    /** @var string */
+    private $minValue;
+
+    /** @var string */
+    private $maxValue;
+
+    public function __construct(string $minValue, string $maxValue)
+    {
+        $this->minValue = $minValue;
+        $this->maxValue = $maxValue;
+    }
+
     public function underlyingType(): Type
     {
         return new Integer();
+    }
+
+    public function getMinValue(): string
+    {
+        return $this->minValue;
+    }
+
+    public function getMaxValue(): string
+    {
+        return $this->maxValue;
     }
 
     /**
@@ -34,6 +56,6 @@ final class PositiveInteger extends Integer implements PseudoType
      */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'int<' . $this->minValue . ', ' . $this->maxValue . '>';
     }
 }
