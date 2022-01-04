@@ -715,6 +715,19 @@ class TypeResolverTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     */
+    public function testInvalidArrayOperator(): void
+    {
+        $this->expectException('InvalidArgumentException');
+        $fixture = new TypeResolver();
+        $fixture->resolve('[]', new Context(''));
+    }
+
+    /**
      * Returns a list of keywords and expected classes that are created from them.
      *
      * @return string[][]

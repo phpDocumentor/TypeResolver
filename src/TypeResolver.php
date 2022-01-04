@@ -38,6 +38,7 @@ use function array_values;
 use function class_exists;
 use function class_implements;
 use function count;
+use function current;
 use function end;
 use function in_array;
 use function key;
@@ -273,6 +274,10 @@ final class TypeResolver
             } elseif ($token === self::OPERATOR_ARRAY) {
                 end($types);
                 $last = key($types);
+                if ($last === null) {
+                    throw new InvalidArgumentException('Unexpected array operator');
+                }
+
                 $lastItem = $types[$last];
                 if ($lastItem instanceof Expression) {
                     $lastItem = $lastItem->getValueType();
@@ -317,7 +322,7 @@ final class TypeResolver
                 );
             }
         } elseif (count($types) === 1) {
-            return $types[0];
+            return current($types);
         }
 
         if ($compoundToken === '|') {
