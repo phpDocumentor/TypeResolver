@@ -17,6 +17,7 @@ use ArrayIterator;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\ClassString;
@@ -36,6 +37,7 @@ use RuntimeException;
 use function array_key_exists;
 use function array_pop;
 use function array_values;
+use function assert;
 use function class_exists;
 use function class_implements;
 use function count;
@@ -261,7 +263,9 @@ final class TypeResolver
                 $classType = array_pop($types);
                 if ($classType !== null) {
                     if ((string) $classType === 'class-string') {
-                        $types[] = $this->resolveClassString($tokens, $context);
+                        foreach ($this->resolveClassString($tokens, $context) as $classStringType) {
+                            $types[] = $classStringType;
+                        }
                     } elseif ((string) $classType === 'int') {
                         $types[] = $this->resolveIntRange($tokens);
                     } elseif ((string) $classType === 'interface-string') {
@@ -461,17 +465,41 @@ final class TypeResolver
      * Resolves class string
      *
      * @param ArrayIterator<int, (string|null)> $tokens
+     *
+     * @return array<int, ClassString>
      */
-    private function resolveClassString(ArrayIterator $tokens, Context $context): Type
+    private function resolveClassString(ArrayIterator $tokens, Context $context): array
     {
         $tokens->next();
 
         $classType = $this->parseTypes($tokens, $context, self::PARSER_IN_COLLECTION_EXPRESSION);
 
-        if (!$classType instanceof Object_ || $classType->getFqsen() === null) {
-            throw new RuntimeException(
-                $classType . ' is not a class string'
-            );
+        $aggreatedObjects = false;
+        if ($classType instanceof AggregatedType) {
+            foreach ($classType->getIterator() as $typeInner) {
+                if (!$typeInner instanceof Object_) {
+                    break;
+                }
+            }
+
+            $aggreatedObjects = true;
+        }
+
+        if ($aggreatedObjects) {
+            assert($classType instanceof AggregatedType);
+            foreach ($classType->getIterator() as $typeInner) {
+                if (!$typeInner instanceof Object_ || $typeInner->getFqsen() === null) {
+                    throw new RuntimeException(
+                        $typeInner . ' is not a class string'
+                    );
+                }
+            }
+        } else {
+            if (!$classType instanceof Object_ || $classType->getFqsen() === null) {
+                throw new RuntimeException(
+                    $classType . ' is not a class string'
+                );
+            }
         }
 
         $token = $tokens->current();
@@ -487,7 +515,19 @@ final class TypeResolver
             );
         }
 
-        return new ClassString($classType->getFqsen());
+        $return = [];
+        if ($aggreatedObjects) {
+            assert($classType instanceof AggregatedType);
+            foreach ($classType->getIterator() as $typeInner) {
+                assert($typeInner instanceof Object_);
+                $return[] = new ClassString($typeInner->getFqsen());
+            }
+        } else {
+            assert($classType instanceof Object_);
+            $return[] = new ClassString($classType->getFqsen());
+        }
+
+        return $return;
     }
 
     /**

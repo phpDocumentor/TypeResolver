@@ -15,6 +15,9 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
+use function count;
+use function implode;
+
 /**
  * Represents a list of values. This is an abstract class for Array_ and Collection.
  *
@@ -67,6 +70,30 @@ abstract class AbstractList implements Type
     public function __toString(): string
     {
         if ($this->keyType) {
+            $classStringValues = [];
+            if ($this->valueType instanceof AggregatedType) {
+                /**
+                 * @psalm-suppress ImpureMethodCall
+                 */
+                foreach ($this->valueType->getIterator() as $typeInner) {
+                    if (!($typeInner instanceof ClassString)) {
+                        $classStringValues = [];
+                        break;
+                    }
+
+                    $fqsenTmp = $typeInner->getFqsen();
+                    if (!$fqsenTmp) {
+                        continue;
+                    }
+
+                    $classStringValues[] = $fqsenTmp->__toString();
+                }
+            }
+
+            if (count($classStringValues) > 0) {
+                return 'array<' . $this->keyType . ',class-string<' . implode('|', $classStringValues) . '>>';
+            }
+
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
