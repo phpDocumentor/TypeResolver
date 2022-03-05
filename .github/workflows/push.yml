@@ -12,7 +12,7 @@ jobs:
   composer-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: composer
         uses: docker://composer
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -74,7 +74,7 @@ jobs:
       - phpunit-with-coverage
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup cache environment
         id: cache-env
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [phpunit]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: composer
         uses: docker://composer
         env:
@@ -145,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [phpunit]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: composer
         uses: docker://composer
         env:
@@ -176,7 +176,7 @@ jobs:
       - phpunit
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup cache environment
         id: cache-env
@@ -212,7 +212,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [phpunit]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: composer
@@ -246,7 +246,7 @@ jobs:
           BLACKFIRE_SERVER_TOKEN: "21795bdce7c0b5d24f0ccbb42e2a7518feb5359840752b163652899f927cbf2b"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
