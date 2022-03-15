@@ -36,6 +36,8 @@ class IntRangeTest extends TestCase
     {
         return [
             'simple int range' => [new IntegerRange('-5', '5'), 'int<-5, 5>'],
+            'zero int range v1' => [new IntegerRange('0', '1'), 'int<0, 1>'],
+            'zero int range v2' => [new IntegerRange('-5', '0'), 'int<-5, 0>'],
             'mixed int range' => [new IntegerRange('min', '5'), 'int<min, 5>'],
             'keyword int range' => [new IntegerRange('min', 'max'), 'int<min, max>'],
         ];
