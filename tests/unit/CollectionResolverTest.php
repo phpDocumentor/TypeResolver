@@ -328,4 +328,21 @@ class CollectionResolverTest extends TestCase
         $this->assertInstanceOf(Types\String_::class, $valueType);
         $this->assertInstanceOf(Types\Integer::class, $keyType);
     }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\Nullable
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     */
+    public function testResolvingNullableArray(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('?array<int>', new Context(''));
+
+        $this->assertInstanceOf(Types\Nullable::class, $resolvedType);
+        $this->assertSame('?int[]', (string) $resolvedType);
+    }
 }

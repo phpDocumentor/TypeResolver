@@ -293,13 +293,8 @@ final class TypeResolver
 
                 $tokens->next();
             } else {
-                $type = $this->resolveSingleType($token, $context);
+                $types[] = $this->resolveSingleType($token, $context);
                 $tokens->next();
-                if ($parserContext === self::PARSER_IN_NULLABLE) {
-                    return $type;
-                }
-
-                $types[] = $type;
             }
         }
 

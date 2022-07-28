@@ -407,9 +407,9 @@ class TypeResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
+        $this->expectException('RuntimeException');
+        $this->expectExceptionMessage('Unexpected type separator');
         $resolvedType = $fixture->resolve('?string|null|?boolean');
-
-        $this->assertSame('?string|null|?bool', (string) $resolvedType);
     }
 
     /**
