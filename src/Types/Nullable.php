@@ -23,7 +23,7 @@ use phpDocumentor\Reflection\Type;
 final class Nullable implements Type
 {
     /** @var Type The actual type that is wrapped */
-    private $realType;
+    private Type $realType;
 
     /**
      * Initialises this nullable type using the real type embedded

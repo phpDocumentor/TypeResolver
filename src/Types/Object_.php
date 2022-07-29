@@ -30,8 +30,7 @@ use function strpos;
  */
 final class Object_ implements Type
 {
-    /** @var Fqsen|null */
-    private $fqsen;
+    private ?Fqsen $fqsen;
 
     /**
      * Initializes this object with an optional FQSEN, if not provided this object is considered 'untyped'.

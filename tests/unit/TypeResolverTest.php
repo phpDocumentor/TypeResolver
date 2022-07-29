@@ -13,21 +13,49 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use InvalidArgumentException;
+use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
+use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\LiteralString;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
+use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\Numeric_;
+use phpDocumentor\Reflection\PseudoTypes\NumericString;
+use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\TraitString;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
+use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Never_;
 use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Parent_;
+use phpDocumentor\Reflection\Types\Resource_;
+use phpDocumentor\Reflection\Types\Scalar;
+use phpDocumentor\Reflection\Types\Self_;
+use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\This;
+use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use stdClass;
 
 use function get_class;
@@ -73,7 +101,7 @@ class TypeResolverTest extends TestCase
         $fixture = new TypeResolver();
 
         if ($throwsException) {
-            $this->expectException('RuntimeException');
+            $this->expectException(RuntimeException::class);
         }
 
         $resolvedType = $fixture->resolve($classString, new Context(''));
@@ -97,7 +125,7 @@ class TypeResolverTest extends TestCase
         $fixture = new TypeResolver();
 
         if ($throwsException) {
-            $this->expectException('RuntimeException');
+            $this->expectException(RuntimeException::class);
         }
 
         $resolvedType = $fixture->resolve($interfaceString, new Context(''));
@@ -191,7 +219,7 @@ class TypeResolverTest extends TestCase
         $this->assertInstanceOf(Array_::class, $resolvedType);
         $this->assertSame('string[]', (string) $resolvedType);
         $this->assertInstanceOf(Compound::class, $resolvedType->getKeyType());
-        $this->assertInstanceOf(Types\String_::class, $resolvedType->getValueType());
+        $this->assertInstanceOf(String_::class, $resolvedType->getValueType());
     }
 
     /**
@@ -239,7 +267,7 @@ class TypeResolverTest extends TestCase
 
         $this->assertSame('string[]', (string) $childValueType);
         $this->assertInstanceOf(Compound::class, $childValueType->getKeyType());
-        $this->assertInstanceOf(Types\String_::class, $childValueType->getValueType());
+        $this->assertInstanceOf(String_::class, $childValueType->getValueType());
     }
 
     /**
@@ -267,7 +295,7 @@ class TypeResolverTest extends TestCase
 
         $secondType = $resolvedType->get(1);
 
-        $this->assertInstanceOf(Types\String_::class, $firstType);
+        $this->assertInstanceOf(String_::class, $firstType);
         $this->assertInstanceOf(Object_::class, $secondType);
         $this->assertInstanceOf(Fqsen::class, $secondType->getFqsen());
     }
@@ -649,9 +677,9 @@ class TypeResolverTest extends TestCase
         $secondType = $resolvedType->get(1);
 
         $this->assertInstanceOf(Array_::class, $firstType);
-        $this->assertInstanceOf(Types\Integer::class, $firstType->getValueType());
+        $this->assertInstanceOf(Integer::class, $firstType->getValueType());
         $this->assertInstanceOf(Array_::class, $secondType);
-        $this->assertInstanceOf(Types\String_::class, $secondType->getValueType());
+        $this->assertInstanceOf(String_::class, $secondType->getValueType());
     }
 
     /**
@@ -685,7 +713,7 @@ class TypeResolverTest extends TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist(): void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', 'IDoNotExist');
     }
@@ -698,7 +726,7 @@ class TypeResolverTest extends TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface(): void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', stdClass::class);
     }
@@ -711,7 +739,7 @@ class TypeResolverTest extends TestCase
      */
     public function testExceptionIsThrownIfTypeIsEmpty(): void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->resolve(' ', new Context(''));
     }
@@ -724,7 +752,7 @@ class TypeResolverTest extends TestCase
      */
     public function testInvalidArrayOperator(): void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->resolve('[]', new Context(''));
     }
@@ -737,46 +765,46 @@ class TypeResolverTest extends TestCase
     public function provideKeywords(): array
     {
         return [
-            ['string', Types\String_::class],
-            ['class-string', Types\ClassString::class],
-            ['html-escaped-string', PseudoTypes\HtmlEscapedString::class],
-            ['lowercase-string', PseudoTypes\LowercaseString::class],
-            ['non-empty-lowercase-string', PseudoTypes\NonEmptyLowercaseString::class],
-            ['non-empty-string', PseudoTypes\NonEmptyString::class],
-            ['numeric-string', PseudoTypes\NumericString::class],
-            ['numeric', PseudoTypes\Numeric_::class],
-            ['trait-string', PseudoTypes\TraitString::class],
-            ['int', Types\Integer::class],
-            ['integer', Types\Integer::class],
-            ['positive-int', PseudoTypes\PositiveInteger::class],
-            ['negative-int', PseudoTypes\NegativeInteger::class],
-            ['float', Types\Float_::class],
-            ['double', Types\Float_::class],
-            ['bool', Types\Boolean::class],
-            ['boolean', Types\Boolean::class],
-            ['true', Types\Boolean::class],
-            ['true', PseudoTypes\True_::class],
-            ['false', Types\Boolean::class],
-            ['false', PseudoTypes\False_::class],
-            ['resource', Types\Resource_::class],
-            ['null', Types\Null_::class],
-            ['callable', Types\Callable_::class],
-            ['callable-string', PseudoTypes\CallableString::class],
-            ['callback', Types\Callable_::class],
-            ['array', Types\Array_::class],
-            ['array-key', Types\ArrayKey::class],
-            ['scalar', Types\Scalar::class],
-            ['object', Types\Object_::class],
-            ['mixed', Types\Mixed_::class],
-            ['void', Types\Void_::class],
-            ['$this', Types\This::class],
-            ['static', Types\Static_::class],
-            ['self', Types\Self_::class],
-            ['parent', Types\Parent_::class],
-            ['iterable', Types\Iterable_::class],
-            ['never', Types\Never_::class],
-            ['literal-string', PseudoTypes\LiteralString::class],
-            ['list', PseudoTypes\List_::class],
+            ['string', String_::class],
+            ['class-string', ClassString::class],
+            ['html-escaped-string', HtmlEscapedString::class],
+            ['lowercase-string', LowercaseString::class],
+            ['non-empty-lowercase-string', NonEmptyLowercaseString::class],
+            ['non-empty-string', NonEmptyString::class],
+            ['numeric-string', NumericString::class],
+            ['numeric', Numeric_::class],
+            ['trait-string', TraitString::class],
+            ['int', Integer::class],
+            ['integer', Integer::class],
+            ['positive-int', PositiveInteger::class],
+            ['negative-int', NegativeInteger::class],
+            ['float', Float_::class],
+            ['double', Float_::class],
+            ['bool', Boolean::class],
+            ['boolean', Boolean::class],
+            ['true', Boolean::class],
+            ['true', True_::class],
+            ['false', Boolean::class],
+            ['false', False_::class],
+            ['resource', Resource_::class],
+            ['null', Null_::class],
+            ['callable', Callable_::class],
+            ['callable-string', CallableString::class],
+            ['callback', Callable_::class],
+            ['array', Array_::class],
+            ['array-key', ArrayKey::class],
+            ['scalar', Scalar::class],
+            ['object', Object_::class],
+            ['mixed', Mixed_::class],
+            ['void', Void_::class],
+            ['$this', This::class],
+            ['static', Static_::class],
+            ['self', Self_::class],
+            ['parent', Parent_::class],
+            ['iterable', Iterable_::class],
+            ['never', Never_::class],
+            ['literal-string', LiteralString::class],
+            ['list', List_::class],
         ];
     }
 
