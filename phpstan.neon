@@ -1,2 +1,9 @@
 parameters:
+    bootstrapFiles:
+        - src/PseudoTypes/False_.php
+        - src/PseudoTypes/True_.php
     level: max
+    excludePaths:
+        - tests/benchmark/Assets/*
+    paths:
+        - src

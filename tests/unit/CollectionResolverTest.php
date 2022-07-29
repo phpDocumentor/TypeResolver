@@ -17,6 +17,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -199,10 +200,12 @@ class CollectionResolverTest extends TestCase
         $this->assertEquals('\\ArrayObject', (string) $resolvedType->getFqsen());
 
         $valueType = $resolvedType->getValueType();
-        $collectionValueType = $valueType->getValueType();
         $this->assertInstanceOf(Types\Collection::class, $valueType);
+        $collectionValueType = $valueType->getValueType();
+
         $this->assertInstanceOf(Types\Object_::class, $valueType->getValueType());
         $this->assertEquals('\\ArrayObject', (string) $valueType->getFqsen());
+        $this->assertInstanceOf(Object_::class, $collectionValueType);
         $this->assertEquals('\\DateTime', (string) $collectionValueType->getFqsen());
 
         $keyType = $resolvedType->getKeyType();

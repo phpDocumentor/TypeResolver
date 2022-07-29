@@ -10,12 +10,16 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "phpdocumentor/reflection-common": "^2.0"
     },
     "require-dev": {
         "ext-tokenizer": "*",
-        "psalm/phar": "^4.8"
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan-phpunit": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "vimeo/psalm": "^4.25"
     },
     "autoload": {
         "psr-4": {
@@ -30,6 +34,14 @@
     "extra": {
         "branch-alias": {
             "dev-1.x": "1.x-dev"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        },
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     }
 }

@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\Types\ContextFactory;
  */
 final class ContextFactoryBench
 {
-    private $source;
+    private string $source;
 
     public function setup()
     {

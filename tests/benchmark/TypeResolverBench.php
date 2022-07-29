@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\TypeResolver;
  */
 class TypeResolverBench
 {
-    private $typeResolver;
+    private TypeResolver $typeResolver;
 
     public function setup()
     {
