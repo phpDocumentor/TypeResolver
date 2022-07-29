@@ -407,9 +407,11 @@ class TypeResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
-        $this->expectException('RuntimeException');
-        $this->expectExceptionMessage('Unexpected type separator');
+        // Note that in PHP types it is illegal to use shorthand nullable
+        // syntax with unions. This would be 'string|boolean|null' instead.
         $resolvedType = $fixture->resolve('?string|null|?boolean');
+
+        $this->assertSame('?string|null|?bool', (string) $resolvedType);
     }
 
     /**

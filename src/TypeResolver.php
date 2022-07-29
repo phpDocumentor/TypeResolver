@@ -210,6 +210,7 @@ final class TypeResolver
                         self::PARSER_IN_COMPOUND,
                         self::PARSER_IN_ARRAY_EXPRESSION,
                         self::PARSER_IN_COLLECTION_EXPRESSION,
+                        self::PARSER_IN_NULLABLE,
                     ], true)
                 ) {
                     throw new RuntimeException(
@@ -225,6 +226,7 @@ final class TypeResolver
                         self::PARSER_IN_COMPOUND,
                         self::PARSER_IN_ARRAY_EXPRESSION,
                         self::PARSER_IN_COLLECTION_EXPRESSION,
+                        self::PARSER_IN_NULLABLE,
                     ], true)
                 ) {
                     throw new RuntimeException(
