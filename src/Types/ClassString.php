@@ -24,8 +24,7 @@ use phpDocumentor\Reflection\Type;
  */
 final class ClassString extends String_ implements PseudoType
 {
-    /** @var Fqsen|null */
-    private $fqsen;
+    private ?Fqsen $fqsen;
 
     /**
      * Initializes this representation of a class string with the given Fqsen.

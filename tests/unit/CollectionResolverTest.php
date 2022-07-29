@@ -13,12 +13,19 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Float_;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @covers ::<private>
@@ -50,8 +57,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\String_::class, $valueType);
-        $this->assertInstanceOf(Types\Compound::class, $keyType);
+        $this->assertInstanceOf(String_::class, $valueType);
+        $this->assertInstanceOf(Compound::class, $keyType);
     }
 
     /**
@@ -78,10 +85,10 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\Object_::class, $valueType);
+        $this->assertInstanceOf(Object_::class, $valueType);
         $this->assertEquals('\\Iterator', (string) $valueType->getFqsen());
-        $this->assertInstanceOf(Types\Array_::class, $keyType);
-        $this->assertInstanceOf(Types\String_::class, $keyType->getValueType());
+        $this->assertInstanceOf(Array_::class, $keyType);
+        $this->assertInstanceOf(String_::class, $keyType->getValueType());
     }
 
     /**
@@ -106,8 +113,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\String_::class, $valueType);
-        $this->assertInstanceOf(Types\Compound::class, $keyType);
+        $this->assertInstanceOf(String_::class, $valueType);
+        $this->assertInstanceOf(Compound::class, $keyType);
     }
 
     /**
@@ -132,8 +139,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\String_::class, $keyType);
-        $this->assertInstanceOf(Types\Compound::class, $valueType);
+        $this->assertInstanceOf(String_::class, $keyType);
+        $this->assertInstanceOf(Compound::class, $valueType);
     }
 
     /**
@@ -158,8 +165,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\String_::class, $keyType);
-        $this->assertInstanceOf(Types\Compound::class, $valueType);
+        $this->assertInstanceOf(String_::class, $keyType);
+        $this->assertInstanceOf(Compound::class, $valueType);
     }
 
     /**
@@ -173,7 +180,7 @@ class CollectionResolverTest extends TestCase
      */
     public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace(): void
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(InvalidArgumentException::class);
         $fixture = new TypeResolver();
 
         $fixture->resolve('array<string,  object|array>', new Context(''));
@@ -200,19 +207,19 @@ class CollectionResolverTest extends TestCase
         $this->assertEquals('\\ArrayObject', (string) $resolvedType->getFqsen());
 
         $valueType = $resolvedType->getValueType();
-        $this->assertInstanceOf(Types\Collection::class, $valueType);
+        $this->assertInstanceOf(Collection::class, $valueType);
         $collectionValueType = $valueType->getValueType();
 
-        $this->assertInstanceOf(Types\Object_::class, $valueType->getValueType());
+        $this->assertInstanceOf(Object_::class, $valueType->getValueType());
         $this->assertEquals('\\ArrayObject', (string) $valueType->getFqsen());
         $this->assertInstanceOf(Object_::class, $collectionValueType);
         $this->assertEquals('\\DateTime', (string) $collectionValueType->getFqsen());
 
         $keyType = $resolvedType->getKeyType();
-        $this->assertInstanceOf(Types\Compound::class, $keyType);
-        $this->assertInstanceOf(Types\String_::class, $keyType->get(0));
-        $this->assertInstanceOf(Types\Integer::class, $keyType->get(1));
-        $this->assertInstanceOf(Types\Float_::class, $keyType->get(2));
+        $this->assertInstanceOf(Compound::class, $keyType);
+        $this->assertInstanceOf(String_::class, $keyType->get(0));
+        $this->assertInstanceOf(Integer::class, $keyType->get(1));
+        $this->assertInstanceOf(Float_::class, $keyType->get(2));
     }
 
     /**
@@ -221,7 +228,7 @@ class CollectionResolverTest extends TestCase
      */
     public function testBadArrayCollectionKey(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('An array can have only integers or strings as keys');
         $fixture = new TypeResolver();
         $fixture->resolve('array<object,string>', new Context(''));
@@ -252,7 +259,7 @@ class CollectionResolverTest extends TestCase
      */
     public function testMissingStartCollection(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unexpected collection operator "<", class name is missing');
         $fixture = new TypeResolver();
         $fixture->resolve('<string>', new Context(''));
@@ -264,7 +271,7 @@ class CollectionResolverTest extends TestCase
      */
     public function testMissingEndCollection(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Collection: ">" is missing');
         $fixture = new TypeResolver();
         $fixture->resolve('ArrayObject<object|string', new Context(''));
@@ -276,7 +283,7 @@ class CollectionResolverTest extends TestCase
      */
     public function testBadCollectionClass(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('string is not a collection');
         $fixture = new TypeResolver();
         $fixture->resolve('string<integer>', new Context(''));
@@ -304,8 +311,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\Float_::class, $valueType);
-        $this->assertInstanceOf(Types\String_::class, $keyType);
+        $this->assertInstanceOf(Float_::class, $valueType);
+        $this->assertInstanceOf(String_::class, $keyType);
     }
 
     /**
@@ -328,8 +335,8 @@ class CollectionResolverTest extends TestCase
 
         $keyType = $resolvedType->getKeyType();
 
-        $this->assertInstanceOf(Types\String_::class, $valueType);
-        $this->assertInstanceOf(Types\Integer::class, $keyType);
+        $this->assertInstanceOf(String_::class, $valueType);
+        $this->assertInstanceOf(Integer::class, $keyType);
     }
 
     /**
@@ -345,7 +352,7 @@ class CollectionResolverTest extends TestCase
 
         $resolvedType = $fixture->resolve('?array<int>', new Context(''));
 
-        $this->assertInstanceOf(Types\Nullable::class, $resolvedType);
+        $this->assertInstanceOf(Nullable::class, $resolvedType);
         $this->assertSame('?int[]', (string) $resolvedType);
     }
 }

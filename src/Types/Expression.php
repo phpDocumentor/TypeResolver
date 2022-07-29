@@ -22,8 +22,7 @@ use phpDocumentor\Reflection\Type;
  */
 final class Expression implements Type
 {
-    /** @var Type */
-    protected $valueType;
+    protected Type $valueType;
 
     /**
      * Initializes this representation of an array with the given Type.

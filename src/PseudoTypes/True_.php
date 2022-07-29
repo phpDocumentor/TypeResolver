@@ -37,4 +37,4 @@ final class True_ extends Boolean implements PseudoType
     }
 }
 
-class_alias('\phpDocumentor\Reflection\PseudoTypes\True_', 'phpDocumentor\Reflection\Types\True_', false);
+class_alias(True_::class, 'phpDocumentor\Reflection\Types\True_', false);

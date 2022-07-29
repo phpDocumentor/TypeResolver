@@ -16,6 +16,7 @@ namespace phpDocumentor\Reflection;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @covers ::<private>
@@ -84,7 +85,7 @@ class IntegerRangeResolverTest extends TestCase
      */
     public function testResolvingIntRangeErrorMisingMaxValue(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('int<min,max> has not the correct format');
 
         $fixture = new TypeResolver();
@@ -102,7 +103,7 @@ class IntegerRangeResolverTest extends TestCase
      */
     public function testResolvingIntRangeErrorMisingMinValue(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('int<min,max> has not the correct format');
 
         $fixture = new TypeResolver();
@@ -120,7 +121,7 @@ class IntegerRangeResolverTest extends TestCase
      */
     public function testResolvingIntRangeErrorMisingComma(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('int<min,max> has not the correct format');
 
         $fixture = new TypeResolver();
@@ -138,7 +139,7 @@ class IntegerRangeResolverTest extends TestCase
      */
     public function testResolvingIntRangeErrorMissingEnd(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unexpected character "max", ">" is missing');
 
         $fixture = new TypeResolver();
@@ -156,7 +157,7 @@ class IntegerRangeResolverTest extends TestCase
      */
     public function testResolvingIntRangeErrorFormat(): void
     {
-        $this->expectException('RuntimeException');
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('int<min,max> has not the correct format');
 
         $fixture = new TypeResolver();

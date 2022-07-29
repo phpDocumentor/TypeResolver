@@ -24,11 +24,9 @@ use phpDocumentor\Reflection\Types\Integer;
  */
 final class IntegerRange extends Integer implements PseudoType
 {
-    /** @var string */
-    private $minValue;
+    private string $minValue;
 
-    /** @var string */
-    private $maxValue;
+    private string $maxValue;
 
     public function __construct(string $minValue, string $maxValue)
     {

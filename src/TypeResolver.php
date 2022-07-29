@@ -15,35 +15,60 @@ namespace phpDocumentor\Reflection;
 
 use ArrayIterator;
 use InvalidArgumentException;
+use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\LiteralString;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
+use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\Numeric_;
+use phpDocumentor\Reflection\PseudoTypes\NumericString;
+use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\TraitString;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
+use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
+use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Never_;
+use phpDocumentor\Reflection\Types\Null_;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Parent_;
+use phpDocumentor\Reflection\Types\Resource_;
+use phpDocumentor\Reflection\Types\Scalar;
+use phpDocumentor\Reflection\Types\Self_;
+use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
+use phpDocumentor\Reflection\Types\This;
+use phpDocumentor\Reflection\Types\Void_;
 use RuntimeException;
 
 use function array_key_exists;
+use function array_key_last;
 use function array_pop;
 use function array_values;
 use function class_exists;
 use function class_implements;
 use function count;
 use function current;
-use function end;
 use function in_array;
 use function is_numeric;
-use function key;
 use function preg_split;
 use function strpos;
 use function strtolower;
@@ -76,54 +101,51 @@ final class TypeResolver
      * @var array<string, string> List of recognized keywords and unto which Value Object they map
      * @psalm-var array<string, class-string<Type>>
      */
-    private $keywords = [
-        'string' => Types\String_::class,
-        'class-string' => Types\ClassString::class,
-        'interface-string' => Types\InterfaceString::class,
-        'html-escaped-string' => PseudoTypes\HtmlEscapedString::class,
-        'lowercase-string' => PseudoTypes\LowercaseString::class,
-        'non-empty-lowercase-string' => PseudoTypes\NonEmptyLowercaseString::class,
-        'non-empty-string' => PseudoTypes\NonEmptyString::class,
-        'numeric-string' => PseudoTypes\NumericString::class,
-        'numeric' => PseudoTypes\Numeric_::class,
-        'trait-string' => PseudoTypes\TraitString::class,
-        'int' => Types\Integer::class,
-        'integer' => Types\Integer::class,
-        'positive-int' => PseudoTypes\PositiveInteger::class,
-        'negative-int' => PseudoTypes\NegativeInteger::class,
-        'bool' => Types\Boolean::class,
-        'boolean' => Types\Boolean::class,
-        'real' => Types\Float_::class,
-        'float' => Types\Float_::class,
-        'double' => Types\Float_::class,
-        'object' => Types\Object_::class,
-        'mixed' => Types\Mixed_::class,
-        'array' => Types\Array_::class,
-        'array-key' => Types\ArrayKey::class,
-        'resource' => Types\Resource_::class,
-        'void' => Types\Void_::class,
-        'null' => Types\Null_::class,
-        'scalar' => Types\Scalar::class,
-        'callback' => Types\Callable_::class,
-        'callable' => Types\Callable_::class,
-        'callable-string' => PseudoTypes\CallableString::class,
-        'false' => PseudoTypes\False_::class,
-        'true' => PseudoTypes\True_::class,
-        'literal-string' => PseudoTypes\LiteralString::class,
-        'self' => Types\Self_::class,
-        '$this' => Types\This::class,
-        'static' => Types\Static_::class,
-        'parent' => Types\Parent_::class,
-        'iterable' => Types\Iterable_::class,
-        'never' => Types\Never_::class,
-        'list' => PseudoTypes\List_::class,
+    private array $keywords = [
+        'string' => String_::class,
+        'class-string' => ClassString::class,
+        'interface-string' => InterfaceString::class,
+        'html-escaped-string' => HtmlEscapedString::class,
+        'lowercase-string' => LowercaseString::class,
+        'non-empty-lowercase-string' => NonEmptyLowercaseString::class,
+        'non-empty-string' => NonEmptyString::class,
+        'numeric-string' => NumericString::class,
+        'numeric' => Numeric_::class,
+        'trait-string' => TraitString::class,
+        'int' => Integer::class,
+        'integer' => Integer::class,
+        'positive-int' => PositiveInteger::class,
+        'negative-int' => NegativeInteger::class,
+        'bool' => Boolean::class,
+        'boolean' => Boolean::class,
+        'real' => Float_::class,
+        'float' => Float_::class,
+        'double' => Float_::class,
+        'object' => Object_::class,
+        'mixed' => Mixed_::class,
+        'array' => Array_::class,
+        'array-key' => ArrayKey::class,
+        'resource' => Resource_::class,
+        'void' => Void_::class,
+        'null' => Null_::class,
+        'scalar' => Scalar::class,
+        'callback' => Callable_::class,
+        'callable' => Callable_::class,
+        'callable-string' => CallableString::class,
+        'false' => False_::class,
+        'true' => True_::class,
+        'literal-string' => LiteralString::class,
+        'self' => Self_::class,
+        '$this' => This::class,
+        'static' => Static_::class,
+        'parent' => Parent_::class,
+        'iterable' => Iterable_::class,
+        'never' => Never_::class,
+        'list' => List_::class,
     ];
 
-    /**
-     * @var FqsenResolver
-     * @psalm-readonly
-     */
-    private $fqsenResolver;
+    /** @psalm-readonly */
+    private FqsenResolver $fqsenResolver;
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
@@ -280,8 +302,7 @@ final class TypeResolver
             ) {
                 break;
             } elseif ($token === self::OPERATOR_ARRAY) {
-                end($types);
-                $last = key($types);
+                $last = array_key_last($types);
                 if ($last === null) {
                     throw new InvalidArgumentException('Unexpected array operator');
                 }
