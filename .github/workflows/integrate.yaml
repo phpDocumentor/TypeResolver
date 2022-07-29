@@ -47,3 +47,4 @@ jobs:
     uses: "phpDocumentor/.github/.github/workflows/continues-integration.yml@v0.1.0"
     with:
       composer-root-version: "1.x-dev"
+      php-versions: "['7.4', '8.0', '8.1', '8.2']"
