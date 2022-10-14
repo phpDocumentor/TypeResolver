@@ -54,7 +54,7 @@ abstract class AbstractList implements Type
     }
 
     /**
-     * Returns the value for the keys of this array.
+     * Returns the type for the values of this array.
      */
     public function getValueType(): Type
     {
