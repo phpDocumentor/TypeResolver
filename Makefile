@@ -33,7 +33,7 @@ vendor: composer.json composer.lock
 
 .PHONY: benchmark
 benchmark:
-	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project php:7.4-cli tools/phpbench run
+	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project php:7.4-cli vendor/bin/phpbench run
 
 .PHONY: rector
 rector: ## Refactor code using rector

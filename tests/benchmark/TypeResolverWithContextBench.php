@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace benchmark;
 
+use PhpBench\Benchmark\Metadata\Annotations\Warmup;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\ContextFactory;
@@ -32,13 +33,6 @@ final class TypeResolverWithContextBench
 
     /**
      * @Warmup(2)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 1ms"
-     *      }
-     * )
      */
     public function benchResolveCompoundArrayWithDefinedTypes() : void
     {
@@ -47,13 +41,6 @@ final class TypeResolverWithContextBench
 
     /**
      * @Warmup(2)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 1ms"
-     *      }
-     * )
      */
     public function benchArrayOfClass() : void
     {

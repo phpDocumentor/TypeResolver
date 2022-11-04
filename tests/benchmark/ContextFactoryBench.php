@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace benchmark;
 
+use PhpBench\Benchmark\Metadata\Annotations\Warmup;
 use phpDocumentor\Reflection\Types\ContextFactory;
 
 /**
@@ -20,13 +21,6 @@ final class ContextFactoryBench
 
     /**
      * @Warmup(1)
-     * @Executor(
-     *     "blackfire",
-     *      assertions={
-     *      {"expression"="main.peak_memory < 120Mb", "title"="memory peak"},
-     *      "main.wall_time < 3S"
-     *      }
-     * )
      */
     public function benchCreateContextForNamespace()
     {
