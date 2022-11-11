@@ -15,8 +15,12 @@ namespace phpDocumentor\Reflection;
 
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
+use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
+use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
@@ -26,13 +30,16 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
+use phpDocumentor\Reflection\Types\CallableParameter;
 use phpDocumentor\Reflection\Types\ClassString;
+use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
@@ -433,6 +440,7 @@ class TypeResolverTest extends TestCase
      */
     public function testResolvingNullableCompoundTypes(): void
     {
+        $this->markTestSkipped('Invalid type definition');
         $fixture = new TypeResolver();
 
         // Note that in PHP types it is illegal to use shorthand nullable
@@ -560,12 +568,9 @@ class TypeResolverTest extends TestCase
      */
     public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
     {
+        $this->expectException(RuntimeException::class);
         $fixture = new TypeResolver();
-
-        $resolvedType = $fixture->resolve('(string|\stdClass', new Context(''));
-
-        $this->assertInstanceOf(Compound::class, $resolvedType);
-        $this->assertSame('', (string) $resolvedType);
+        $fixture->resolve('(string|\stdClass', new Context(''));
     }
 
     /**
@@ -752,7 +757,7 @@ class TypeResolverTest extends TestCase
      */
     public function testInvalidArrayOperator(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(RuntimeException::class);
         $fixture = new TypeResolver();
         $fixture->resolve('[]', new Context(''));
     }
@@ -862,5 +867,238 @@ class TypeResolverTest extends TestCase
         $type = $fixture->resolve('array<string,array<int,string>>', new Context(''));
 
         $this->assertEquals(new Array_(new Array_(new String_(), new Integer()), new String_()), $type);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @dataProvider typeProvider
+     * @dataProvider genericsProvider
+     * @dataProvider callableProvider
+     * @dataProvider constExpressions
+     * @testdox create type from $type
+     */
+    public function testTypeBuilding(string $type, Type $expected): void
+    {
+        $fixture = new TypeResolver();
+        $actual = $fixture->resolve($type, new Context('phpDocumentor'));
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function typeProvider(): array
+    {
+        return [
+            [
+                'string',
+                new String_(),
+            ],
+            [
+                '( string )',
+                new String_(),
+            ],
+            [
+                '\\Foo\Bar\\Baz',
+                new Object_(new Fqsen('\\Foo\Bar\\Baz')),
+            ],
+            [
+                'string|int',
+                new Compound(
+                    [
+                        new String_(),
+                        new Integer(),
+                    ]
+                ),
+            ],
+            [
+                'string&int',
+                new Intersection(
+                    [
+                        new String_(),
+                        new Integer(),
+                    ]
+                ),
+            ],
+            [
+                'string & (int | float)',
+                new Intersection(
+                    [
+                        new String_(),
+                        new Expression(
+                            new Compound(
+                                [
+                                    new Integer(),
+                                    new Float_(),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ],
+            [
+                'string[]',
+                new Array_(
+                    new String_()
+                ),
+            ],
+            [
+                '$this',
+                new This(),
+            ],
+            [
+                '?int',
+                new Nullable(
+                    new Integer()
+                ),
+            ],
+            [
+                'self',
+                new Self_(),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function genericsProvider(): array
+    {
+        return [
+            [
+                'array<int, Foo\\Bar>',
+                new Array_(
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                    new Integer()
+                ),
+            ],
+            [
+                'Collection<array-key, int>[]',
+                new Array_(
+                    new Collection(
+                        new Fqsen('\\phpDocumentor\\Collection'),
+                        new Integer(),
+                        new ArrayKey()
+                    )
+                ),
+            ],
+            [
+                'class-string',
+                new ClassString(null),
+            ],
+            [
+                'class-string<Foo>',
+                new ClassString(new Fqsen('\\phpDocumentor\\Foo')),
+            ],
+            [
+                'interface-string<Foo>',
+                new InterfaceString(new Fqsen('\\phpDocumentor\\Foo')),
+            ],
+            [
+                'List<Foo>',
+                new List_(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                'int<1, 100>',
+                new IntegerRange('1', '100'),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function callableProvider(): array
+    {
+        return [
+            [
+                'callable',
+                new Callable_(),
+            ],
+            [
+                'callable()',
+                new Callable_(),
+            ],
+            [
+                'callable(): Foo',
+                new Callable_([], new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                'callable(): (Foo&Bar)',
+                new Callable_(
+                    [],
+                    new Intersection(
+                        [
+                            new Object_(new Fqsen('\\phpDocumentor\\Foo')),
+                            new Object_(new Fqsen('\\phpDocumentor\\Bar')),
+                        ]
+                    )
+                ),
+            ],
+            [
+                'callable(A&...$a=, B&...=, C): Foo',
+                new Callable_(
+                    [
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\A')),
+                            'a',
+                            true,
+                            true,
+                            true
+                        ),
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\B')),
+                            null,
+                            true,
+                            true,
+                            true
+                        ),
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\C')),
+                            null,
+                            false,
+                            false,
+                            false
+                        ),
+                    ],
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo'))
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function constExpressions(): array
+    {
+        return [
+            [
+                '123',
+                new IntegerValue(123),
+            ],
+            [
+                'true',
+                new True_(),
+            ],
+            [
+                '123.2',
+                new FloatValue(123.2),
+            ],
+            [
+                '"bar"',
+                new StringValue('bar'),
+            ],
+            [
+                'Foo::FOO_CONSTANT',
+                new ConstExpression(new Fqsen('\\phpDocumentor\\Foo'), 'FOO_CONSTANT'),
+            ],
+            [
+                'Foo::FOO_*',
+                new ConstExpression(new Fqsen('\\phpDocumentor\\Foo'), 'FOO_*'),
+            ],
+        ];
     }
 }

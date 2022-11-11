@@ -180,7 +180,7 @@ PHP
                 'Assert' => Assert::class,
                 'e' => e::class,
                 ReflectionClass::class => ReflectionClass::class,
-                'stdClass' => 'stdClass',
+                \stdClass::class => \stdClass::class,
             ];
 
             $actual = $context->getNamespaceAliases();

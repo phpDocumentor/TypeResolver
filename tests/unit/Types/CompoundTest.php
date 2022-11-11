@@ -143,4 +143,34 @@ final class CompoundTest extends TestCase
             $this->assertSame($types[$index], $type);
         }
     }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Integer
+     * @uses \phpDocumentor\Reflection\Types\Boolean
+     *
+     * @covers ::__construct
+     * @covers ::__toString
+     */
+    public function testCompoundIsMergedWithCompound(): void
+    {
+        $compound = new Compound([new Integer(), new Compound([new Integer(), new Boolean()])]);
+
+        $this->assertCount(2, iterator_to_array($compound));
+        $this->assertSame('int|bool', (string) $compound);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Integer
+     * @uses \phpDocumentor\Reflection\Types\Boolean
+     *
+     * @covers ::__construct
+     * @covers ::__toString
+     */
+    public function testCompoundIsMergedOnMergedWithIntersection(): void
+    {
+        $compound = new Compound([new Integer(), new Intersection([new Integer(), new Boolean()])]);
+
+        $this->assertCount(2, iterator_to_array($compound));
+        $this->assertSame('int|int&bool', (string) $compound);
+    }
 }
