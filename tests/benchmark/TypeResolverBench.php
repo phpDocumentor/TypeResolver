@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace benchmark;
 
+use PhpBench\Benchmark\Metadata\Annotations\Revs;
+use PhpBench\Benchmark\Metadata\Annotations\Warmup;
 use phpDocumentor\Reflection\TypeResolver;
 
 /**
@@ -21,13 +23,6 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 300us"
-     *      }
-     * )
      */
     public function benchResolveSingleType() : void
     {
@@ -37,13 +32,6 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 0.5ms"
-     *      }
-     * )
      */
     public function benchResolveCompoundType() : void
     {
@@ -53,13 +41,6 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 300us"
-     *      }
-     * )
      */
     public function benchResolveArrayType() : void
     {
@@ -69,13 +50,6 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 300us"
-     *      }
-     * )
      */
     public function benchResolveCompoundArrayType() : void
     {
@@ -85,13 +59,6 @@ class TypeResolverBench
     /**
      * @Warmup(2)
      * @Revs(10000)
-     * @Executor(
-     *     "blackfire",
-     *     assertions={
-     *      {"expression"="main.peak_memory < 11kb", "title"="memory peak"},
-     *      "main.wall_time < 1ms"
-     *      }
-     * )
      */
     public function benchResolveCompoundArrayWithDefinedTypes() : void
     {

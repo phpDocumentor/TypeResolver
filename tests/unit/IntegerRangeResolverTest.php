@@ -83,7 +83,7 @@ class IntegerRangeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingIntRangeErrorMisingMaxValue(): void
+    public function testResolvingIntRangeErrorMissingMaxValue(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('int<min,max> has not the correct format');
@@ -104,7 +104,7 @@ class IntegerRangeResolverTest extends TestCase
     public function testResolvingIntRangeErrorMisingMinValue(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('int<min,max> has not the correct format');
+        $this->expectExceptionMessage('Unexpected token ",", expected type at offset 4');
 
         $fixture = new TypeResolver();
         $resolvedType = $fixture->resolve('int<,max>', new Context(''));
@@ -140,27 +140,9 @@ class IntegerRangeResolverTest extends TestCase
     public function testResolvingIntRangeErrorMissingEnd(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Unexpected character "max", ">" is missing');
+        $this->expectExceptionMessage('Unexpected token "", expected \'>\' at offset 11');
 
         $fixture = new TypeResolver();
         $resolvedType = $fixture->resolve('int<min,max', new Context(''));
-    }
-
-    /**
-     * @uses \phpDocumentor\Reflection\Types\Context
-     * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
-     * @uses \phpDocumentor\Reflection\Types\String_
-     *
-     * @covers ::__construct
-     * @covers ::resolve
-     */
-    public function testResolvingIntRangeErrorFormat(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('int<min,max> has not the correct format');
-
-        $fixture = new TypeResolver();
-        $resolvedType = $fixture->resolve('int<min,max,>', new Context(''));
     }
 }

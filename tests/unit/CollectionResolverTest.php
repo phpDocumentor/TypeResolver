@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
-use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
@@ -178,23 +177,6 @@ class CollectionResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      */
-    public function testResolvingArrayCollectionWithKeyAndTooManyWhitespace(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $fixture = new TypeResolver();
-
-        $fixture->resolve('array<string,  object|array>', new Context(''));
-    }
-
-    /**
-     * @uses \phpDocumentor\Reflection\Types\Context
-     * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
-     * @uses \phpDocumentor\Reflection\Types\String_
-     *
-     * @covers ::__construct
-     * @covers ::resolve
-     */
     public function testResolvingCollectionOfCollection(): void
     {
         $fixture = new TypeResolver();
@@ -260,7 +242,7 @@ class CollectionResolverTest extends TestCase
     public function testMissingStartCollection(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Unexpected collection operator "<", class name is missing');
+        $this->expectExceptionMessage('Unexpected token "<", expected type at offset 0');
         $fixture = new TypeResolver();
         $fixture->resolve('<string>', new Context(''));
     }
@@ -272,7 +254,7 @@ class CollectionResolverTest extends TestCase
     public function testMissingEndCollection(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Collection: ">" is missing');
+        $this->expectExceptionMessage('Unexpected token "", expected \'>\' at offset 25');
         $fixture = new TypeResolver();
         $fixture->resolve('ArrayObject<object|string', new Context(''));
     }
