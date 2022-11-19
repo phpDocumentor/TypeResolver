@@ -102,7 +102,10 @@ use function in_array;
 use function sprintf;
 use function strpos;
 use function strtolower;
+use function trigger_error;
 use function trim;
+
+use const E_USER_DEPRECATED;
 
 final class TypeResolver
 {
@@ -200,15 +203,13 @@ final class TypeResolver
             $context = new Context('');
         }
 
-        try {
-            $tokens = $this->lexer->tokenize($type);
-            $tokenIterator = new TokenIterator($tokens);
-            $ast = $this->typeParser->parse($tokenIterator);
-        } catch (ParserException $e) {
-            throw new RuntimeException($e->getMessage(), 0, $e);
-        }
+        $tokens = $this->lexer->tokenize($type);
+        $tokenIterator = new TokenIterator($tokens);
 
-        return $this->createType($ast, $context);
+        $ast = $this->parse($tokenIterator);
+        $type = $this->createType($ast, $context);
+
+        return $this->tryParseRemainingCompoundTypes($tokenIterator, $context, $type);
     }
 
     public function createType(?TypeNode $type, Context $context): Type
@@ -403,7 +404,7 @@ final class TypeResolver
 
             case $type->constExpr instanceof ConstFetchNode:
                 return new ConstExpression(
-                    $this->fqsenResolver->resolve($type->constExpr->className, $context),
+                    $this->resolve($type->constExpr->className, $context),
                     $type->constExpr->name
                 );
 
@@ -550,5 +551,50 @@ final class TypeResolver
         }
 
         throw new RuntimeException('An array can have only integers or strings as keys');
+    }
+
+    private function parse(TokenIterator $tokenIterator): TypeNode
+    {
+        try {
+            $ast = $this->typeParser->parse($tokenIterator);
+        } catch (ParserException $e) {
+            throw new RuntimeException($e->getMessage(), 0, $e);
+        }
+
+        return $ast;
+    }
+
+    /**
+     * Will try to parse unsupported type notations by phpstan
+     *
+     * The phpstan parser doesn't support the illegal nullable combinations like this library does.
+     * This method will warn the user about those notations but for bc purposes we will still have it here.
+     */
+    private function tryParseRemainingCompoundTypes(TokenIterator $tokenIterator, Context $context, Type $type): Type
+    {
+        trigger_error(
+            'Legacy nullable type detected, please update your code as
+         you are using nullable types in a docblock. support will be removed in v2.0.0',
+            E_USER_DEPRECATED
+        );
+        $continue = true;
+        while ($continue) {
+            $continue = false;
+            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_UNION)) {
+                $ast = $this->parse($tokenIterator);
+                $type2 = $this->createType($ast, $context);
+                $type = new Compound([$type, $type2]);
+                $continue = true;
+            }
+
+            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_INTERSECTION)) {
+                $ast = $this->typeParser->parse($tokenIterator);
+                $type2 = $this->createType($ast, $context);
+                $type = new Intersection([$type, $type2]);
+                $continue = true;
+            }
+        }
+
+        return $type;
     }
 }

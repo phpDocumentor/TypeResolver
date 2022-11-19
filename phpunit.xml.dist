@@ -4,7 +4,7 @@
     bootstrap="vendor/autoload.php"
     colors="true"
     verbose="true"
-    convertDeprecationsToExceptions="true"
+    convertDeprecationsToExceptions="false"
     forceCoversAnnotation="true"
 >
     <testsuites>
