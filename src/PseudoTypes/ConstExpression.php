@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -23,16 +22,16 @@ use function sprintf;
 /** @psalm-immutable */
 final class ConstExpression implements PseudoType
 {
-    private Fqsen $owner;
+    private Type $owner;
     private string $expression;
 
-    public function __construct(Fqsen $owner, string $expression)
+    public function __construct(Type $owner, string $expression)
     {
         $this->owner = $owner;
         $this->expression = $expression;
     }
 
-    public function getOwner(): Fqsen
+    public function getOwner(): Type
     {
         return $this->owner;
     }

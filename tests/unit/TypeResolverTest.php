@@ -427,32 +427,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\String_
-     * @uses \phpDocumentor\Reflection\Types\Nullable
-     * @uses \phpDocumentor\Reflection\Types\Null_
-     * @uses \phpDocumentor\Reflection\Types\Boolean
-     * @uses \phpDocumentor\Reflection\Fqsen
-     * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::<private>
-     */
-    public function testResolvingNullableCompoundTypes(): void
-    {
-        $this->markTestSkipped('Invalid type definition');
-        $fixture = new TypeResolver();
-
-        // Note that in PHP types it is illegal to use shorthand nullable
-        // syntax with unions. This would be 'string|boolean|null' instead.
-        $resolvedType = $fixture->resolve('?string|null|?boolean');
-
-        $this->assertSame('?string|null|?bool', (string) $resolvedType);
-    }
-
-    /**
-     * @uses \phpDocumentor\Reflection\Types\Context
-     * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
@@ -876,6 +850,7 @@ class TypeResolverTest extends TestCase
      * @dataProvider genericsProvider
      * @dataProvider callableProvider
      * @dataProvider constExpressions
+     * @dataProvider illegalLegacyFormatProvider
      * @testdox create type from $type
      */
     public function testTypeBuilding(string $type, Type $expected): void
@@ -1093,11 +1068,66 @@ class TypeResolverTest extends TestCase
             ],
             [
                 'Foo::FOO_CONSTANT',
-                new ConstExpression(new Fqsen('\\phpDocumentor\\Foo'), 'FOO_CONSTANT'),
+                new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo')), 'FOO_CONSTANT'),
             ],
             [
                 'Foo::FOO_*',
-                new ConstExpression(new Fqsen('\\phpDocumentor\\Foo'), 'FOO_*'),
+                new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo')), 'FOO_*'),
+            ],
+            [
+                'self::*|null',
+                new Compound([new ConstExpression(new Self_(), '*'), new Null_()]),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function illegalLegacyFormatProvider(): array
+    {
+        return [
+            [
+                '?string|bool',
+                new Compound([new Nullable(new String_()), new Boolean()]),
+            ],
+            [
+                '?string|?bool',
+                new Compound([new Nullable(new String_()), new Nullable(new Boolean())]),
+            ],
+            [
+                '?string|?bool|null',
+                new Compound([new Nullable(new String_()), new Nullable(new Boolean()), new Null_()]),
+            ],
+            [
+                '?string|bool|Foo',
+                new Compound([
+                    new Nullable(new String_()),
+                    new Boolean(),
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo')),
+                ]),
+            ],
+            [
+                '?string&bool',
+                new Intersection([new Nullable(new String_()), new Boolean()]),
+            ],
+            [
+                '?string&bool|Foo',
+                new Intersection(
+                    [
+                        new Nullable(new String_()),
+                        new Compound([new Boolean(), new Object_(new Fqsen('\\phpDocumentor\\Foo'))]),
+                    ]
+                ),
+            ],
+            [
+                '?string&?bool|null',
+                new Compound(
+                    [
+                        new Intersection([new Nullable(new String_()), new Nullable(new Boolean())]),
+                        new Null_(),
+                    ]
+                ),
             ],
         ];
     }
