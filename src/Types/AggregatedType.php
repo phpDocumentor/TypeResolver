@@ -51,6 +51,13 @@ abstract class AggregatedType implements Type, IteratorAggregate
     }
 
     /**
+     * Returns the token used to separate the types
+     */
+    public function getToken(): string {
+        return $this->token;
+    }
+
+    /**
      * Returns the type at the given index.
      */
     public function get(int $index): ?Type
