@@ -3,14 +3,13 @@
 /tests/ export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
-/.scrutinizer.yml export-ignore
+/.yamllint.yaml export-ignore
 /Makefile export-ignore
-/composer-require-config.json export-ignore
+/composer-require-checker.json export-ignore
 /composer.lock export-ignore
-/phive.xml export-ignore
+/rector.php export-ignore
 /phpbench.json export-ignore
 /phpcs.xml.dist export-ignore
-/phpmd.xml.dist export-ignore
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
 /psalm.xml export-ignore
