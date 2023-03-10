@@ -25,6 +25,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
@@ -784,6 +785,7 @@ class TypeResolverTest extends TestCase
             ['never', Never_::class],
             ['literal-string', LiteralString::class],
             ['list', List_::class],
+            ['non-empty-list', NonEmptyList::class],
         ];
     }
 

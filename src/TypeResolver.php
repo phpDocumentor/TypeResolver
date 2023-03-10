@@ -27,6 +27,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
@@ -157,6 +158,7 @@ final class TypeResolver
         'iterable' => Iterable_::class,
         'never' => Never_::class,
         'list' => List_::class,
+        'non-empty-list' => NonEmptyList::class,
     ];
 
     /** @psalm-readonly */
@@ -330,6 +332,11 @@ final class TypeResolver
 
             case 'list':
                 return new List_(
+                    $this->createType($type->genericTypes[0], $context)
+                );
+
+            case 'non-empty-list':
+                return new NonEmptyList(
                     $this->createType($type->genericTypes[0], $context)
                 );
 
