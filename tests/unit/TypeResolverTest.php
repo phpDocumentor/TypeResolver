@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
@@ -73,6 +74,8 @@ use function get_class;
  */
 class TypeResolverTest extends TestCase
 {
+    use VerifyDeprecations;
+
     /**
      * @uses         \phpDocumentor\Reflection\Types\Context
      * @uses         \phpDocumentor\Reflection\Types\Array_
@@ -855,8 +858,14 @@ class TypeResolverTest extends TestCase
      * @dataProvider illegalLegacyFormatProvider
      * @testdox create type from $type
      */
-    public function testTypeBuilding(string $type, Type $expected): void
+    public function testTypeBuilding(string $type, Type $expected, bool $deprecation = false): void
     {
+        if ($deprecation) {
+            $this->expectDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
+        } else {
+            $this->expectNoDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
+        }
+
         $fixture = new TypeResolver();
         $actual = $fixture->resolve($type, new Context('phpDocumentor'));
 
@@ -1090,16 +1099,19 @@ class TypeResolverTest extends TestCase
     {
         return [
             [
-                '?string|bool',
+                '?string |bool',
                 new Compound([new Nullable(new String_()), new Boolean()]),
+                true,
             ],
             [
                 '?string|?bool',
                 new Compound([new Nullable(new String_()), new Nullable(new Boolean())]),
+                true,
             ],
             [
                 '?string|?bool|null',
                 new Compound([new Nullable(new String_()), new Nullable(new Boolean()), new Null_()]),
+                true,
             ],
             [
                 '?string|bool|Foo',
@@ -1108,10 +1120,12 @@ class TypeResolverTest extends TestCase
                     new Boolean(),
                     new Object_(new Fqsen('\\phpDocumentor\\Foo')),
                 ]),
+                true,
             ],
             [
                 '?string&bool',
                 new Intersection([new Nullable(new String_()), new Boolean()]),
+                true,
             ],
             [
                 '?string&bool|Foo',
@@ -1121,6 +1135,7 @@ class TypeResolverTest extends TestCase
                         new Compound([new Boolean(), new Object_(new Fqsen('\\phpDocumentor\\Foo'))]),
                     ]
                 ),
+                true,
             ],
             [
                 '?string&?bool|null',
@@ -1130,6 +1145,7 @@ class TypeResolverTest extends TestCase
                         new Null_(),
                     ]
                 ),
+                true,
             ],
         ];
     }
