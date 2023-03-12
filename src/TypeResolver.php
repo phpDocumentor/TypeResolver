@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use Doctrine\Deprecations\Deprecation;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
@@ -103,10 +104,7 @@ use function in_array;
 use function sprintf;
 use function strpos;
 use function strtolower;
-use function trigger_error;
 use function trim;
-
-use const E_USER_DEPRECATED;
 
 final class TypeResolver
 {
@@ -579,11 +577,18 @@ final class TypeResolver
      */
     private function tryParseRemainingCompoundTypes(TokenIterator $tokenIterator, Context $context, Type $type): Type
     {
-        trigger_error(
-            'Legacy nullable type detected, please update your code as
-         you are using nullable types in a docblock. support will be removed in v2.0.0',
-            E_USER_DEPRECATED
-        );
+        if (
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_UNION) ||
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_INTERSECTION)
+        ) {
+            Deprecation::trigger(
+                'phpdocumentor/type-resolver',
+                'https://github.com/phpDocumentor/TypeResolver/issues/184',
+                'Legacy nullable type detected, please update your code as
+                you are using nullable types in a docblock. support will be removed in v2.0.0',
+            );
+        }
+
         $continue = true;
         while ($continue) {
             $continue = false;
