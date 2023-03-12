@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
@@ -312,6 +313,30 @@ class CollectionResolverTest extends TestCase
 
         $this->assertInstanceOf(List_::class, $resolvedType);
         $this->assertSame('list<string>', (string) $resolvedType);
+
+        $valueType = $resolvedType->getValueType();
+
+        $keyType = $resolvedType->getKeyType();
+
+        $this->assertInstanceOf(String_::class, $valueType);
+        $this->assertInstanceOf(Integer::class, $keyType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\Types\String_
+     *
+     * @covers ::__construct
+     * @covers ::resolve
+     */
+    public function testResolvingNonEmptyList(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('non-empty-list<string>', new Context(''));
+
+        $this->assertInstanceOf(NonEmptyList::class, $resolvedType);
+        $this->assertSame('non-empty-list<string>', (string) $resolvedType);
 
         $valueType = $resolvedType->getValueType();
 
