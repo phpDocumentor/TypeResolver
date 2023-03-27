@@ -961,6 +961,18 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'array<string|int, Foo\\Bar>',
+                new Array_(
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                    new Compound(
+                        [
+                            new String_(),
+                            new Integer(),
+                        ]
+                    )
+                ),
+            ],
+            [
                 'Collection<array-key, int>[]',
                 new Array_(
                     new Collection(
