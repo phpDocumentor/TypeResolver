@@ -551,11 +551,22 @@ final class TypeResolver
             return new Array_(...$types);
         }
 
-        if ($types[1] instanceof String_ || $types[1] instanceof Integer || $types[1] instanceof ArrayKey) {
+        if ($this->validArrayKeyType($types[1]) || $types[1] instanceof ArrayKey) {
             return new Array_(...$types);
         }
 
+        if ($types[1] instanceof Compound && $types[1]->getIterator()->count() === 2) {
+            if ($this->validArrayKeyType($types[1]->get(0)) && $this->validArrayKeyType($types[1]->get(1))) {
+                return new Array_(...$types);
+            }
+        }
+
         throw new RuntimeException('An array can have only integers or strings as keys');
+    }
+
+    private function validArrayKeyType(?Type $type): bool
+    {
+        return $type instanceof String_ || $type instanceof Integer;
     }
 
     private function parse(TokenIterator $tokenIterator): TypeNode
