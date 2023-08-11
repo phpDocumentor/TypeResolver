@@ -139,6 +139,31 @@ namespace phpDocumentor\Reflection\Types {
             $this->assertSame([], $context->getNamespaceAliases());
         }
 
+        public function testTraitContainsClosureWithUseStatement() : void
+        {
+            $php = '<?php declare(strict_types=1);
+                namespace Foo;
+
+                trait FooTrait {
+                    protected function check(array $data, string $key) : void
+                    {
+                        array_walk($data, function(&$item) use ($key) {
+                            // update item based on the key
+                        });
+                    }
+                }
+
+                class FooClass {
+                    use FooTrait;
+                }
+            ';
+
+            $fixture = new ContextFactory();
+            $context = $fixture->createForNamespace('Foo', $php);
+
+            $this->assertSame([], $context->getNamespaceAliases());
+        }
+
         /**
          * @covers ::createFromReflector
          */
