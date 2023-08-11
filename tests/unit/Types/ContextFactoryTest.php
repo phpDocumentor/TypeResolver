@@ -139,6 +139,10 @@ namespace phpDocumentor\Reflection\Types {
             $this->assertSame([], $context->getNamespaceAliases());
         }
 
+        /**
+         * @covers ::createForNamespace
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
         public function testTraitContainsClosureWithUseStatement() : void
         {
             $php = '<?php declare(strict_types=1);
