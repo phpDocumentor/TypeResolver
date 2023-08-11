@@ -181,6 +181,7 @@ final class ContextFactory
                     $currentNamespace = $this->parseNamespace($tokens);
                     break;
                 case T_CLASS:
+                case T_TRAIT:
                     // Fast-forward the iterator through the class so that any
                     // T_USE tokens found within are skipped - these are not
                     // valid namespace use statements so should be ignored.
