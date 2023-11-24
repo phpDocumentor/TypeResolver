@@ -5,8 +5,10 @@ name: "Integrate"
 on: # yamllint disable-line rule:truthy
   push:
     branches:
-      - "5.x"
+      - "1.x"
   pull_request: null
+  schedule:
+    - cron: "0 14 * * 1"
   # Allow manually triggering the workflow.
   workflow_dispatch: null
 
@@ -44,7 +46,6 @@ jobs:
 
   unit-tests:
     name: "Unit test"
-    uses: "phpDocumentor/.github/.github/workflows/continues-integration.yml@v0.4.0"
+    uses: "phpDocumentor/.github/.github/workflows/continuous-integration.yml@v0.5.0"
     with:
       composer-root-version: "1.x-dev"
-      php-versions: "['7.4', '8.0', '8.1', '8.2']"
