@@ -4,6 +4,8 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use PHPUnit\Framework\TestCase;
 
 class ArrayShapeTest extends TestCase
