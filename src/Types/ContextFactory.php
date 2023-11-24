@@ -45,6 +45,7 @@ use const T_NAME_QUALIFIED;
 use const T_NAMESPACE;
 use const T_NS_SEPARATOR;
 use const T_STRING;
+use const T_TRAIT;
 use const T_USE;
 
 if (!defined('T_NAME_QUALIFIED')) {
