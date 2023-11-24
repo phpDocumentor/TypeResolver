@@ -46,6 +46,6 @@ jobs:
 
   unit-tests:
     name: "Unit test"
-    uses: "phpDocumentor/.github/.github/workflows/continuous-integration.yml@0.5.0"
+    uses: "phpDocumentor/.github/.github/workflows/continuous-integration.yml@v0.5.0"
     with:
       composer-root-version: "1.x-dev"
