@@ -8,7 +8,7 @@ on: # yamllint disable-line rule:truthy
       - "1.x"
   pull_request: null
   schedule:
-    - cron: '0 14 * * 1'
+    - cron: "0 14 * * 1"
   # Allow manually triggering the workflow.
   workflow_dispatch: null
 
