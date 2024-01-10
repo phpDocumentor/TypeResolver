@@ -49,11 +49,11 @@ use const T_TRAIT;
 use const T_USE;
 
 if (!defined('T_NAME_QUALIFIED')) {
-    define('T_NAME_QUALIFIED', 'T_NAME_QUALIFIED');
+    define('T_NAME_QUALIFIED', 10001);
 }
 
 if (!defined('T_NAME_FULLY_QUALIFIED')) {
-    define('T_NAME_FULLY_QUALIFIED', 'T_NAME_FULLY_QUALIFIED');
+    define('T_NAME_FULLY_QUALIFIED', 10002);
 }
 
 /**
