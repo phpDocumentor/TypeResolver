@@ -32,6 +32,14 @@ class ArrayShape implements PseudoType
         $this->items = $items;
     }
 
+    /**
+     * @return ArrayShapeItem[]
+     */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
     public function underlyingType(): Type
     {
         return new Array_(new Mixed_(), new ArrayKey());
