@@ -20,9 +20,12 @@ use function sprintf;
 
 final class ArrayShapeItem
 {
-    private ?string $key;
-    private Type $value;
-    private bool $optional;
+    /** @var string|null */
+    private $key;
+    /** @var Type */
+    private $value;
+    /** @var bool */
+    private $optional;
 
     public function __construct(?string $key, ?Type $value, bool $optional)
     {

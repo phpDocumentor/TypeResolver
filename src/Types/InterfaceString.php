@@ -23,7 +23,8 @@ use phpDocumentor\Reflection\Type;
  */
 final class InterfaceString implements Type
 {
-    private ?Fqsen $fqsen;
+    /** @var Fqsen|null */
+    private $fqsen;
 
     /**
      * Initializes this representation of a class string with the given Fqsen.

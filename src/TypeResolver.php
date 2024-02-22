@@ -115,7 +115,7 @@ final class TypeResolver
      * @var array<string, string> List of recognized keywords and unto which Value Object they map
      * @psalm-var array<string, class-string<Type>>
      */
-    private array $keywords = [
+    private $keywords = [
         'string' => String_::class,
         'class-string' => ClassString::class,
         'interface-string' => InterfaceString::class,
@@ -159,12 +159,21 @@ final class TypeResolver
         'non-empty-list' => NonEmptyList::class,
     ];
 
-    /** @psalm-readonly */
-    private FqsenResolver $fqsenResolver;
-    /** @psalm-readonly */
-    private TypeParser $typeParser;
-    /** @psalm-readonly */
-    private Lexer $lexer;
+    /**
+     * @psalm-readonly
+     * @var FqsenResolver
+     */
+    private $fqsenResolver;
+    /**
+     * @psalm-readonly
+     * @var TypeParser
+     */
+    private $typeParser;
+    /**
+     * @psalm-readonly
+     * @var Lexer
+     */
+    private $lexer;
 
     /**
      * Initializes this TypeResolver with the means to create and resolve Fqsen objects.
@@ -227,11 +236,13 @@ final class TypeResolver
             case ArrayShapeNode::class:
                 return new ArrayShape(
                     ...array_map(
-                        fn (ArrayShapeItemNode $item) => new ArrayShapeItem(
-                            (string) $item->keyName,
-                            $this->createType($item->valueType, $context),
-                            $item->optional
-                        ),
+                        function (ArrayShapeItemNode $item) use ($context): ArrayShapeItem {
+                            return new ArrayShapeItem(
+                                (string) $item->keyName,
+                                $this->createType($item->valueType, $context),
+                                $item->optional
+                            );
+                        },
                         $type->items
                     )
                 );
@@ -252,7 +263,7 @@ final class TypeResolver
                 return new Intersection(
                     array_filter(
                         array_map(
-                            function (TypeNode $nestedType) use ($context) {
+                            function (TypeNode $nestedType) use ($context): Type {
                                 $type = $this->createType($nestedType, $context);
                                 if ($type instanceof AggregatedType) {
                                     return new Expression($type);
@@ -274,7 +285,7 @@ final class TypeResolver
                 return new Compound(
                     array_filter(
                         array_map(
-                            function (TypeNode $nestedType) use ($context) {
+                            function (TypeNode $nestedType) use ($context): Type {
                                 $type = $this->createType($nestedType, $context);
                                 if ($type instanceof AggregatedType) {
                                     return new Expression($type);
@@ -343,16 +354,15 @@ final class TypeResolver
                     throw new RuntimeException('int<min,max> has not the correct format');
                 }
 
-                return new IntegerRange(
-                    (string) $type->genericTypes[0],
-                    (string) $type->genericTypes[1],
-                );
+                return new IntegerRange((string) $type->genericTypes[0], (string) $type->genericTypes[1]);
 
             case 'iterable':
                 return new Iterable_(
                     ...array_reverse(
                         array_map(
-                            fn (TypeNode $genericType) => $this->createType($genericType, $context),
+                            function (TypeNode $genericType) use ($context): Type {
+                                return $this->createType($genericType, $context);
+                            },
                             $type->genericTypes
                         )
                     )
@@ -368,7 +378,9 @@ final class TypeResolver
                     $collectionType->getFqsen(),
                     ...array_reverse(
                         array_map(
-                            fn (TypeNode $genericType) => $this->createType($genericType, $context),
+                            function (TypeNode $genericType) use ($context): Type {
+                                return $this->createType($genericType, $context);
+                            },
                             $type->genericTypes
                         )
                     )
@@ -378,21 +390,18 @@ final class TypeResolver
 
     private function createFromCallable(CallableTypeNode $type, Context $context): Callable_
     {
-        return new Callable_(
-            array_map(
-                function (CallableTypeParameterNode $param) use ($context) {
-                    return new CallableParameter(
-                        $this->createType($param->type, $context),
-                        $param->parameterName !== '' ? trim($param->parameterName, '$') : null,
-                        $param->isReference,
-                        $param->isVariadic,
-                        $param->isOptional
-                    );
-                },
-                $type->parameters
-            ),
-            $this->createType($type->returnType, $context),
-        );
+        return new Callable_(array_map(
+            function (CallableTypeParameterNode $param) use ($context): CallableParameter {
+                return new CallableParameter(
+                    $this->createType($param->type, $context),
+                    $param->parameterName !== '' ? trim($param->parameterName, '$') : null,
+                    $param->isReference,
+                    $param->isVariadic,
+                    $param->isOptional
+                );
+            },
+            $type->parameters
+        ), $this->createType($type->returnType, $context));
     }
 
     private function createFromConst(ConstTypeNode $type, Context $context): Type
@@ -542,7 +551,9 @@ final class TypeResolver
     {
         $types = array_reverse(
             array_map(
-                fn (TypeNode $node) => $this->createType($node, $context),
+                function (TypeNode $node) use ($context): Type {
+                    return $this->createType($node, $context);
+                },
                 $typeNodes
             )
         );
@@ -596,7 +607,7 @@ final class TypeResolver
                 'phpdocumentor/type-resolver',
                 'https://github.com/phpDocumentor/TypeResolver/issues/184',
                 'Legacy nullable type detected, please update your code as
-                you are using nullable types in a docblock. support will be removed in v2.0.0',
+                you are using nullable types in a docblock. support will be removed in v2.0.0'
             );
         }
 

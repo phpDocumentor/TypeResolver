@@ -22,9 +22,10 @@ use phpDocumentor\Reflection\Type;
  */
 final class Callable_ implements Type
 {
-    private ?Type $returnType;
+    /** @var Type|null */
+    private $returnType;
     /** @var CallableParameter[] */
-    private array $parameters;
+    private $parameters;
 
     /**
      * @param CallableParameter[] $parameters
