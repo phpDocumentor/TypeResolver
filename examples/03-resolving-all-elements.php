@@ -3,7 +3,7 @@
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\FqsenResolver;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $fqsenResolver = new FqsenResolver();
 

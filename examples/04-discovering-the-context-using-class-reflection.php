@@ -4,7 +4,7 @@ use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 require 'Classy.php';
 
 $typeResolver = new TypeResolver();

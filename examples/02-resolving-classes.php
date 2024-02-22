@@ -3,7 +3,7 @@
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\TypeResolver;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $typeResolver = new TypeResolver();
 
