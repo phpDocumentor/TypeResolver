@@ -31,7 +31,8 @@ use phpDocumentor\Reflection\Type;
  */
 final class Collection extends AbstractList
 {
-    private ?Fqsen $fqsen;
+    /** @var Fqsen|null */
+    private $fqsen;
 
     /**
      * Initializes this representation of an array with the given Type or Fqsen.
