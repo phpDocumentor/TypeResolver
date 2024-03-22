@@ -12,7 +12,7 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "phpdocumentor/reflection-common": "^2.0",
-        "phpstan/phpdoc-parser": "^1.13",
+        "phpstan/phpdoc-parser": "^1.18",
         "doctrine/deprecations": "^1.0"
     },
     "require-dev": {
