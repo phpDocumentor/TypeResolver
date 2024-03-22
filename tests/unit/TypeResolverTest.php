@@ -15,6 +15,8 @@ namespace phpDocumentor\Reflection;
 
 use Doctrine\Deprecations\PHPUnit\VerifyDeprecations;
 use InvalidArgumentException;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
@@ -23,6 +25,8 @@ use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
 use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\ListShape;
+use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
@@ -31,6 +35,8 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
@@ -83,6 +89,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      *
      * @dataProvider provideKeywords
@@ -103,6 +110,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      *
      * @dataProvider provideClassStrings
@@ -127,6 +135,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      *
      * @dataProvider provideInterfaceStrings
@@ -152,6 +161,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      *
      * @dataProvider provideFqcn
@@ -175,6 +185,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingRelativeQSENsBasedOnNamespace(): void
@@ -196,6 +207,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingRelativeQSENsBasedOnNamespaceAlias(): void
@@ -219,6 +231,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingTypedArrays(): void
@@ -240,6 +253,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingNullableTypes(): void
@@ -260,6 +274,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingNestedTypedArrays(): void
@@ -291,6 +306,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingCompoundTypes(): void
@@ -321,6 +337,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingAmpersandCompoundTypes(): void
@@ -358,6 +375,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingMixedCompoundTypes(): void
@@ -407,6 +425,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingCompoundTypedArrayTypes(): void
@@ -438,6 +457,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingArrayExpressionObjectsTypes(): void
@@ -471,6 +491,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingArrayExpressionSimpleTypes(): void
@@ -507,6 +528,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingArrayOfArrayExpressionTypes(): void
@@ -542,6 +564,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
@@ -561,6 +584,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingArrayExpressionOrCompoundTypes(): void
@@ -602,6 +626,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingIterableExpressionSimpleTypes(): void
@@ -644,6 +669,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::<private>
      */
     public function testResolvingCompoundTypesWithTwoArrays(): void
@@ -719,6 +745,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testExceptionIsThrownIfTypeIsEmpty(): void
     {
@@ -732,6 +759,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testInvalidArrayOperator(): void
     {
@@ -839,6 +867,7 @@ class TypeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testArrayKeyValueSpecification(): void
     {
@@ -851,10 +880,12 @@ class TypeResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      * @dataProvider typeProvider
      * @dataProvider genericsProvider
      * @dataProvider callableProvider
      * @dataProvider constExpressions
+     * @dataProvider shapeStructures
      * @dataProvider illegalLegacyFormatProvider
      * @testdox create type from $type
      */
@@ -1100,6 +1131,42 @@ class TypeResolverTest extends TestCase
             [
                 'self::*|null',
                 new Compound([new ConstExpression(new Self_(), '*'), new Null_()]),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<array{0: string, 1: Type}>
+     */
+    public function shapeStructures(): array
+    {
+        return [
+            [
+                'array{foo: string, bar: int}',
+                new ArrayShape(
+                    new ArrayShapeItem('foo', new String_(), false),
+                    new ArrayShapeItem('bar', new Integer(), false)
+                ),
+            ],
+            [
+                'array{foo?: string, bar: int}',
+                new ArrayShape(
+                    new ArrayShapeItem('foo', new String_(), true),
+                    new ArrayShapeItem('bar', new Integer(), false)
+                ),
+            ],
+            [
+                'object{foo: string, bar: int}',
+                new ObjectShape(
+                    new ObjectShapeItem('foo', new String_(), false),
+                    new ObjectShapeItem('bar', new Integer(), false)
+                ),
+            ],
+            [
+                'list{1}',
+                new ListShape(
+                    new ListShapeItem(null, new IntegerValue(1), false)
+                ),
             ],
         ];
     }

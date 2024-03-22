@@ -6,6 +6,9 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ArrayShape
+ */
 class ArrayShapeTest extends TestCase
 {
     /**

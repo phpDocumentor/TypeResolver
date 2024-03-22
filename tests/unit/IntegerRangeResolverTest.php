@@ -32,6 +32,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRange(): void
     {
@@ -57,6 +58,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRangeWithKeywords(): void
     {
@@ -82,6 +84,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMissingMaxValue(): void
     {
@@ -100,6 +103,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMisingMinValue(): void
     {
@@ -118,6 +122,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMisingComma(): void
     {
@@ -136,6 +141,7 @@ class IntegerRangeResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMissingEnd(): void
     {

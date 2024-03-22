@@ -32,7 +32,6 @@ class NumericResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
-     * @covers ::resolve
      */
     public function testResolvingIntRange(): void
     {
