@@ -40,6 +40,7 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::resolve
+     * @covers ::createType
      * @covers ::__construct
      */
     public function testResolvingCollection(): void
@@ -69,6 +70,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingCollectionWithKeyType(): void
     {
@@ -99,6 +101,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingArrayCollection(): void
     {
@@ -125,6 +128,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingArrayCollectionWithKey(): void
     {
@@ -151,6 +155,7 @@ class CollectionResolverTest extends TestCase
 
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingArrayCollectionWithKeyAndWhitespace(): void
     {
@@ -177,6 +182,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingCollectionOfCollection(): void
     {
@@ -208,6 +214,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testBadArrayCollectionKey(): void
     {
@@ -220,6 +227,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testGoodArrayCollectionKey(): void
     {
@@ -239,6 +247,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testMissingStartCollection(): void
     {
@@ -251,6 +260,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testMissingEndCollection(): void
     {
@@ -263,6 +273,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testBadCollectionClass(): void
     {
@@ -280,6 +291,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingCollectionAsArray(): void
     {
@@ -304,6 +316,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingList(): void
     {
@@ -328,6 +341,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingNonEmptyList(): void
     {
@@ -352,6 +366,7 @@ class CollectionResolverTest extends TestCase
      *
      * @covers ::__construct
      * @covers ::resolve
+     * @covers ::createType
      */
     public function testResolvingNullableArray(): void
     {
