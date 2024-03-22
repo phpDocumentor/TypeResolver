@@ -28,6 +28,7 @@ use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
@@ -139,6 +140,7 @@ final class TypeResolver
         'mixed' => Mixed_::class,
         'array' => Array_::class,
         'array-key' => ArrayKey::class,
+        'non-empty-array' => NonEmptyArray::class,
         'resource' => Resource_::class,
         'void' => Void_::class,
         'null' => Null_::class,
