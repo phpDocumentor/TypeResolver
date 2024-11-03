@@ -62,6 +62,14 @@ abstract class AbstractList implements Type
     }
 
     /**
+     * Returns key is a list
+     */
+    public function isListKey(): bool
+    {
+        return $this->keyType !== null;
+    }
+
+    /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
     public function __toString(): string

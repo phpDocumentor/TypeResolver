@@ -14,39 +14,40 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use ArrayIterator;
-use InvalidArgumentException;
-use ReflectionClass;
-use ReflectionClassConstant;
-use ReflectionMethod;
-use ReflectionParameter;
-use ReflectionProperty;
-use Reflector;
 use RuntimeException;
+use Reflector;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionFunction;
+use ReflectionProperty;
+use ReflectionParameter;
+use ReflectionAttribute;
+use ReflectionClassConstant;
+use InvalidArgumentException;
 use UnexpectedValueException;
 
-use function define;
-use function defined;
-use function file_exists;
-use function file_get_contents;
-use function get_class;
-use function in_array;
-use function is_string;
-use function strrpos;
-use function substr;
-use function token_get_all;
-use function trim;
-
 use const T_AS;
-use const T_CLASS;
-use const T_CURLY_OPEN;
-use const T_DOLLAR_OPEN_CURLY_BRACES;
-use const T_NAME_FULLY_QUALIFIED;
-use const T_NAME_QUALIFIED;
-use const T_NAMESPACE;
-use const T_NS_SEPARATOR;
-use const T_STRING;
-use const T_TRAIT;
 use const T_USE;
+use const T_TRAIT;
+use const T_CLASS;
+use const T_STRING;
+use const T_NAMESPACE;
+use const T_CURLY_OPEN;
+use const T_NS_SEPARATOR;
+use const T_NAME_QUALIFIED;
+use const T_NAME_FULLY_QUALIFIED;
+use const T_DOLLAR_OPEN_CURLY_BRACES;
+use function trim;
+use function define;
+use function substr;
+use function defined;
+use function strrpos;
+use function in_array;
+use function get_class;
+use function is_string;
+use function file_exists;
+use function token_get_all;
+use function file_get_contents;
 
 if (!defined('T_NAME_QUALIFIED')) {
     define('T_NAME_QUALIFIED', 10001);
@@ -103,6 +104,14 @@ final class ContextFactory
             return $this->createFromReflectionClassConstant($reflector);
         }
 
+        if ($reflector instanceof ReflectionFunction) {
+            return $this->createFromReflectionFunction($reflector);
+        }
+
+        if ($reflector instanceof ReflectionAttribute) {
+            return $this->createFromReflectionAttribute($reflector);
+        }
+
         throw new UnexpectedValueException('Unhandled \Reflector instance given:  ' . get_class($reflector));
     }
 
@@ -157,6 +166,31 @@ final class ContextFactory
         }
 
         return new Context($namespace, []);
+    }
+
+    private function createFromReflectionFunction(ReflectionFunction $function): Context
+    {
+        $fileName  = $function->getFileName();
+        $namespace = $function->getNamespaceName();
+
+        if (is_string($fileName) && file_exists($fileName)) {
+            $contents = file_get_contents($fileName);
+            if ($contents === false) {
+                throw new RuntimeException('Unable to read file "' . $fileName . '"');
+            }
+
+            return $this->createForNamespace($namespace, $contents);
+        }
+
+        return new Context($namespace, []);
+    }
+
+    private function createFromReflectionAttribute(ReflectionAttribute $attribute): Context
+    {
+        $name  = $attribute->getName();
+        $class = new ReflectionClass($name);
+
+        return $this->createFromReflectionClass($class);
     }
 
     /**

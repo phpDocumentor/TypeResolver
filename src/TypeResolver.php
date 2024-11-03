@@ -13,105 +13,119 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
-use Doctrine\Deprecations\Deprecation;
+use phpDocumentor\Reflection\PseudoTypes\ClosedResource;
+use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
+use phpDocumentor\Reflection\PseudoTypes\KeyOf;
+use phpDocumentor\Reflection\PseudoTypes\OpenResource;
+use phpDocumentor\Reflection\PseudoTypes\PrivatePropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\ProtectedPropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PublicPropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\ValueOf;
+use RuntimeException;
 use InvalidArgumentException;
-use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
-use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
-use phpDocumentor\Reflection\PseudoTypes\CallableString;
-use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
-use phpDocumentor\Reflection\PseudoTypes\False_;
-use phpDocumentor\Reflection\PseudoTypes\FloatValue;
-use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
-use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
-use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
-use phpDocumentor\Reflection\PseudoTypes\List_;
-use phpDocumentor\Reflection\PseudoTypes\ListShape;
-use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
-use phpDocumentor\Reflection\PseudoTypes\LiteralString;
-use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
-use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
-use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
-use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
-use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
-use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
-use phpDocumentor\Reflection\PseudoTypes\Numeric_;
-use phpDocumentor\Reflection\PseudoTypes\NumericString;
-use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
-use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
-use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
-use phpDocumentor\Reflection\PseudoTypes\StringValue;
-use phpDocumentor\Reflection\PseudoTypes\TraitString;
-use phpDocumentor\Reflection\PseudoTypes\True_;
-use phpDocumentor\Reflection\Types\AggregatedType;
+use phpDocumentor\Reflection\Type;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use Doctrine\Deprecations\Deprecation;
+use phpDocumentor\Reflection\Types\This;
+use phpDocumentor\Reflection\Types\Null_;
+use phpDocumentor\Reflection\Types\Self_;
+use phpDocumentor\Reflection\Types\Void_;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\ArrayKey;
-use phpDocumentor\Reflection\Types\Boolean;
-use phpDocumentor\Reflection\Types\Callable_;
-use phpDocumentor\Reflection\Types\CallableParameter;
-use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Collection;
-use phpDocumentor\Reflection\Types\Compound;
-use phpDocumentor\Reflection\Types\Context;
-use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
-use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\InterfaceString;
-use phpDocumentor\Reflection\Types\Intersection;
-use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Never_;
-use phpDocumentor\Reflection\Types\Null_;
-use phpDocumentor\Reflection\Types\Nullable;
+use phpDocumentor\Reflection\Types\Scalar;
+use phpDocumentor\Reflection\Types\Boolean;
+use phpDocumentor\Reflection\Types\Context;
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Parent_;
-use phpDocumentor\Reflection\Types\Resource_;
-use phpDocumentor\Reflection\Types\Scalar;
-use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
-use phpDocumentor\Reflection\Types\This;
-use phpDocumentor\Reflection\Types\Void_;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFloatNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprIntegerNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
-use PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode;
-use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
-use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\CallableTypeParameterNode;
-use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
-use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\ConstTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\ObjectShapeItemNode;
-use PHPStan\PhpDocParser\Ast\Type\ObjectShapeNode;
-use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\ThisTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+use PHPStan\PhpDocParser\Parser\TypeParser;
+use phpDocumentor\Reflection\Types\ArrayKey;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Nullable;
+use phpDocumentor\Reflection\Types\Callable_;
+use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Resource_;
+use phpDocumentor\Reflection\Types\Collection;
+use phpDocumentor\Reflection\Types\Expression;
+use PHPStan\PhpDocParser\Parser\TokenIterator;
+use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\Types\ClassString;
+use PHPStan\PhpDocParser\Ast\Type\ThisTypeNode;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use phpDocumentor\Reflection\Types\Intersection;
+use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ConstTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
-use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\ParserException;
-use PHPStan\PhpDocParser\Parser\TokenIterator;
-use PHPStan\PhpDocParser\Parser\TypeParser;
-use RuntimeException;
+use phpDocumentor\Reflection\PseudoTypes\IntMask;
+use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
+use phpDocumentor\Reflection\PseudoTypes\Numeric_;
+use phpDocumentor\Reflection\Types\AggregatedType;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ObjectShapeNode;
+use phpDocumentor\Reflection\PseudoTypes\ListShape;
+use phpDocumentor\Reflection\Types\InterfaceString;
+use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
+use phpDocumentor\Reflection\PseudoTypes\FloatValue;
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
+use phpDocumentor\Reflection\PseudoTypes\StringValue;
+use phpDocumentor\Reflection\PseudoTypes\TraitString;
+use phpDocumentor\Reflection\Types\CallableParameter;
+use PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode;
+use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
+use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
+use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
+use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ObjectShapeItemNode;
+use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\LiteralString;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
+use phpDocumentor\Reflection\PseudoTypes\NumericString;
+use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
+use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFloatNode;
+use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprIntegerNode;
+use PHPStan\PhpDocParser\Ast\Type\CallableTypeParameterNode;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalParameter;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 
-use function array_filter;
-use function array_key_exists;
-use function array_map;
-use function array_reverse;
-use function class_exists;
-use function class_implements;
-use function get_class;
-use function in_array;
-use function sprintf;
-use function strpos;
-use function strtolower;
+use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
 use function trim;
+use function strpos;
+use function sprintf;
+use function in_array;
+use function array_map;
+use function get_class;
+use function strtolower;
+use function array_filter;
+use function class_exists;
+use function array_reverse;
+use function array_key_exists;
+use function class_implements;
 
 final class TypeResolver
 {
@@ -148,6 +162,8 @@ final class TypeResolver
         'array-key' => ArrayKey::class,
         'non-empty-array' => NonEmptyArray::class,
         'resource' => Resource_::class,
+        'closed-resource' => ClosedResource::class,
+        'open-resource' => OpenResource::class,
         'void' => Void_::class,
         'null' => Null_::class,
         'scalar' => Scalar::class,
@@ -274,6 +290,7 @@ final class TypeResolver
                     default:
                         throw new RuntimeException('Unsupported array shape kind');
                 }
+                // no break
             case ObjectShapeNode::class:
                 return new ObjectShape(
                     ...array_map(
@@ -343,8 +360,29 @@ final class TypeResolver
                 return new This();
 
             case ConditionalTypeNode::class:
+                return new Conditional(
+                    $this->createType($type->subjectType, $context),
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                    $type->negated
+                );
+
             case ConditionalTypeForParameterNode::class:
+                return new ConditionalParameter(
+                    $type->parameterName,
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                    $type->negated
+                );
+
             case OffsetAccessTypeNode::class:
+                $offset = $this->createType($type->offset, $context);
+                $type   = $this->createType($type->type, $context);
+
+                return new OffsetAccess($type, $offset);
+
             default:
                 return new Mixed_();
         }
@@ -380,6 +418,54 @@ final class TypeResolver
                     $subType->getFqsen()
                 );
 
+            case 'properties-of' :
+                $subType = $this->createType($type->genericTypes[0], $context);
+                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
+                    throw new RuntimeException(
+                        $subType . ' is not a class'
+                    );
+                }
+
+                return new PropertiesOf(
+                    $subType->getFqsen()
+                );
+
+            case 'public-properties-of' :
+                $subType = $this->createType($type->genericTypes[0], $context);
+                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
+                    throw new RuntimeException(
+                        $subType . ' is not a class'
+                    );
+                }
+
+                return new PublicPropertiesOf(
+                    $subType->getFqsen()
+                );
+
+            case 'protected-properties-of' :
+                $subType = $this->createType($type->genericTypes[0], $context);
+                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
+                    throw new RuntimeException(
+                        $subType . ' is not a class'
+                    );
+                }
+
+                return new ProtectedPropertiesOf(
+                    $subType->getFqsen()
+                );
+
+            case 'private-properties-of' :
+                $subType = $this->createType($type->genericTypes[0], $context);
+                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
+                    throw new RuntimeException(
+                        $subType . ' is not a class'
+                    );
+                }
+
+                return new PrivatePropertiesOf(
+                    $subType->getFqsen()
+                );
+
             case 'list':
                 return new List_(
                     $this->createType($type->genericTypes[0], $context)
@@ -390,12 +476,42 @@ final class TypeResolver
                     $this->createType($type->genericTypes[0], $context)
                 );
 
+            case 'key-of':
+                return new KeyOf(
+                    $this->createType($type->genericTypes[0], $context)
+                );
+
+            case 'value-of':
+                return new ValueOf(
+                    $this->createType($type->genericTypes[0], $context)
+                );
+
             case 'int':
                 if (isset($type->genericTypes[1]) === false) {
                     throw new RuntimeException('int<min,max> has not the correct format');
                 }
 
                 return new IntegerRange((string) $type->genericTypes[0], (string) $type->genericTypes[1]);
+
+            case 'int-mask':
+                return new IntMask(
+                    array_map(
+                        function (TypeNode $genericType) use ($context): Type {
+                            return $this->createType($genericType, $context);
+                        },
+                        $type->genericTypes
+                    )
+                );
+
+            case 'int-mask-of':
+                    return new IntMaskOf(
+                        array_map(
+                            function (TypeNode $genericType) use ($context): Type {
+                                return $this->createType($genericType, $context);
+                            },
+                            $type->genericTypes
+                        )
+                    );
 
             case 'iterable':
                 return new Iterable_(

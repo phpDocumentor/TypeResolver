@@ -11,22 +11,29 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\PseudoType;
+use phpDocumentor\Reflection\Types\Resource_;
 
 /**
- * Value Object representing the 'resource' Type.
+ * Value Object representing the 'open-resource' Type.
  *
  * @psalm-immutable
  */
-class Resource_ implements Type
+final class OpenResource extends Resource_ implements PseudoType
 {
+    public function underlyingType(): Type
+    {
+        return new Resource_();
+    }
+
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */
     public function __toString(): string
     {
-        return 'resource';
+        return 'open-resource';
     }
 }

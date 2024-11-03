@@ -13,8 +13,10 @@ abstract class ShapeItem
 {
     /** @var string|null */
     private $key;
+
     /** @var Type */
     private $value;
+
     /** @var bool */
     private $optional;
 

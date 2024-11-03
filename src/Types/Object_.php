@@ -28,7 +28,7 @@ use function strpos;
  *
  * @psalm-immutable
  */
-final class Object_ implements Type
+class Object_ implements Type
 {
     /** @var Fqsen|null */
     private $fqsen;

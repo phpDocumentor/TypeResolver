@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use function sprintf;
 
 /** @psalm-immutable */
-final class ConstExpression implements PseudoType
+final class ConstExpression extends Mixed_ implements PseudoType
 {
     /** @var Type */
     private $owner;

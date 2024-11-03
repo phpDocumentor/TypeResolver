@@ -13,33 +13,30 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
-use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\AggregatedType;
 
 /** @psalm-immutable */
-final class IntegerValue extends Integer implements PseudoType
+final class IntMask extends AggregatedType implements PseudoType
 {
-    /** @var int */
-    private $value;
-
-    public function __construct(int $value)
+    public function __construct(array $types)
     {
-        $this->value = $value;
-    }
-
-    public function getValue(): int
-    {
-        return $this->value;
+        parent::__construct($types, ', ');
     }
 
     public function underlyingType(): Type
     {
-        return new Integer();
+        return new Compound([new Integer()]);
     }
 
+    /**
+     * Returns a rendered output of the Type as it would be used in a DocBlock.
+     */
     public function __toString(): string
     {
-        return (string) $this->value;
+        return 'int-mask<' . parent::__toString() . '>';
     }
 }
