@@ -7,3 +7,20 @@ parameters:
         - tests/benchmark/Assets/*
     paths:
         - src
+    ignoreErrors:
+        -
+            message: "#^Parameter \\#1 \\$constExprParser of class PHPStan\\\\PhpDocParser\\\\Parser\\\\TypeParser constructor expects PHPStan\\\\PhpDocParser\\\\Parser\\\\ConstExprParser\\|null, PHPStan\\\\PhpDocParser\\\\ParserConfig given\\.$#"
+            count: 1
+            path: src/TypeResolver.php
+        -
+            message: "#^Parameter \\#1 \\$parseDoctrineAnnotations of class PHPStan\\\\PhpDocParser\\\\Lexer\\\\Lexer constructor expects bool, PHPStan\\\\PhpDocParser\\\\ParserConfig given\\.$#"
+            count: 1
+            path: src/TypeResolver.php
+        -
+            message: "#^Parameter \\#1 \\$unescapeStrings of class PHPStan\\\\PhpDocParser\\\\Parser\\\\ConstExprParser constructor expects bool, PHPStan\\\\PhpDocParser\\\\ParserConfig given\\.$#"
+            count: 1
+            path: src/TypeResolver.php
+        -
+            message: "#^Parameter \\#2 \\$quoteAwareConstExprString of class PHPStan\\\\PhpDocParser\\\\Parser\\\\TypeParser constructor expects bool, PHPStan\\\\PhpDocParser\\\\Parser\\\\ConstExprParser given\\.$#"
+            count: 1
+            path: src/TypeResolver.php
