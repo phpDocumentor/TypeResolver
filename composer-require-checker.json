@@ -2,7 +2,7 @@
   "symbol-whitelist" : [
     "null", "true", "false",
     "static", "self", "parent",
-    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object", "XSLTProcessor",
+    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object", "XSLTProcessor", "PHPStan\\PhpDocParser\\ParserConfig",
     "T_NAME_QUALIFIED", "T_NAME_FULLY_QUALIFIED"
   ],
   "php-core-extensions" : [
