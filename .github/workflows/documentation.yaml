@@ -48,7 +48,7 @@ jobs:
         run: "rsync -r --delete build/docs/* docs/docs/components/type-resolver"
 
       - name: "Commit"
-        uses: "stefanzweifel/git-auto-commit-action@v5"
+        uses: "stefanzweifel/git-auto-commit-action@v6"
         with:
           repository: "docs"
           commit_message: "Update type-resolver documentation"
