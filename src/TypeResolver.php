@@ -118,8 +118,8 @@ use function get_class;
 use function in_array;
 use function sprintf;
 use function strpos;
-use function substr;
 use function strtolower;
+use function substr;
 use function trim;
 
 final class TypeResolver
@@ -358,7 +358,6 @@ final class TypeResolver
                 return new This();
 
             case ConditionalTypeNode::class:
-                /** @var ConditionalTypeNode $type */
                 return new Conditional(
                     $type->negated,
                     $this->createType($type->subjectType, $context),
@@ -368,7 +367,6 @@ final class TypeResolver
                 );
 
             case ConditionalTypeForParameterNode::class:
-                /** @var ConditionalTypeForParameterNode $type */
                 return new ConditionalForParameter(
                     $type->negated,
                     substr($type->parameterName, 1),
@@ -378,7 +376,6 @@ final class TypeResolver
                 );
 
             case OffsetAccessTypeNode::class:
-                /** @var OffsetAccessTypeNode $type */
                 return new OffsetAccess(
                     $this->createType($type->type, $context),
                     $this->createType($type->offset, $context)
@@ -547,7 +544,7 @@ final class TypeResolver
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
 
-                // @codeCoverageIgnoreStart
+            // @codeCoverageIgnoreStart
             default:
                 // I haven't got the foggiest how the logic would come here but added this as a defense.
                 throw new RuntimeException(
@@ -568,7 +565,7 @@ final class TypeResolver
         if (!class_exists($typeClassName)) {
             throw new InvalidArgumentException(
                 'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
-                    . ' but we could not find the class ' . $typeClassName
+                . ' but we could not find the class ' . $typeClassName
             );
         }
 
@@ -576,7 +573,7 @@ final class TypeResolver
         if ($interfaces === false) {
             throw new InvalidArgumentException(
                 'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
-                    . ' but we could not find the class ' . $typeClassName
+                . ' but we could not find the class ' . $typeClassName
             );
         }
 
