@@ -255,7 +255,7 @@ final class TypeResolver
                             ...array_map(
                                 function (ArrayShapeItemNode $item) use ($context): ArrayShapeItem {
                                     return new ArrayShapeItem(
-                                        (string) $item->keyName,
+                                        $item->keyName !== null ? (string) $item->keyName : null,
                                         $this->createType($item->valueType, $context),
                                         $item->optional
                                     );

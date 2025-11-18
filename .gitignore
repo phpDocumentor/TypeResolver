@@ -1,6 +1,7 @@
 # IDE Shizzle; it is recommended to use a global .gitignore for this but since this is an OSS project we want to make
 # it easy to contribute
 .idea
+.vscode
 /nbproject/private/
 .buildpath
 .project
