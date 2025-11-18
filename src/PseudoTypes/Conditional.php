@@ -24,7 +24,7 @@ use function sprintf;
  *
  * @psalm-immutable
  */
-final class Conditional implements PseudoType
+final class Conditional extends Mixed_ implements PseudoType
 {
     /** @var bool */
     private $negated;
