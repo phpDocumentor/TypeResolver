@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 /**
  * Value Object representing an unknown, or mixed, type.
@@ -23,14 +22,6 @@ use PHPStan\PhpDocParser\Ast\Type\TypeNode;
  */
 final class Mixed_ implements Type
 {
-    /** @var TypeNode|null */
-    public $typeNode;
-
-    public function __construct(?TypeNode $typeNode = null)
-    {
-        $this->typeNode = $typeNode;
-    }
-
     /**
      * Returns a rendered output of the Type as it would be used in a DocBlock.
      */

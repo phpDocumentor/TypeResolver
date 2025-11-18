@@ -18,12 +18,17 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
+use phpDocumentor\Reflection\PseudoTypes\IntMask;
+use phpDocumentor\Reflection\PseudoTypes\KeyOf;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\ListShape;
 use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
@@ -38,10 +43,12 @@ use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
@@ -350,10 +357,34 @@ final class TypeResolver
                 return new This();
 
             case ConditionalTypeNode::class:
+                /** @var ConditionalTypeNode $type */
+                return new Conditional(
+                    $type->negated,
+                    $this->createType($type->subjectType, $context),
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                );
+
             case ConditionalTypeForParameterNode::class:
+                /** @var ConditionalTypeForParameterNode $type */
+                return new ConditionalForParameter(
+                    $type->negated,
+                    substr($type->parameterName, 1),
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                );
+
             case OffsetAccessTypeNode::class:
+                /** @var OffsetAccessTypeNode $type */
+                return new OffsetAccess(
+                    $this->createType($type->type, $context),
+                    $this->createType($type->offset, $context)
+                );
+
             default:
-                return new Mixed_($type);
+                return new Mixed_();
         }
     }
 
@@ -415,6 +446,25 @@ final class TypeResolver
                         )
                     )
                 );
+
+            case 'key-of':
+                return new KeyOf($this->createType($type->genericTypes[0], $context));
+
+            case 'value-of':
+                return new ValueOf($this->createType($type->genericTypes[0], $context));
+
+            case 'int-mask':
+                return new IntMask(
+                    ...array_map(
+                        function (TypeNode $genericType) use ($context): Type {
+                            return $this->createType($genericType, $context);
+                        },
+                        $type->genericTypes
+                    )
+                );
+
+            case 'int-mask-of':
+                return new IntMaskOf($this->createType($type->genericTypes[0], $context));
 
             default:
                 $collectionType = $this->createType($type->type, $context);
@@ -496,7 +546,7 @@ final class TypeResolver
             case $this->isPartialStructuralElementName($type):
                 return $this->resolveTypedObject($type, $context);
 
-            // @codeCoverageIgnoreStart
+                // @codeCoverageIgnoreStart
             default:
                 // I haven't got the foggiest how the logic would come here but added this as a defense.
                 throw new RuntimeException(
@@ -517,7 +567,7 @@ final class TypeResolver
         if (!class_exists($typeClassName)) {
             throw new InvalidArgumentException(
                 'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
-                . ' but we could not find the class ' . $typeClassName
+                    . ' but we could not find the class ' . $typeClassName
             );
         }
 
@@ -525,7 +575,7 @@ final class TypeResolver
         if ($interfaces === false) {
             throw new InvalidArgumentException(
                 'The Value Object that needs to be created with a keyword "' . $keyword . '" must be an existing class'
-                . ' but we could not find the class ' . $typeClassName
+                    . ' but we could not find the class ' . $typeClassName
             );
         }
 
