@@ -17,9 +17,11 @@ use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 
+use function implode;
+
 /**
  * Value Object representing the `int-mask` type.
- * 
+ *
  * @psalm-immutable
  */
 final class IntMask implements PseudoType

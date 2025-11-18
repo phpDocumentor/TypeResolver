@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Types\ArrayKey;
 
 /**
  * Value Object representing the `key-of` type.
- * 
+ *
  * @psalm-immutable
  */
 final class KeyOf implements PseudoType
@@ -44,6 +44,6 @@ final class KeyOf implements PseudoType
 
     public function __toString(): string
     {
-        return "key-of<{$this->type}>";
+        return 'key-of<' . $this->type . '>';
     }
 }

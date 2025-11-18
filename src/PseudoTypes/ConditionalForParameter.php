@@ -21,7 +21,7 @@ use function sprintf;
 
 /**
  * Value Object representing the conditional type for parameter.
- * 
+ *
  * @psalm-immutable
  */
 final class ConditionalForParameter implements PseudoType
@@ -82,9 +82,9 @@ final class ConditionalForParameter implements PseudoType
             '(%s %s %s ? %s : %s)',
             '$' . $this->parameterName,
             $this->negated ? 'is not' : 'is',
-            $this->targetType,
-            $this->if,
-            $this->else
+            (string) $this->targetType,
+            (string) $this->if,
+            (string) $this->else
         );
     }
 }

@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Value Object representing the `value-of` type.
- * 
+ *
  * @psalm-immutable
  */
 final class ValueOf implements PseudoType
@@ -44,6 +44,6 @@ final class ValueOf implements PseudoType
 
     public function __toString(): string
     {
-        return "value-of<{$this->type}>";
+        return 'value-of<' . $this->type . '>';
     }
 }

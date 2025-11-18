@@ -26,8 +26,8 @@ use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
-use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
 use phpDocumentor\Reflection\PseudoTypes\IntMask;
+use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
 use phpDocumentor\Reflection\PseudoTypes\KeyOf;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\ListShape;
@@ -118,6 +118,7 @@ use function get_class;
 use function in_array;
 use function sprintf;
 use function strpos;
+use function substr;
 use function strtolower;
 use function trim;
 

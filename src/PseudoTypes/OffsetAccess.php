@@ -17,11 +17,11 @@ use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\Mixed_;
-use PhpParser\Node\NullableType;
+use phpDocumentor\Reflection\Types\Nullable;
 
 /**
  * Value Object representing the offset access type.
- * 
+ *
  * @psalm-immutable
  */
 final class OffsetAccess implements PseudoType
@@ -41,7 +41,7 @@ final class OffsetAccess implements PseudoType
     {
         return $this->type;
     }
-    
+
     public function getOffset(): Type
     {
         return $this->offset;
@@ -57,7 +57,7 @@ final class OffsetAccess implements PseudoType
         if (
             $this->type instanceof Callable_
             || $this->type instanceof ConstExpression
-            || $this->type instanceof NullableType
+            || $this->type instanceof Nullable
         ) {
             return '(' . $this->type . ')[' . $this->offset . ']';
         }

@@ -21,7 +21,7 @@ use function sprintf;
 
 /**
  * Value Object representing the conditional type.
- * 
+ *
  * @psalm-immutable
  */
 final class Conditional implements PseudoType
@@ -80,11 +80,11 @@ final class Conditional implements PseudoType
     {
         return sprintf(
             '(%s %s %s ? %s : %s)',
-            $this->subjectType,
+            (string) $this->subjectType,
             $this->negated ? 'is not' : 'is',
-            $this->targetType,
-            $this->if,
-            $this->else
+            (string) $this->targetType,
+            (string) $this->if,
+            (string) $this->else
         );
     }
 }

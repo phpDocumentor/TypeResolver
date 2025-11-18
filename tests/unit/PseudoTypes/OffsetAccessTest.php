@@ -27,13 +27,33 @@ class OffsetAccessTest extends TestCase
         $this->assertSame($offset, $type->getOffset());
     }
 
+
     /**
+     * @dataProvider provideToStringData
      * @covers ::__toString
      */
-    public function testToString(): void
+    public function testToString(string $expectedResult, OffsetAccess $type): void
     {
-        $type = new OffsetAccess(new Object_(new Fqsen('\\phpDocumentor\\MyArray')), new StringValue('bar'));
+        $this->assertSame($expectedResult, (string) $type);
+    }
 
-        $this->assertSame('\\phpDocumentor\\MyArray["bar"]', (string) $type);
+    /**
+     * @return array<string, array{string, OffsetAccess}>
+     */
+    public static function provideToStringData(): array
+    {
+        return [
+            'basic' => [
+                '\\phpDocumentor\\MyArray["bar"]',
+                new OffsetAccess(new Object_(new Fqsen('\\phpDocumentor\\MyArray')), new StringValue('bar')),
+            ],
+            'with const expression' => [
+                '(\\phpDocumentor\\Foo::SOME_ARRAY)["bar"]',
+                new OffsetAccess(
+                    new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo')), 'SOME_ARRAY'),
+                    new StringValue('bar')
+                ),
+            ],
+        ];
     }
 }

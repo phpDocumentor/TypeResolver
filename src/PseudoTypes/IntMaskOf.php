@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * Value Object representing the `int-mask-of` type.
- * 
+ *
  * @psalm-immutable
  */
 final class IntMaskOf implements PseudoType
@@ -44,6 +44,6 @@ final class IntMaskOf implements PseudoType
 
     public function __toString(): string
     {
-        return "int-mask-of<{$this->type}>";
+        return 'int-mask-of<' . $this->type . '>';
     }
 }
