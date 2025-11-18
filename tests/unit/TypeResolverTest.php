@@ -1151,6 +1151,13 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'array{string, int}',
+                new ArrayShape(
+                    new ArrayShapeItem(null, new String_(), false),
+                    new ArrayShapeItem(null, new Integer(), false)
+                ),
+            ],
+            [
                 'array{foo?: string, bar: int}',
                 new ArrayShape(
                     new ArrayShapeItem('foo', new String_(), true),
