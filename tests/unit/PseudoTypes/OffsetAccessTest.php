@@ -27,7 +27,6 @@ class OffsetAccessTest extends TestCase
         $this->assertSame($offset, $type->getOffset());
     }
 
-
     /**
      * @dataProvider provideToStringData
      * @covers ::__toString
