@@ -353,7 +353,7 @@ final class TypeResolver
             case ConditionalTypeForParameterNode::class:
             case OffsetAccessTypeNode::class:
             default:
-                return new Mixed_();
+                return new Mixed_($type);
         }
     }
 
