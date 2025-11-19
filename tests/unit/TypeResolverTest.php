@@ -981,8 +981,28 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'static',
+                new Static_(),
+            ],
+            [
+                'static<FirstClass, SecondClass, ThirdClass>',
+                new Static_(
+                    new Object_(new Fqsen('\\phpDocumentor\\FirstClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\SecondClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\ThirdClass')),
+                ),
+            ],
+            [
                 'self',
                 new Self_(),
+            ],
+            [
+                'self<FirstClass, SecondClass, ThirdClass>',
+                new Self_(
+                    new Object_(new Fqsen('\\phpDocumentor\\FirstClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\SecondClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\ThirdClass')),
+                ),
             ],
             [
                 '($size is positive-int ? non-empty-array : array)',
