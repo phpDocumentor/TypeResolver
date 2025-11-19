@@ -1,0 +1,16 @@
+# CS: no whitespace before return type colon
+6937c3bf9f57533b310c28c1758f4af6bd777f92
+# CS: miscellaneous other whitespace fixes
+92a009284c653e8576ee544191f2167f97c93aed
+# Fix style issues
+0339a6b726db84790d94794e36f502c52e0e518a
+# CS fixes
+2e32a6d48972b2c1976ed5d8967145b6cec4a4a9
+# CS fixes
+e64841657859b6a3d1ecf01d6922ce1548ad7382
+# fix code style
+81dea8effddb6afc070552d95b8f5bbc2589fe10
+# Style fixes
+0cbfc1c752b9fae8c7a0be740e5d6af496463e1e
+# Apply doctrine coding standards
+d0e860a40b8199a0d5166023bc3764eed7af7d83
