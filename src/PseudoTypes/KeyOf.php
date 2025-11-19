@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\ArrayKey;
  *
  * @psalm-immutable
  */
-final class KeyOf implements PseudoType
+final class KeyOf extends ArrayKey implements PseudoType
 {
     /** @var Type */
     private $type;

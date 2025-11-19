@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\Integer;
  *
  * @psalm-immutable
  */
-final class IntMaskOf implements PseudoType
+final class IntMaskOf extends Integer implements PseudoType
 {
     /** @var Type */
     private $type;

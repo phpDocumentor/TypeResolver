@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
  *
  * @psalm-immutable
  */
-final class ValueOf implements PseudoType
+final class ValueOf extends Mixed_ implements PseudoType
 {
     /** @var Type */
     private $type;

@@ -24,7 +24,7 @@ use function implode;
  *
  * @psalm-immutable
  */
-final class IntMask implements PseudoType
+final class IntMask extends Integer implements PseudoType
 {
     /** @var Type[] */
     private $types;
