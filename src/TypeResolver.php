@@ -628,14 +628,7 @@ final class TypeResolver
     /** @param TypeNode[] $typeNodes */
     private function createArray(array $typeNodes, Context $context): Array_
     {
-        $types = array_reverse(
-            array_map(
-                function (TypeNode $node) use ($context): Type {
-                    return $this->createType($node, $context);
-                },
-                $typeNodes
-            )
-        );
+        $types = array_reverse($this->createTypesByTypeNodes($typeNodes, $context));
 
         if (isset($types[1]) === false) {
             return new Array_(...$types);
