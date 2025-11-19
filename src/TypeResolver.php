@@ -434,16 +434,7 @@ final class TypeResolver
                 return new IntegerRange((string) $type->genericTypes[0], (string) $type->genericTypes[1]);
 
             case 'iterable':
-                return new Iterable_(
-                    ...array_reverse(
-                        array_map(
-                            function (TypeNode $genericType) use ($context): Type {
-                                return $this->createType($genericType, $context);
-                            },
-                            $type->genericTypes
-                        )
-                    )
-                );
+                return new Iterable_(...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context)));
 
             case 'key-of':
                 return new KeyOf($this->createType($type->genericTypes[0], $context));
@@ -452,17 +443,16 @@ final class TypeResolver
                 return new ValueOf($this->createType($type->genericTypes[0], $context));
 
             case 'int-mask':
-                return new IntMask(
-                    ...array_map(
-                        function (TypeNode $genericType) use ($context): Type {
-                            return $this->createType($genericType, $context);
-                        },
-                        $type->genericTypes
-                    )
-                );
+                return new IntMask(...$this->createTypesByTypeNodes($type->genericTypes, $context));
 
             case 'int-mask-of':
                 return new IntMaskOf($this->createType($type->genericTypes[0], $context));
+
+            case 'static':
+                return new Static_(...$this->createTypesByTypeNodes($type->genericTypes, $context));
+
+            case 'self':
+                return new Self_(...$this->createTypesByTypeNodes($type->genericTypes, $context));
 
             default:
                 $collectionType = $this->createType($type->type, $context);
@@ -472,14 +462,7 @@ final class TypeResolver
 
                 return new Collection(
                     $collectionType->getFqsen(),
-                    ...array_reverse(
-                        array_map(
-                            function (TypeNode $genericType) use ($context): Type {
-                                return $this->createType($genericType, $context);
-                            },
-                            $type->genericTypes
-                        )
-                    )
+                    ...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context))
                 );
         }
     }
@@ -645,14 +628,7 @@ final class TypeResolver
     /** @param TypeNode[] $typeNodes */
     private function createArray(array $typeNodes, Context $context): Array_
     {
-        $types = array_reverse(
-            array_map(
-                function (TypeNode $node) use ($context): Type {
-                    return $this->createType($node, $context);
-                },
-                $typeNodes
-            )
-        );
+        $types = array_reverse($this->createTypesByTypeNodes($typeNodes, $context));
 
         if (isset($types[1]) === false) {
             return new Array_(...$types);
@@ -726,5 +702,20 @@ final class TypeResolver
         }
 
         return $type;
+    }
+
+    /**
+     * @param TypeNode[] $nodes
+     *
+     * @return Type[]
+     */
+    private function createTypesByTypeNodes(array $nodes, Context $context): array
+    {
+        return array_map(
+            function (TypeNode $node) use ($context): Type {
+                return $this->createType($node, $context);
+            },
+            $nodes
+        );
     }
 }

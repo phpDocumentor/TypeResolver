@@ -981,6 +981,10 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'static',
+                new Static_(),
+            ],
+            [
                 'self',
                 new Self_(),
             ],
@@ -1108,6 +1112,26 @@ class TypeResolverTest extends TestCase
             [
                 'int-mask-of<Foo::INT_*>',
                 new IntMaskOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo')), 'INT_*')),
+            ],
+            [
+                'iterable<int, string>',
+                new Iterable_(new String_(), new Integer()),
+            ],
+            [
+                'static<FirstClass, SecondClass, ThirdClass>',
+                new Static_(
+                    new Object_(new Fqsen('\\phpDocumentor\\FirstClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\SecondClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\ThirdClass')),
+                ),
+            ],
+            [
+                'self<FirstClass, SecondClass, ThirdClass>',
+                new Self_(
+                    new Object_(new Fqsen('\\phpDocumentor\\FirstClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\SecondClass')),
+                    new Object_(new Fqsen('\\phpDocumentor\\ThirdClass')),
+                ),
             ],
         ];
     }
