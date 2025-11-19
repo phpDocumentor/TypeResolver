@@ -1,13 +1,7 @@
 # CS: no whitespace before return type colon
 6937c3bf9f57533b310c28c1758f4af6bd777f92
-# CS: blank line between different use statement types
-6a038945051bb17e760620930dd1d91aa041647f
-# CS: import all things
-53bb2a98396eb2dcbe56039235e1aa4c78003033
 # CS: miscellaneous other whitespace fixes
 92a009284c653e8576ee544191f2167f97c93aed
-# CS: docblock tag grouping
-a2f72753663b4e9eb0bcce74174044d9a92d86ff
 # Fix style issues
 0339a6b726db84790d94794e36f502c52e0e518a
 # CS fixes
