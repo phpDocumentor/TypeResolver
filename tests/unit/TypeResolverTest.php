@@ -18,12 +18,17 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\PseudoTypes\IntMask;
+use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
+use phpDocumentor\Reflection\PseudoTypes\KeyOf;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\ListShape;
 use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
@@ -38,10 +43,12 @@ use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -977,6 +984,53 @@ class TypeResolverTest extends TestCase
                 'self',
                 new Self_(),
             ],
+            [
+                '($size is positive-int ? non-empty-array : array)',
+                new ConditionalForParameter(
+                    false,
+                    'size',
+                    new PositiveInteger(),
+                    new NonEmptyArray(),
+                    new Array_()
+                ),
+            ],
+            [
+                '($size is not positive-int ? non-empty-array : int)',
+                new ConditionalForParameter(
+                    true,
+                    'size',
+                    new PositiveInteger(),
+                    new NonEmptyArray(),
+                    new Integer()
+                ),
+            ],
+            [
+                '(T is int ? static : array<static>)',
+                new Conditional(
+                    false,
+                    new Object_(new Fqsen('\\phpDocumentor\\T')),
+                    new Integer(),
+                    new Static_(),
+                    new Array_(new Static_())
+                ),
+            ],
+            [
+                '(T is not int ? self : array<static>)',
+                new Conditional(
+                    true,
+                    new Object_(new Fqsen('\\phpDocumentor\\T')),
+                    new Integer(),
+                    new Self_(),
+                    new Array_(new Static_())
+                ),
+            ],
+            [
+                "MyArray['bar']",
+                new OffsetAccess(
+                    new Object_(new Fqsen('\\phpDocumentor\\MyArray')),
+                    new StringValue('bar')
+                ),
+            ],
         ];
     }
 
@@ -1034,6 +1088,26 @@ class TypeResolverTest extends TestCase
             [
                 'int<1, 100>',
                 new IntegerRange('1', '100'),
+            ],
+            [
+                'key-of<Type::ARRAY_CONST>',
+                new KeyOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Type')), 'ARRAY_CONST')),
+            ],
+            [
+                'value-of<Type::ARRAY_CONST>',
+                new ValueOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Type')), 'ARRAY_CONST')),
+            ],
+            [
+                'int-mask<1, 2, 4>',
+                new IntMask(new IntegerValue(1), new IntegerValue(2), new IntegerValue(4)),
+            ],
+            [
+                'int-mask-of<1|2|4>',
+                new IntMaskOf(new Compound([new IntegerValue(1), new IntegerValue(2), new IntegerValue(4)])),
+            ],
+            [
+                'int-mask-of<Foo::INT_*>',
+                new IntMaskOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo')), 'INT_*')),
             ],
         ];
     }

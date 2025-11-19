@@ -18,12 +18,17 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\PseudoTypes\IntMask;
+use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
+use phpDocumentor\Reflection\PseudoTypes\KeyOf;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\ListShape;
 use phpDocumentor\Reflection\PseudoTypes\ListShapeItem;
@@ -38,10 +43,12 @@ use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\ArrayKey;
@@ -112,6 +119,7 @@ use function in_array;
 use function sprintf;
 use function strpos;
 use function strtolower;
+use function substr;
 use function trim;
 
 final class TypeResolver
@@ -350,8 +358,29 @@ final class TypeResolver
                 return new This();
 
             case ConditionalTypeNode::class:
+                return new Conditional(
+                    $type->negated,
+                    $this->createType($type->subjectType, $context),
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                );
+
             case ConditionalTypeForParameterNode::class:
+                return new ConditionalForParameter(
+                    $type->negated,
+                    substr($type->parameterName, 1),
+                    $this->createType($type->targetType, $context),
+                    $this->createType($type->if, $context),
+                    $this->createType($type->else, $context),
+                );
+
             case OffsetAccessTypeNode::class:
+                return new OffsetAccess(
+                    $this->createType($type->type, $context),
+                    $this->createType($type->offset, $context)
+                );
+
             default:
                 return new Mixed_();
         }
@@ -415,6 +444,25 @@ final class TypeResolver
                         )
                     )
                 );
+
+            case 'key-of':
+                return new KeyOf($this->createType($type->genericTypes[0], $context));
+
+            case 'value-of':
+                return new ValueOf($this->createType($type->genericTypes[0], $context));
+
+            case 'int-mask':
+                return new IntMask(
+                    ...array_map(
+                        function (TypeNode $genericType) use ($context): Type {
+                            return $this->createType($genericType, $context);
+                        },
+                        $type->genericTypes
+                    )
+                );
+
+            case 'int-mask-of':
+                return new IntMaskOf($this->createType($type->genericTypes[0], $context));
 
             default:
                 $collectionType = $this->createType($type->type, $context);
