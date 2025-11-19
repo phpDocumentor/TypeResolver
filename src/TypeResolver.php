@@ -713,6 +713,7 @@ final class TypeResolver
 
     /**
      * @param TypeNode[] $nodes
+     *
      * @return Type[]
      */
     private function createTypesByTypeNodes(array $nodes, Context $context): array

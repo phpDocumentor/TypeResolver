@@ -15,6 +15,8 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
+use function implode;
+
 /**
  * Value Object representing the 'static' type.
  *
