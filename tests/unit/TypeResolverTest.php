@@ -965,6 +965,24 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                '(A&B)|C|(D&E)',
+                new Compound([
+                    new Expression(
+                        new Intersection([
+                            new Object_(new Fqsen('\\phpDocumentor\\A')),
+                            new Object_(new Fqsen('\\phpDocumentor\\B')),
+                        ]),
+                    ),
+                    new Object_(new Fqsen('\\phpDocumentor\\C')),
+                    new Expression(
+                        new Intersection([
+                            new Object_(new Fqsen('\\phpDocumentor\\D')),
+                            new Object_(new Fqsen('\\phpDocumentor\\E')),
+                        ]),
+                    ),
+                ]),
+            ],
+            [
                 'string[]',
                 new Array_(
                     new String_()
