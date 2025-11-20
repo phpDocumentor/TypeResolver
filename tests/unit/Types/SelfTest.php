@@ -38,7 +38,7 @@ class SelfTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string, OffsetAccess}>
+     * @return array<string, array{string, Self_}>
      */
     public static function provideToStringData(): array
     {
