@@ -1082,6 +1082,29 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'non-empty-array<string|int>',
+                new NonEmptyArray(
+                    new Compound(
+                        [
+                            new String_(),
+                            new Integer(),
+                        ]
+                    )
+                ),
+            ],
+            [
+                'non-empty-array<string|int, Foo\\Bar>',
+                new NonEmptyArray(
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                    new Compound(
+                        [
+                            new String_(),
+                            new Integer(),
+                        ]
+                    )
+                ),
+            ],
+            [
                 'Collection<array-key, int>[]',
                 new Array_(
                     new Collection(
@@ -1106,6 +1129,10 @@ class TypeResolverTest extends TestCase
             [
                 'List<Foo>',
                 new List_(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                'non-empty-list<Foo>',
+                new NonEmptyList(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
             ],
             [
                 'int<1, 100>',
