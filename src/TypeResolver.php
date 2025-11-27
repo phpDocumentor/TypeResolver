@@ -393,7 +393,9 @@ final class TypeResolver
                 return $this->createArray($type->genericTypes, $context);
 
             case 'non-empty-array':
-                return new NonEmptyArray(...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context)));
+                return new NonEmptyArray(
+                    ...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context))
+                );
 
             case 'class-string':
                 $subType = $this->createType($type->genericTypes[0], $context);
