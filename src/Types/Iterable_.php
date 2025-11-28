@@ -25,12 +25,12 @@ final class Iterable_ extends AbstractList
      */
     public function __toString(): string
     {
-        if ($this->keyType) {
-            return 'iterable<' . $this->keyType . ',' . $this->valueType . '>';
+        if ($this->valueType === null) {
+            return 'iterable';
         }
 
-        if ($this->valueType instanceof Mixed_) {
-            return 'iterable';
+        if ($this->keyType) {
+            return 'iterable<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
         return 'iterable<' . $this->valueType . '>';
