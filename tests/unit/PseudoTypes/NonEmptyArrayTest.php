@@ -40,7 +40,7 @@ class NonEmptyArrayTest extends TestCase
     {
         return [
             'simple non-empty-array' => [new NonEmptyArray(), 'non-empty-array'],
-            'non-empty-array of mixed' => [new NonEmptyArray(new Mixed_()), 'non-empty-array'],
+            'non-empty-array of mixed' => [new NonEmptyArray(new Mixed_()), 'non-empty-array<mixed>'],
             'non-empty-array of single type' => [new NonEmptyArray(new String_()), 'non-empty-array<string>'],
             'non-empty-array of compound type' =>
                 [

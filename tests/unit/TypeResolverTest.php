@@ -983,9 +983,19 @@ class TypeResolverTest extends TestCase
                 ]),
             ],
             [
+                'array',
+                new Array_(),
+            ],
+            [
                 'string[]',
                 new Array_(
                     new String_()
+                ),
+            ],
+            [
+                'mixed[]',
+                new Array_(
+                    new Mixed_()
                 ),
             ],
             [
@@ -1177,6 +1187,22 @@ class TypeResolverTest extends TestCase
                     new Object_(new Fqsen('\\phpDocumentor\\SecondClass')),
                     new Object_(new Fqsen('\\phpDocumentor\\ThirdClass')),
                 ),
+            ],
+            [
+                'array<mixed>',
+                new Array_(new Mixed_()),
+            ],
+            [
+                'iterable<mixed>',
+                new Iterable_(new Mixed_()),
+            ],
+            [
+                'non-empty-array<mixed>',
+                new NonEmptyArray(new Mixed_()),
+            ],
+            [
+                'non-empty-list<mixed>',
+                new NonEmptyList(new Mixed_()),
             ],
         ];
     }

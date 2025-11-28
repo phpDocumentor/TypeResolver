@@ -40,7 +40,7 @@ class NonEmptyListTest extends TestCase
     {
         return [
             'simple non-empty-list' => [new NonEmptyList(), 'non-empty-list'],
-            'non-empty-list of mixed' => [new NonEmptyList(new Mixed_()), 'non-empty-list'],
+            'non-empty-list of mixed' => [new NonEmptyList(new Mixed_()), 'non-empty-list<mixed>'],
             'non-empty-list of single type' => [new NonEmptyList(new String_()), 'non-empty-list<string>'],
             'non-empty-list of compound type' =>
                 [new NonEmptyList(new Compound([new Integer(), new String_()])), 'non-empty-list<int|string>'],

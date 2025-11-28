@@ -36,7 +36,7 @@ class IterableTest extends TestCase
     {
         return [
             'simple iterable' => [new Iterable_(), 'iterable'],
-            'iterable of mixed' => [new Iterable_(new Mixed_()), 'iterable'],
+            'iterable of mixed' => [new Iterable_(new Mixed_()), 'iterable<mixed>'],
             'iterable of single type' => [new Iterable_(new String_()), 'iterable<string>'],
             'iterable of compound type' => [
                 new Iterable_(new Compound([new Integer(), new String_()])),

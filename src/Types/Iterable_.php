@@ -29,7 +29,7 @@ final class Iterable_ extends AbstractList
             return 'iterable<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
-        if ($this->valueType instanceof Mixed_) {
+        if ($this->valueType === null) {
             return 'iterable';
         }
 

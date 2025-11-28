@@ -22,7 +22,7 @@ use phpDocumentor\Reflection\Type;
  */
 abstract class AbstractList implements Type
 {
-    /** @var Type */
+    /** @var Type|null */
     protected $valueType;
 
     /** @var Type|null */
@@ -31,15 +31,15 @@ abstract class AbstractList implements Type
     /** @var Type */
     protected $defaultKeyType;
 
+    /** @var Type */
+    protected $defaultValueType;
+
     /**
      * Initializes this representation of an array with the given Type.
      */
     public function __construct(?Type $valueType = null, ?Type $keyType = null)
     {
-        if ($valueType === null) {
-            $valueType = new Mixed_();
-        }
-
+        $this->defaultValueType = new Mixed_();
         $this->valueType      = $valueType;
         $this->defaultKeyType = new Compound([new String_(), new Integer()]);
         $this->keyType        = $keyType;
@@ -48,6 +48,11 @@ abstract class AbstractList implements Type
     public function getOriginalKeyType(): ?Type
     {
         return $this->keyType;
+    }
+
+    public function getOriginalValueType(): ?Type
+    {
+        return $this->valueType;
     }
 
     /**
@@ -63,7 +68,7 @@ abstract class AbstractList implements Type
      */
     public function getValueType(): Type
     {
-        return $this->valueType;
+        return $this->valueType ?? $this->defaultValueType;
     }
 
     /**
@@ -75,7 +80,7 @@ abstract class AbstractList implements Type
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
-        if ($this->valueType instanceof Mixed_) {
+        if ($this->valueType === null) {
             return 'array';
         }
 

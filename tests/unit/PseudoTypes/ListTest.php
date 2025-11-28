@@ -40,7 +40,7 @@ class ListTest extends TestCase
     {
         return [
             'simple list' => [new List_(), 'list'],
-            'list of mixed' => [new List_(new Mixed_()), 'list'],
+            'list of mixed' => [new List_(new Mixed_()), 'list<mixed>'],
             'list of single type' => [new List_(new String_()), 'list<string>'],
             'list of compound type' => [new List_(new Compound([new Integer(), new String_()])), 'list<int|string>'],
         ];
