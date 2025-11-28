@@ -76,12 +76,12 @@ abstract class AbstractList implements Type
      */
     public function __toString(): string
     {
-        if ($this->keyType) {
-            return 'array<' . $this->keyType . ',' . $this->valueType . '>';
-        }
-
         if ($this->valueType === null) {
             return 'array';
+        }
+
+        if ($this->keyType) {
+            return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
         if ($this->valueType instanceof Compound) {

@@ -35,12 +35,12 @@ final class NonEmptyArray extends Array_ implements PseudoType
      */
     public function __toString(): string
     {
-        if ($this->keyType) {
-            return 'non-empty-array<' . $this->keyType . ',' . $this->valueType . '>';
-        }
-
         if ($this->valueType === null) {
             return 'non-empty-array';
+        }
+
+        if ($this->keyType) {
+            return 'non-empty-array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
         return 'non-empty-array<' . $this->valueType . '>';
