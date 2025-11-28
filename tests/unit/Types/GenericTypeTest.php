@@ -6,7 +6,6 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoTypes\List_;
-use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +26,6 @@ class GenericTypeTest extends TestCase
         $this->assertSame($fqsen, $type->getFqsen());
         $this->assertSame($types, $type->getTypes());
     }
-
 
     /**
      * @dataProvider provideToStringData

@@ -16,6 +16,8 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
 
+use function implode;
+
 /**
  * Value Object representing a type with generics.
  *
