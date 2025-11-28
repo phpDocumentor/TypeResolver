@@ -1073,14 +1073,20 @@ class TypeResolverTest extends TestCase
                 'array<key-of<Foo\\Bar::SOME_CONSTANT>, string>',
                 new Array_(
                     new String_(),
-                    new KeyOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')), 'SOME_CONSTANT'))
+                    new KeyOf(new ConstExpression(
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                        'SOME_CONSTANT'
+                    ))
                 ),
             ],
             [
                 'array<value-of<Foo\\Bar::SOME_CONSTANT>, string>',
                 new Array_(
                     new String_(),
-                    new ValueOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')), 'SOME_CONSTANT'))
+                    new ValueOf(new ConstExpression(
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                        'SOME_CONSTANT'
+                    ))
                 ),
             ],
             [
