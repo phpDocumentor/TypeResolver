@@ -55,11 +55,11 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
 use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
+use phpDocumentor\Reflection\Types\GenericType;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
@@ -1117,10 +1117,12 @@ class TypeResolverTest extends TestCase
             [
                 'Collection<array-key, int>[]',
                 new Array_(
-                    new Collection(
+                    new GenericType(
                         new Fqsen('\\phpDocumentor\\Collection'),
-                        new Integer(),
-                        new ArrayKey()
+                        [
+                            new ArrayKey(),
+                            new Integer(),
+                        ]
                     )
                 ),
             ],

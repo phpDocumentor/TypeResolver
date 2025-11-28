@@ -27,7 +27,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -53,7 +52,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -79,7 +77,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -98,7 +95,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -117,7 +113,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -136,7 +131,6 @@ class IntegerRangeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Collection
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct

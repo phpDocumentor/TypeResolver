@@ -56,11 +56,11 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
 use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
+use phpDocumentor\Reflection\Types\GenericType;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
@@ -460,15 +460,14 @@ final class TypeResolver
                 return new Self_(...$this->createTypesByTypeNodes($type->genericTypes, $context));
 
             default:
-                $collectionType = $this->createType($type->type, $context);
-                if ($collectionType instanceof Object_ === false) {
-                    throw new RuntimeException(sprintf('%s is not a collection', (string) $collectionType));
+                $mainType = $this->createType($type->type, $context);
+                if ($mainType instanceof Object_ === false) {
+                    throw new RuntimeException(sprintf('%s is an unsupported generic', (string) $mainType));
                 }
 
-                return new Collection(
-                    $collectionType->getFqsen(),
-                    ...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context))
-                );
+                $types = $this->createTypesByTypeNodes($type->genericTypes, $context);
+
+                return new GenericType($mainType->getFqsen(), $types);
         }
     }
 
