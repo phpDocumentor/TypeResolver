@@ -44,6 +44,15 @@ class GenericTypeTest extends TestCase
     public static function provideToStringData(): array
     {
         return [
+            'without fqsen' => [
+                'object<string>',
+                new GenericType(
+                    null,
+                    [
+                        new String_(),
+                    ]
+                ),
+            ],
             'collection without key' => [
                 '\\ArrayObject<string>',
                 new GenericType(new Fqsen('\\ArrayObject'), [new String_()]),
