@@ -59,7 +59,7 @@ final class Collection extends AbstractList
     {
         $objectType = (string) ($this->fqsen ?? 'object');
 
-        /** @var string */
+        /** @var string $valueType */
         $valueType = $this->valueType;
 
         if ($this->keyType === null) {
