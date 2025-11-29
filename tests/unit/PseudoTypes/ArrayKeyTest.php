@@ -11,12 +11,14 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\ArrayKey
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ArrayKey
  */
 final class ArrayKeyTest extends TestCase
 {
@@ -30,7 +32,7 @@ final class ArrayKeyTest extends TestCase
     }
 
     /**
-     * @uses \phpDocumentor\Reflection\Types\ArrayKey::__construct
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ArrayKey::__construct
      *
      * @covers ::getIterator
      */

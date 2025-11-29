@@ -15,7 +15,6 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\ArrayKey;
 
 /**
  * Value Object representing the `key-of` type.

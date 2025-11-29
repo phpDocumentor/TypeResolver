@@ -11,18 +11,19 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
- * Value Object representing the type 'string'.
+ * Value Object representing the type `interface-string`.
  *
  * @psalm-immutable
  */
-final class ClassString extends String_ implements PseudoType
+final class InterfaceString extends String_ implements PseudoType
 {
     /** @var Fqsen|null */
     private $fqsen;
@@ -54,9 +55,9 @@ final class ClassString extends String_ implements PseudoType
     public function __toString(): string
     {
         if ($this->fqsen === null) {
-            return 'class-string';
+            return 'interface-string';
         }
 
-        return 'class-string<' . (string) $this->fqsen . '>';
+        return 'interface-string<' . (string) $this->fqsen . '>';
     }
 }

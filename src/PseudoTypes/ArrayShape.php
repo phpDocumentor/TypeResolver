@@ -16,7 +16,6 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Mixed_;
 
 use function implode;
