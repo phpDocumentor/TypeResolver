@@ -199,14 +199,8 @@ final class TypeResolver
     public function __construct(?FqsenResolver $fqsenResolver = null)
     {
         $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver();
-
-        if (class_exists(ParserConfig::class)) {
-            $this->typeParser = new TypeParser(new ParserConfig([]), new ConstExprParser(new ParserConfig([])));
-            $this->lexer = new Lexer(new ParserConfig([]));
-        } else {
-            $this->typeParser = new TypeParser(new ConstExprParser());
-            $this->lexer = new Lexer();
-        }
+        $this->typeParser = new TypeParser(new ParserConfig([]), new ConstExprParser(new ParserConfig([])));
+        $this->lexer = new Lexer(new ParserConfig([]));
     }
 
     /**
@@ -242,7 +236,19 @@ final class TypeResolver
         $ast = $this->parse($tokenIterator);
         $type = $this->createType($ast, $context);
 
-        return $this->tryParseRemainingCompoundTypes($tokenIterator, $context, $type);
+        if (
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_UNION) ||
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_INTERSECTION)
+        ) {
+            Deprecation::trigger(
+                'phpdocumentor/type-resolver',
+                'https://github.com/phpDocumentor/TypeResolver/issues/184',
+                'Legacy nullable type detected, please update your code as
+                you are using nullable types in a docblock. support is removed in v2.0.0'
+            );
+        }
+
+        return $type;
     }
 
     public function createType(?TypeNode $type, Context $context): Type
@@ -676,47 +682,6 @@ final class TypeResolver
         }
 
         return $ast;
-    }
-
-    /**
-     * Will try to parse unsupported type notations by phpstan
-     *
-     * The phpstan parser doesn't support the illegal nullable combinations like this library does.
-     * This method will warn the user about those notations but for bc purposes we will still have it here.
-     */
-    private function tryParseRemainingCompoundTypes(TokenIterator $tokenIterator, Context $context, Type $type): Type
-    {
-        if (
-            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_UNION) ||
-            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_INTERSECTION)
-        ) {
-            Deprecation::trigger(
-                'phpdocumentor/type-resolver',
-                'https://github.com/phpDocumentor/TypeResolver/issues/184',
-                'Legacy nullable type detected, please update your code as
-                you are using nullable types in a docblock. support will be removed in v2.0.0'
-            );
-        }
-
-        $continue = true;
-        while ($continue) {
-            $continue = false;
-            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_UNION)) {
-                $ast = $this->parse($tokenIterator);
-                $type2 = $this->createType($ast, $context);
-                $type = new Compound([$type, $type2]);
-                $continue = true;
-            }
-
-            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_INTERSECTION)) {
-                $ast = $this->typeParser->parse($tokenIterator);
-                $type2 = $this->createType($ast, $context);
-                $type = new Intersection([$type, $type2]);
-                $continue = true;
-            }
-        }
-
-        return $type;
     }
 
     /**
