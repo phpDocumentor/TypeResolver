@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
@@ -60,7 +61,6 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
-use phpDocumentor\Reflection\Types\GenericType;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
@@ -467,7 +467,7 @@ final class TypeResolver
 
                 $types = $this->createTypesByTypeNodes($type->genericTypes, $context);
 
-                return new GenericType($mainType->getFqsen(), $types);
+                return new Generic($mainType->getFqsen(), $types);
         }
     }
 

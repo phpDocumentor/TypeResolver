@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\PseudoTypes\List_;
+use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\GenericType
+ * @coversDefaultClass \phpDocumentor\Reflection\Types\Generic
  */
-class GenericTypeTest extends TestCase
+class GenericTest extends TestCase
 {
     /**
      * @covers ::getFqsen
@@ -21,7 +24,7 @@ class GenericTypeTest extends TestCase
     {
         $fqsen = new Fqsen('\\Foo\\Bar');
         $types = [new Object_(new Fqsen('\\Foo\\SomeClass')), new List_(new Integer())];
-        $type = new GenericType($fqsen, $types);
+        $type = new Generic($fqsen, $types);
 
         $this->assertSame($fqsen, $type->getFqsen());
         $this->assertSame($types, $type->getTypes());
@@ -31,20 +34,20 @@ class GenericTypeTest extends TestCase
      * @dataProvider provideToStringData
      * @covers ::__toString
      */
-    public function testToString(string $expectedResult, GenericType $type): void
+    public function testToString(string $expectedResult, Generic $type): void
     {
         $this->assertSame($expectedResult, (string) $type);
     }
 
     /**
-     * @return array<string, array{string, GenericType}>
+     * @return array<string, array{string, Generic}>
      */
     public static function provideToStringData(): array
     {
         return [
             'without fqsen' => [
                 'object<string>',
-                new GenericType(
+                new Generic(
                     null,
                     [
                         new String_(),
@@ -53,18 +56,18 @@ class GenericTypeTest extends TestCase
             ],
             'collection without key' => [
                 '\\ArrayObject<string>',
-                new GenericType(new Fqsen('\\ArrayObject'), [new String_()]),
+                new Generic(new Fqsen('\\ArrayObject'), [new String_()]),
             ],
             'collection with key' => [
                 '\\ArrayObject<string[], \\Iterator>',
-                new GenericType(
+                new Generic(
                     new Fqsen('\\ArrayObject'),
                     [new Array_(new String_()), new Object_(new Fqsen('\\Iterator'))]
                 ),
             ],
             'more than two generics' => [
                 '\\MyClass<\\SomeClassFirst, \\SomeClassSecond, \\SomeClassThird>',
-                new GenericType(
+                new Generic(
                     new Fqsen('\\MyClass'),
                     [
                         new Object_(new Fqsen('\\SomeClassFirst')),

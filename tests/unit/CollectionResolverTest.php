@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection;
 
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Float_;
-use phpDocumentor\Reflection\Types\GenericType;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
@@ -36,7 +36,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\GenericType
+     * @uses \phpDocumentor\Reflection\Types\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::resolve
@@ -49,7 +49,7 @@ class CollectionResolverTest extends TestCase
 
         $resolvedType = $fixture->resolve('ArrayObject<string>', new Context(''));
 
-        $this->assertInstanceOf(GenericType::class, $resolvedType);
+        $this->assertInstanceOf(Generic::class, $resolvedType);
         $this->assertSame('\\ArrayObject<string>', (string) $resolvedType);
         $this->assertSame('\\ArrayObject', (string) $resolvedType->getFqsen());
         $this->assertEquals([new String_()], $resolvedType->getTypes());
@@ -58,7 +58,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\GenericType
+     * @uses \phpDocumentor\Reflection\Types\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -71,7 +71,7 @@ class CollectionResolverTest extends TestCase
 
         $resolvedType = $fixture->resolve('ArrayObject<string[],Iterator>', new Context(''));
 
-        $this->assertInstanceOf(GenericType::class, $resolvedType);
+        $this->assertInstanceOf(Generic::class, $resolvedType);
         $this->assertSame('\\ArrayObject<string[], \\Iterator>', (string) $resolvedType);
         $this->assertSame('\\ArrayObject', (string) $resolvedType->getFqsen());
 
@@ -165,7 +165,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\GenericType
+     * @uses \phpDocumentor\Reflection\Types\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -178,7 +178,7 @@ class CollectionResolverTest extends TestCase
 
         $resolvedType = $fixture->resolve('ArrayObject<string|integer|double,ArrayObject<DateTime>>', new Context(''));
 
-        $this->assertInstanceOf(GenericType::class, $resolvedType);
+        $this->assertInstanceOf(Generic::class, $resolvedType);
         $this->assertSame('\\ArrayObject<string|int|float, \\ArrayObject<\\DateTime>>', (string) $resolvedType);
         $this->assertSame('\\ArrayObject', (string) $resolvedType->getFqsen());
 
@@ -188,7 +188,7 @@ class CollectionResolverTest extends TestCase
         $this->assertEquals(new Compound([new String_(), new Integer(), new Float_()]), $types[0]);
 
         $this->assertArrayHasKey(0, $types);
-        $this->assertInstanceOf(GenericType::class, $types[1]);
+        $this->assertInstanceOf(Generic::class, $types[1]);
         $this->assertSame('\\ArrayObject', (string) $types[1]->getFqsen());
 
         $nestedGenericTypes = $types[1]->getTypes();

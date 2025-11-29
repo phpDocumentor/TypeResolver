@@ -11,10 +11,11 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Object_;
 
 use function implode;
 
@@ -23,11 +24,8 @@ use function implode;
  *
  * @psalm-immutable
  */
-final class GenericType implements Type
+final class Generic extends Object_
 {
-    /** @var Fqsen|null */
-    private $fqsen;
-
     /** @var Type[] */
     private $types;
 
@@ -36,13 +34,9 @@ final class GenericType implements Type
      */
     public function __construct(?Fqsen $fqsen, array $types)
     {
-        $this->fqsen = $fqsen;
-        $this->types = $types;
-    }
+        parent::__construct($fqsen);
 
-    public function getFqsen(): ?Fqsen
-    {
-        return $this->fqsen;
+        $this->types = $types;
     }
 
     /**
