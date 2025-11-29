@@ -12,7 +12,7 @@ use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Generic
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\Generic
  */
 class GenericTest extends TestCase
 {
@@ -66,11 +66,11 @@ class GenericTest extends TestCase
                 ),
             ],
             'more than two generics' => [
-                '\\MyClass<\\SomeClassFirst, \\SomeClassSecond, \\SomeClassThird>',
+                '\\MyClass<\\T, \\SomeClassSecond, \\SomeClassThird>',
                 new Generic(
                     new Fqsen('\\MyClass'),
                     [
-                        new Object_(new Fqsen('\\SomeClassFirst')),
+                        new GenericTemplate(new Object_(new Fqsen('\\T'))),
                         new Object_(new Fqsen('\\SomeClassSecond')),
                         new Object_(new Fqsen('\\SomeClassThird')),
                     ]
