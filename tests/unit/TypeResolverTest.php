@@ -95,14 +95,14 @@ class TypeResolverTest extends TestCase
      * @uses         \phpDocumentor\Reflection\Types\Array_
      * @uses         \phpDocumentor\Reflection\Types\Object_
      *
+     * @param class-string $expectedClass
+     *
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
      * @covers ::<private>
      *
      * @dataProvider provideKeywords
-     *
-     * @param class-string $expectedClass
      */
     public function testResolvingKeywords(string $keyword, string $expectedClass): void
     {
