@@ -28,10 +28,10 @@ use function strpos;
  *
  * @psalm-immutable
  */
-final class Object_ implements Type
+class Object_ implements Type
 {
     /** @var Fqsen|null */
-    private $fqsen;
+    protected $fqsen;
 
     /**
      * Initializes this object with an optional FQSEN, if not provided this object is considered 'untyped'.

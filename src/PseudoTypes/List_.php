@@ -17,7 +17,6 @@ use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 /**
  * Value Object representing the type 'list'.
@@ -41,7 +40,7 @@ final class List_ extends Array_ implements PseudoType
      */
     public function __toString(): string
     {
-        if ($this->valueType instanceof Mixed_) {
+        if ($this->valueType === null) {
             return 'list';
         }
 
