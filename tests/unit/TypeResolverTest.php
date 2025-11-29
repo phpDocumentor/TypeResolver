@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
@@ -55,7 +56,6 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
 use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
@@ -1117,10 +1117,12 @@ class TypeResolverTest extends TestCase
             [
                 'Collection<array-key, int>[]',
                 new Array_(
-                    new Collection(
+                    new Generic(
                         new Fqsen('\\phpDocumentor\\Collection'),
-                        new Integer(),
-                        new ArrayKey()
+                        [
+                            new ArrayKey(),
+                            new Integer(),
+                        ]
                     )
                 ),
             ],

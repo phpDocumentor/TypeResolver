@@ -23,6 +23,8 @@ use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
+use phpDocumentor\Reflection\PseudoTypes\Generic;
+use phpDocumentor\Reflection\PseudoTypes\GenericTemplate;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
@@ -56,7 +58,6 @@ use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
 use phpDocumentor\Reflection\Types\ClassString;
-use phpDocumentor\Reflection\Types\Collection;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
@@ -460,15 +461,24 @@ final class TypeResolver
                 return new Self_(...$this->createTypesByTypeNodes($type->genericTypes, $context));
 
             default:
-                $collectionType = $this->createType($type->type, $context);
-                if ($collectionType instanceof Object_ === false) {
-                    throw new RuntimeException(sprintf('%s is not a collection', (string) $collectionType));
+                $mainType = $this->createType($type->type, $context);
+                if ($mainType instanceof Object_ === false) {
+                    throw new RuntimeException(sprintf('%s is an unsupported generic', (string) $mainType));
                 }
 
-                return new Collection(
-                    $collectionType->getFqsen(),
-                    ...array_reverse($this->createTypesByTypeNodes($type->genericTypes, $context))
+                $types = array_map(
+                    function (TypeNode $node) use ($context): Type {
+                        $innerType = $this->createType($node, $context);
+                        if ($innerType instanceof Object_ && $innerType instanceof Generic === false) {
+                            return new GenericTemplate($innerType);
+                        }
+
+                        return $innerType;
+                    },
+                    $type->genericTypes
                 );
+
+                return new Generic($mainType->getFqsen(), $types);
         }
     }
 

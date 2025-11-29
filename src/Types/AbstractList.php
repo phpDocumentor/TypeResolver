@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Type;
 
 /**
- * Represents a list of values. This is an abstract class for Array_ and Collection.
+ * Represents a list of values. This is an abstract class for Array_ and List_.
  *
  * @psalm-immutable
  */
