@@ -15,6 +15,7 @@ namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
+use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,10 @@ class NumericResolverTest extends TestCase
 
         $this->assertInstanceOf(Numeric_::class, $resolvedType);
         $this->assertSame('numeric', (string) $resolvedType);
-        $this->assertSame(false, $resolvedType->underlyingType()->contains(new String_()));
-        $this->assertSame(true, $resolvedType->underlyingType()->contains(new NumericString()));
+
+        $underlyingType = $resolvedType->underlyingType();
+        $this->assertInstanceOf(Compound::class, $underlyingType);
+        $this->assertFalse($underlyingType->contains(new String_()));
+        $this->assertTrue($underlyingType->contains(new NumericString()));
     }
 }

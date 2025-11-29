@@ -101,6 +101,8 @@ class TypeResolverTest extends TestCase
      * @covers ::<private>
      *
      * @dataProvider provideKeywords
+     *
+     * @param class-string $expectedClass
      */
     public function testResolvingKeywords(string $keyword, string $expectedClass): void
     {
@@ -291,9 +293,8 @@ class TypeResolverTest extends TestCase
 
         $resolvedType = $fixture->resolve('string[][]', new Context(''));
 
-        $childValueType = $resolvedType->getValueType();
-
         $this->assertInstanceOf(Array_::class, $resolvedType);
+        $childValueType = $resolvedType->getValueType();
 
         $this->assertSame('string[][]', (string) $resolvedType);
         $this->assertInstanceOf(Compound::class, $resolvedType->getKeyType());
@@ -414,11 +415,12 @@ class TypeResolverTest extends TestCase
 
         $resolvedType = $firstType->getValueType();
 
+        $this->assertInstanceOf(Intersection::class, $resolvedType);
         $firstSubType = $resolvedType->get(0);
         $secondSubType =  $resolvedType->get(1);
 
         $this->assertInstanceOf(Object_::class, $firstSubType);
-        $this->assertInstanceOf(Fqsen::class, $secondSubType->getFqsen());
+        $this->assertInstanceOf(Fqsen::class, $firstSubType->getFqsen());
         $this->assertInstanceOf(Object_::class, $secondSubType);
         $this->assertInstanceOf(Fqsen::class, $secondSubType->getFqsen());
     }

@@ -24,10 +24,10 @@ final class TypeResolverWithContextBench
      */
     private $typeResolver;
 
-    public function setup()
+    public function setup(): void
     {
         $factory = new ContextFactory();
-        $this->context = $factory->createForNamespace('mpdf', file_get_contents(__DIR__ . '/Assets/mpdf.php'));
+        $this->context = $factory->createForNamespace('mpdf', (string) file_get_contents(__DIR__ . '/Assets/mpdf.php'));
         $this->typeResolver = new TypeResolver();
     }
 
