@@ -11,13 +11,13 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\Types;
+namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\ClassString
+ * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ClassString
  */
 class ClassStringTest extends TestCase
 {
