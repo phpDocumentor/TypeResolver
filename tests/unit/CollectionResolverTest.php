@@ -36,7 +36,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::resolve
@@ -58,7 +58,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -164,7 +164,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
