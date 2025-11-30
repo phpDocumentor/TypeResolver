@@ -21,7 +21,6 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "rector/rector": "^2.2",
         "phpbench/phpbench": "^1.2",
         "psalm/phar": "^4"
     },
