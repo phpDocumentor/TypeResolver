@@ -25,15 +25,12 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class ClassString extends String_ implements PseudoType
 {
-    /** @var Fqsen|null */
-    private $fqsen;
+    /** @var Fqsen[] */
+    private $fqsens;
 
-    /**
-     * Initializes this representation of a class string with the given Fqsen.
-     */
-    public function __construct(?Fqsen $fqsen = null)
+    public function __construct(Fqsen ...$fqsens)
     {
-        $this->fqsen = $fqsen;
+        $this->fqsens = $fqsens;
     }
 
     public function underlyingType(): Type
@@ -42,11 +39,11 @@ final class ClassString extends String_ implements PseudoType
     }
 
     /**
-     * Returns the FQSEN associated with this object.
+     * @return Fqsen[]
      */
-    public function getFqsen(): ?Fqsen
+    public function getFqsens(): array
     {
-        return $this->fqsen;
+        return $this->fqsens;
     }
 
     /**
@@ -54,10 +51,10 @@ final class ClassString extends String_ implements PseudoType
      */
     public function __toString(): string
     {
-        if ($this->fqsen === null) {
+        if (!$this->fqsens) {
             return 'class-string';
         }
 
-        return 'class-string<' . (string) $this->fqsen . '>';
+        return 'class-string<' . implode('|', $this->fqsens) . '>';
     }
 }

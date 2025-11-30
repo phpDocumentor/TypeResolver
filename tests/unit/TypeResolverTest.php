@@ -1142,15 +1142,29 @@ class TypeResolverTest extends TestCase
             ],
             [
                 'class-string',
-                new ClassString(null),
+                new ClassString(),
             ],
             [
                 'class-string<Foo>',
                 new ClassString(new Fqsen('\\phpDocumentor\\Foo')),
             ],
             [
+                'class-string<Foo|Bar>',
+                new ClassString(
+                    new Fqsen('\\phpDocumentor\\Foo'),
+                    new Fqsen('\\phpDocumentor\\Bar')
+                ),
+            ],
+            [
                 'interface-string<Foo>',
                 new InterfaceString(new Fqsen('\\phpDocumentor\\Foo')),
+            ],
+            [
+                'interface-string<Foo|Bar>',
+                new InterfaceString(
+                    new Fqsen('\\phpDocumentor\\Foo'),
+                    new Fqsen('\\phpDocumentor\\Bar'),
+                ),
             ],
             [
                 'List<Foo>',

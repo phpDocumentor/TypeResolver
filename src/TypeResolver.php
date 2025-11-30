@@ -404,28 +404,10 @@ final class TypeResolver
                 return new NonEmptyArray(...$genericTypes);
 
             case 'class-string':
-                $subType = $this->createType($type->genericTypes[0], $context);
-                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
-                    throw new RuntimeException(
-                        $subType . ' is not a class string'
-                    );
-                }
-
-                return new ClassString(
-                    $subType->getFqsen()
-                );
+                return new ClassString(...$this->getFqsensByTypeNode($type->genericTypes[0], $context));
 
             case 'interface-string':
-                $subType = $this->createType($type->genericTypes[0], $context);
-                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
-                    throw new RuntimeException(
-                        $subType . ' is not a class string'
-                    );
-                }
-
-                return new InterfaceString(
-                    $subType->getFqsen()
-                );
+                return new InterfaceString(...$this->getFqsensByTypeNode($type->genericTypes[0], $context));
 
             case 'list':
                 return new List_(
@@ -671,6 +653,29 @@ final class TypeResolver
         }
 
         return $ast;
+    }
+
+    /**
+     * @return Fqsen[]
+     */
+    private function getFqsensByTypeNode(TypeNode $node, Context $context): array
+    {
+        $nodes = [$node];
+        if ($node instanceof UnionTypeNode) {
+            $nodes = $node->types;
+        }
+
+        return array_map(
+            function (TypeNode $node) use ($context): Fqsen {
+                $type = $this->createType($node, $context);
+                if ($type instanceof Object_ === false || $type->getFqsen() === null) {
+                    throw new RuntimeException($type . ' is not a class or interface');
+                }
+
+                return $type->getFqsen();
+            },
+            $nodes
+        );
     }
 
     /**
