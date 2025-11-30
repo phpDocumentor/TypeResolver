@@ -85,6 +85,9 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\some\other\ns', (string) $result);
     }
 
+    /**
+     * @covers ::resolve
+     */
     public function testResolveThrowsExceptionWhenGarbageInputIsPassed(): void
     {
         $this->expectException(InvalidArgumentException::class);
