@@ -1116,6 +1116,23 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'trait-string',
+                new TraitString(),
+            ],
+            [
+                'trait-string<Foo>',
+                new TraitString(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                'trait-string<Foo|Bar>',
+                new TraitString(
+                    new Compound([
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo')),
+                        new Object_(new Fqsen('\\phpDocumentor\\Bar')),
+                    ])
+                ),
+            ],
+            [
                 'List<Foo>',
                 new List_(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
             ],

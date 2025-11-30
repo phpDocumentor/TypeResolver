@@ -24,9 +24,22 @@ use phpDocumentor\Reflection\Types\String_;
  */
 final class TraitString extends String_ implements PseudoType
 {
+    /** @var Type|null */
+    private $genericType;
+
+    public function __construct(?Type $genericType = null)
+    {
+        $this->genericType = $genericType;
+    }
+
     public function underlyingType(): Type
     {
         return new String_();
+    }
+
+    public function getGenericType(): ?Type
+    {
+        return $this->genericType;
     }
 
     /**
@@ -34,6 +47,10 @@ final class TraitString extends String_ implements PseudoType
      */
     public function __toString(): string
     {
-        return 'trait-string';
+        if ($this->genericType === null) {
+            return 'trait-string';
+        }
+
+        return 'trait-string<' . (string) $this->genericType . '>';
     }
 }
