@@ -18,10 +18,9 @@
     "require-dev": {
         "ext-tokenizer": "*",
         "phpunit/phpunit": "^9.5",
-        "phpstan/phpstan": "^1.8",
-        "phpstan/phpstan-phpunit": "^1.1",
-        "phpstan/extension-installer": "^1.1",
-        "rector/rector": "^0.13.9",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/extension-installer": "^1.4",
         "phpbench/phpbench": "^1.2",
         "psalm/phar": "^4"
     },

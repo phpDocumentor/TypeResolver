@@ -33,6 +33,6 @@ parameters:
             path: tests/unit/Types/CompoundTest.php
 
         -
-            message: "#^Parameter \\#1 \\$argument of class ReflectionClass constructor expects class\\-string\\<Foo\\\\Bar\\>\\|Foo\\\\Bar\\, string given\\.$#"
+            message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionClass constructor expects class\\-string\\<Foo\\\\Bar\\>\\|Foo\\\\Bar\\, string given\\.$#"
             count: 1
             path: tests/unit/Types/ContextFactoryTest.php

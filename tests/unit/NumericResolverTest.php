@@ -21,7 +21,6 @@ use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers ::<private>
  * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
  */
 class NumericResolverTest extends TestCase

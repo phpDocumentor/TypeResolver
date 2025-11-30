@@ -9,7 +9,6 @@
 /Makefile export-ignore
 /composer-require-checker.json export-ignore
 /composer.lock export-ignore
-/rector.php export-ignore
 /phpbench.json export-ignore
 /phpcs.xml.dist export-ignore
 /phpstan.neon export-ignore
