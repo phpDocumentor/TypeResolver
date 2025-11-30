@@ -842,6 +842,7 @@ class TypeResolverTest extends TestCase
             ['class-string<\phpDocumentor\Reflection>', false],
             ['class-string<\phpDocumentor\Reflection\DocBlock>', false],
             ['class-string<string>', true],
+            ['class-string<\Foo&\Bar>', true],
         ];
     }
 
@@ -856,6 +857,7 @@ class TypeResolverTest extends TestCase
             ['interface-string<\phpDocumentor\Reflection>', false],
             ['interface-string<\phpDocumentor\Reflection\DocBlock>', false],
             ['interface-string<string>', true],
+            ['interface-string<\Foo&\Bar>', true],
         ];
     }
 
@@ -1154,6 +1156,10 @@ class TypeResolverTest extends TestCase
                     new Fqsen('\\phpDocumentor\\Foo'),
                     new Fqsen('\\phpDocumentor\\Bar')
                 ),
+            ],
+            [
+                'interface-string',
+                new InterfaceString(),
             ],
             [
                 'interface-string<Foo>',
