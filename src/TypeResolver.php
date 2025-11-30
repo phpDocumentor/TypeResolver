@@ -109,7 +109,6 @@ use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
 use RuntimeException;
 
-use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_reverse;
