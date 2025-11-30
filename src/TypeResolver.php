@@ -406,6 +406,9 @@ final class TypeResolver
             case 'interface-string':
                 return new InterfaceString($this->createType($type->genericTypes[0], $context));
 
+            case 'trait-string':
+                return new TraitString($this->createType($type->genericTypes[0], $context));
+
             case 'list':
                 return new List_(
                     $this->createType($type->genericTypes[0], $context)
