@@ -40,7 +40,7 @@ class ClassStringTest extends TestCase
             'typed class string' => [new ClassString(new Fqsen('\Foo\Bar')), 'class-string<\Foo\Bar>'],
             'more than one class' => [
                 new ClassString(new Fqsen('\Foo\Bar'), new Fqsen('\Foo\Barrr')),
-                'class-string<\Foo\Bar|\Foo\Barrr>'
+                'class-string<\Foo\Bar|\Foo\Barrr>',
             ],
         ];
     }

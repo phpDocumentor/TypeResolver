@@ -40,7 +40,7 @@ class InterfaceStringTest extends TestCase
             'typed interface string' => [new InterfaceString(new Fqsen('\Foo\Bar')), 'interface-string<\Foo\Bar>'],
             'more than one class' => [
                 new InterfaceString(new Fqsen('\Foo\Bar'), new Fqsen('\Foo\Barrr')),
-                'interface-string<\Foo\Bar|\Foo\Barrr>'
+                'interface-string<\Foo\Bar|\Foo\Barrr>',
             ],
         ];
     }

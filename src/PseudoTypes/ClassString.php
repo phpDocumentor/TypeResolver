@@ -18,6 +18,8 @@ use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\String_;
 
+use function implode;
+
 /**
  * Value Object representing the type 'class-string'.
  *
