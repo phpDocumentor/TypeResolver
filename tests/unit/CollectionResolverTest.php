@@ -29,7 +29,6 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
- * @covers ::<private>
  * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
  */
 class CollectionResolverTest extends TestCase
@@ -187,7 +186,7 @@ class CollectionResolverTest extends TestCase
         $this->assertArrayHasKey(0, $types);
         $this->assertEquals(new Compound([new String_(), new Integer(), new Float_()]), $types[0]);
 
-        $this->assertArrayHasKey(0, $types);
+        $this->assertArrayHasKey(1, $types);
         $this->assertInstanceOf(Generic::class, $types[1]);
         $this->assertSame('\\ArrayObject', (string) $types[1]->getFqsen());
 

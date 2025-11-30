@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\FqsenResolver
- * @covers ::<private>
  */
 final class FqsenResolverTest extends TestCase
 {

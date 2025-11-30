@@ -100,7 +100,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      *
      * @dataProvider provideKeywords
      */
@@ -121,7 +120,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      *
      * @dataProvider provideClassStrings
      */
@@ -146,7 +144,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      *
      * @dataProvider provideInterfaceStrings
      */
@@ -172,7 +169,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      *
      * @dataProvider provideFqcn
      */
@@ -196,7 +192,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingRelativeQSENsBasedOnNamespace(): void
     {
@@ -218,7 +213,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingRelativeQSENsBasedOnNamespaceAlias(): void
     {
@@ -242,7 +236,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingTypedArrays(): void
     {
@@ -264,7 +257,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingNullableTypes(): void
     {
@@ -285,7 +277,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingNestedTypedArrays(): void
     {
@@ -316,7 +307,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingCompoundTypes(): void
     {
@@ -347,7 +337,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingAmpersandCompoundTypes(): void
     {
@@ -385,7 +374,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingMixedCompoundTypes(): void
     {
@@ -436,7 +424,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingCompoundTypedArrayTypes(): void
     {
@@ -468,7 +455,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingArrayExpressionObjectsTypes(): void
     {
@@ -502,7 +488,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingArrayExpressionSimpleTypes(): void
     {
@@ -539,7 +524,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingArrayOfArrayExpressionTypes(): void
     {
@@ -575,7 +559,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
     {
@@ -595,7 +578,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingArrayExpressionOrCompoundTypes(): void
     {
@@ -637,7 +619,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingIterableExpressionSimpleTypes(): void
     {
@@ -680,7 +661,6 @@ class TypeResolverTest extends TestCase
      * @covers ::__construct
      * @covers ::resolve
      * @covers ::createType
-     * @covers ::<private>
      */
     public function testResolvingCompoundTypesWithTwoArrays(): void
     {

@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
-use Rector\Set\ValueObject\DowngradeLevelSetList;
-use Rector\Set\ValueObject\LevelSetList;
+use Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector;
+use Rector\ValueObject\PhpVersion;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([
+return RectorConfig::configure()
+    ->withPaths([
         __DIR__ . '/src',
-        __DIR__ . '/tests/unit'
+        __DIR__ . '/tests/unit',
+    ])
+    ->withImportNames()
+    ->withPhpVersion(PhpVersion::PHP_74)
+    ->withPHPStanConfigs([
+        __DIR__ . '/phpstan.neon',
+    ])
+    ->withRules([
+        InlineConstructorDefaultToPropertyRector::class,
+        CompleteDynamicPropertiesRector::class,
+        ClosureReturnTypeRector::class,
     ]);
-
-    // register a single rule
-    $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
-    $rectorConfig->rule(Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector::class);
-    $rectorConfig->rule(Rector\TypeDeclaration\Rector\Closure\AddClosureReturnTypeRector::class);
-    $rectorConfig->rule(Rector\PHPUnit\Rector\Class_\AddProphecyTraitRector::class);
-    $rectorConfig->importNames();
-
-    // define sets of rules
-    $rectorConfig->sets([
-        DowngradeLevelSetList::DOWN_TO_PHP_73
-    ]);
-};
