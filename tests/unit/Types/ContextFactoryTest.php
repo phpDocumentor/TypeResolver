@@ -24,7 +24,6 @@ namespace phpDocumentor\Reflection\Types {
 
     /**
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
-     * @covers ::<private>
      */
     class ContextFactoryTest extends TestCase
     {

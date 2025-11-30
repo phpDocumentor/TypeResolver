@@ -108,7 +108,6 @@ use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
 use RuntimeException;
 
-use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_reverse;
@@ -323,18 +322,16 @@ final class TypeResolver
 
             case IntersectionTypeNode::class:
                 return new Intersection(
-                    array_filter(
-                        array_map(
-                            function (TypeNode $nestedType) use ($context): Type {
-                                $type = $this->createType($nestedType, $context);
-                                if ($type instanceof AggregatedType) {
-                                    return new Expression($type);
-                                }
+                    array_map(
+                        function (TypeNode $nestedType) use ($context): Type {
+                            $type = $this->createType($nestedType, $context);
+                            if ($type instanceof AggregatedType) {
+                                return new Expression($type);
+                            }
 
-                                return $type;
-                            },
-                            $type->types
-                        )
+                            return $type;
+                        },
+                        $type->types
                     )
                 );
 
@@ -345,18 +342,16 @@ final class TypeResolver
 
             case UnionTypeNode::class:
                 return new Compound(
-                    array_filter(
-                        array_map(
-                            function (TypeNode $nestedType) use ($context): Type {
-                                $type = $this->createType($nestedType, $context);
-                                if ($type instanceof AggregatedType) {
-                                    return new Expression($type);
-                                }
+                    array_map(
+                        function (TypeNode $nestedType) use ($context): Type {
+                            $type = $this->createType($nestedType, $context);
+                            if ($type instanceof AggregatedType) {
+                                return new Expression($type);
+                            }
 
-                                return $type;
-                            },
-                            $type->types
-                        )
+                            return $type;
+                        },
+                        $type->types
                     )
                 );
 

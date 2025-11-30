@@ -35,10 +35,6 @@ vendor: composer.json composer.lock
 benchmark:
 	docker run -it --rm -v${CURDIR}:/opt/project -w /opt/project php:7.4-cli vendor/bin/phpbench run
 
-.PHONY: rector
-rector: ## Refactor code using rector
-	docker run -it --rm -v${PWD}:/opt/project -w /opt/project php:7.4 vendor/bin/rector process
-
 .PHONY: pre-commit-test
 pre-commit-test: fix-code-style test code-style static-code-analysis
 
