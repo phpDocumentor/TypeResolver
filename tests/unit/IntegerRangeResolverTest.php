@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
- * @covers ::<private>
  * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
  */
 class IntegerRangeResolverTest extends TestCase

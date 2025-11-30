@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\PseudoTypes\Generic;
-use phpDocumentor\Reflection\PseudoTypes\GenericTemplate;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\Types\Array_;
@@ -29,7 +28,6 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
- * @covers ::<private>
  * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
  */
 class CollectionResolverTest extends TestCase
@@ -37,7 +35,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::resolve
@@ -59,7 +57,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -81,7 +79,7 @@ class CollectionResolverTest extends TestCase
         $this->assertArrayHasKey(0, $types);
         $this->assertEquals(new Array_(new String_()), $types[0]);
         $this->assertArrayHasKey(1, $types);
-        $this->assertEquals(new GenericTemplate(new Object_(new Fqsen('\\Iterator'))), $types[1]);
+        $this->assertEquals(new Object_(new Fqsen('\\Iterator')), $types[1]);
     }
 
     /**
@@ -165,7 +163,7 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
-     * @uses \phpDocumentor\Reflection\Types\Generic
+     * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
      * @covers ::__construct
@@ -187,13 +185,13 @@ class CollectionResolverTest extends TestCase
         $this->assertArrayHasKey(0, $types);
         $this->assertEquals(new Compound([new String_(), new Integer(), new Float_()]), $types[0]);
 
-        $this->assertArrayHasKey(0, $types);
+        $this->assertArrayHasKey(1, $types);
         $this->assertInstanceOf(Generic::class, $types[1]);
         $this->assertSame('\\ArrayObject', (string) $types[1]->getFqsen());
 
         $nestedGenericTypes = $types[1]->getTypes();
         $this->assertArrayHasKey(0, $nestedGenericTypes);
-        $this->assertEquals(new GenericTemplate(new Object_(new Fqsen('\\DateTime'))), $nestedGenericTypes[0]);
+        $this->assertEquals(new Object_(new Fqsen('\\DateTime')), $nestedGenericTypes[0]);
     }
 
     /**

@@ -28,8 +28,8 @@ class IntMaskOfTest extends TestCase
      */
     public function testToString(): void
     {
-        $type = new IntMask(new Compound([new IntegerValue(1), new IntegerValue(5), new IntegerValue(10)]));
+        $type = new IntMaskOf(new Compound([new IntegerValue(1), new IntegerValue(5), new IntegerValue(10)]));
 
-        $this->assertSame('int-mask<1|5|10>', (string) $type);
+        $this->assertSame('int-mask-of<1|5|10>', (string) $type);
     }
 }

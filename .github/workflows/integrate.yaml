@@ -17,18 +17,21 @@ jobs:
     name: "Code Coverage"
     uses: "phpDocumentor/.github/.github/workflows/code-coverage.yml@main"
     with:
+      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, iconv"
       composer-root-version: "1.x-dev"
 
   coding-standards:
     name: "Coding Standards"
     uses: "phpDocumentor/.github/.github/workflows/coding-standards.yml@v0.9"
     with:
+      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, iconv"
       composer-root-version: "1.x-dev"
 
   dependency-analysis:
     name: "Dependency analysis"
     uses: "phpDocumentor/.github/.github/workflows/dependency-analysis.yml@v0.9"
     with:
+      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, iconv"
       composer-root-version: "1.x-dev"
 
   lint-root:
@@ -41,12 +44,13 @@ jobs:
     name: "Static analysis"
     uses: "phpDocumentor/.github/.github/workflows/static-analysis.yml@v0.9"
     with:
-      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, pcntl, posix"
+      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, pcntl, posix, iconv"
       composer-root-version: "1.x-dev"
 
   unit-tests:
     name: "Unit test"
     uses: "phpDocumentor/.github/.github/workflows/continuous-integration.yml@v0.9"
     with:
+      php-extensions: "none, ctype, dom, json, mbstring, phar, simplexml, tokenizer, xml, xmlwriter, fileinfo, iconv"
       composer-root-version: "1.x-dev"
       upcoming-releases: true

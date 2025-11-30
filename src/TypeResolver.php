@@ -15,19 +15,21 @@ namespace phpDocumentor\Reflection;
 
 use Doctrine\Deprecations\Deprecation;
 use InvalidArgumentException;
+use phpDocumentor\Reflection\PseudoTypes\ArrayKey;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
+use phpDocumentor\Reflection\PseudoTypes\ClassString;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
 use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\Generic;
-use phpDocumentor\Reflection\PseudoTypes\GenericTemplate;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
+use phpDocumentor\Reflection\PseudoTypes\InterfaceString;
 use phpDocumentor\Reflection\PseudoTypes\IntMask;
 use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
 use phpDocumentor\Reflection\PseudoTypes\KeyOf;
@@ -53,17 +55,14 @@ use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Callable_;
 use phpDocumentor\Reflection\Types\CallableParameter;
-use phpDocumentor\Reflection\Types\ClassString;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\Expression;
 use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
-use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -109,7 +108,6 @@ use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
 use RuntimeException;
 
-use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_reverse;
@@ -199,14 +197,8 @@ final class TypeResolver
     public function __construct(?FqsenResolver $fqsenResolver = null)
     {
         $this->fqsenResolver = $fqsenResolver ?: new FqsenResolver();
-
-        if (class_exists(ParserConfig::class)) {
-            $this->typeParser = new TypeParser(new ParserConfig([]), new ConstExprParser(new ParserConfig([])));
-            $this->lexer = new Lexer(new ParserConfig([]));
-        } else {
-            $this->typeParser = new TypeParser(new ConstExprParser());
-            $this->lexer = new Lexer();
-        }
+        $this->typeParser = new TypeParser(new ParserConfig([]), new ConstExprParser(new ParserConfig([])));
+        $this->lexer = new Lexer(new ParserConfig([]));
     }
 
     /**
@@ -242,7 +234,19 @@ final class TypeResolver
         $ast = $this->parse($tokenIterator);
         $type = $this->createType($ast, $context);
 
-        return $this->tryParseRemainingCompoundTypes($tokenIterator, $context, $type);
+        if (
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_UNION) ||
+            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_INTERSECTION)
+        ) {
+            Deprecation::trigger(
+                'phpdocumentor/type-resolver',
+                'https://github.com/phpDocumentor/TypeResolver/issues/184',
+                'Legacy nullable type detected, please update your code as
+                you are using nullable types in a docblock. support is removed in v2.0.0'
+            );
+        }
+
+        return $type;
     }
 
     public function createType(?TypeNode $type, Context $context): Type
@@ -318,18 +322,16 @@ final class TypeResolver
 
             case IntersectionTypeNode::class:
                 return new Intersection(
-                    array_filter(
-                        array_map(
-                            function (TypeNode $nestedType) use ($context): Type {
-                                $type = $this->createType($nestedType, $context);
-                                if ($type instanceof AggregatedType) {
-                                    return new Expression($type);
-                                }
+                    array_map(
+                        function (TypeNode $nestedType) use ($context): Type {
+                            $type = $this->createType($nestedType, $context);
+                            if ($type instanceof AggregatedType) {
+                                return new Expression($type);
+                            }
 
-                                return $type;
-                            },
-                            $type->types
-                        )
+                            return $type;
+                        },
+                        $type->types
                     )
                 );
 
@@ -340,18 +342,16 @@ final class TypeResolver
 
             case UnionTypeNode::class:
                 return new Compound(
-                    array_filter(
-                        array_map(
-                            function (TypeNode $nestedType) use ($context): Type {
-                                $type = $this->createType($nestedType, $context);
-                                if ($type instanceof AggregatedType) {
-                                    return new Expression($type);
-                                }
+                    array_map(
+                        function (TypeNode $nestedType) use ($context): Type {
+                            $type = $this->createType($nestedType, $context);
+                            if ($type instanceof AggregatedType) {
+                                return new Expression($type);
+                            }
 
-                                return $type;
-                            },
-                            $type->types
-                        )
+                            return $type;
+                        },
+                        $type->types
                     )
                 );
 
@@ -468,17 +468,7 @@ final class TypeResolver
                     throw new RuntimeException(sprintf('%s is an unsupported generic', (string) $mainType));
                 }
 
-                $types = array_map(
-                    function (TypeNode $node) use ($context): Type {
-                        $innerType = $this->createType($node, $context);
-                        if ($innerType instanceof Object_ && $innerType instanceof Generic === false) {
-                            return new GenericTemplate($innerType);
-                        }
-
-                        return $innerType;
-                    },
-                    $type->genericTypes
-                );
+                $types = $this->createTypesByTypeNodes($type->genericTypes, $context);
 
                 return new Generic($mainType->getFqsen(), $types);
         }
@@ -651,47 +641,6 @@ final class TypeResolver
         }
 
         return $ast;
-    }
-
-    /**
-     * Will try to parse unsupported type notations by phpstan
-     *
-     * The phpstan parser doesn't support the illegal nullable combinations like this library does.
-     * This method will warn the user about those notations but for bc purposes we will still have it here.
-     */
-    private function tryParseRemainingCompoundTypes(TokenIterator $tokenIterator, Context $context, Type $type): Type
-    {
-        if (
-            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_UNION) ||
-            $tokenIterator->isCurrentTokenType(Lexer::TOKEN_INTERSECTION)
-        ) {
-            Deprecation::trigger(
-                'phpdocumentor/type-resolver',
-                'https://github.com/phpDocumentor/TypeResolver/issues/184',
-                'Legacy nullable type detected, please update your code as
-                you are using nullable types in a docblock. support will be removed in v2.0.0'
-            );
-        }
-
-        $continue = true;
-        while ($continue) {
-            $continue = false;
-            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_UNION)) {
-                $ast = $this->parse($tokenIterator);
-                $type2 = $this->createType($ast, $context);
-                $type = new Compound([$type, $type2]);
-                $continue = true;
-            }
-
-            while ($tokenIterator->tryConsumeTokenType(Lexer::TOKEN_INTERSECTION)) {
-                $ast = $this->typeParser->parse($tokenIterator);
-                $type2 = $this->createType($ast, $context);
-                $type = new Intersection([$type, $type2]);
-                $continue = true;
-            }
-        }
-
-        return $type;
     }
 
     /**
