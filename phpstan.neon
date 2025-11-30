@@ -9,6 +9,17 @@ parameters:
         - src
         - tests
     ignoreErrors:
+        # We are intentionally using non-existing classes here
+
+        -
+            message: "#^Class phpDocumentor\\\\Reflection\\\\DocBlock not found#"
+            count: 1
+            path: tests/unit/Types/ContextFactoryTest.php
+        -
+            message: "#^Class phpDocumentor\\\\Reflection\\\\DocBlock\\\\Tag not found#"
+            count: 1
+            path: tests/unit/Types/ContextFactoryTest.php
+
         # We are intentionally adding invalid parameters here
         -
             message: "#^Parameter \\#2 \\$typeClassName of method phpDocumentor\\\\Reflection\\\\TypeResolver\\:\\:addKeyword\\(\\) expects class\\-string\\<phpDocumentor\\\\Reflection\\\\Type\\>\\, string given\\.$#"
