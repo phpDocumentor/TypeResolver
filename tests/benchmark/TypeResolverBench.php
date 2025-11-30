@@ -15,7 +15,7 @@ class TypeResolverBench
 {
     private TypeResolver $typeResolver;
 
-    public function setup()
+    public function setup(): void
     {
         $this->typeResolver = new TypeResolver();
     }

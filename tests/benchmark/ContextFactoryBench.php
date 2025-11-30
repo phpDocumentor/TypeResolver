@@ -14,15 +14,15 @@ final class ContextFactoryBench
 {
     private string $source;
 
-    public function setup()
+    public function setup(): void
     {
-        $this->source = file_get_contents(__DIR__ . '/Assets/mpdf.php');
+        $this->source = (string) file_get_contents(__DIR__ . '/Assets/mpdf.php');
     }
 
     /**
      * @Warmup(1)
      */
-    public function benchCreateContextForNamespace()
+    public function benchCreateContextForNamespace(): void
     {
         $factory = new ContextFactory();
         $factory->createForNamespace(

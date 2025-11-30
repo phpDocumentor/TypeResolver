@@ -61,7 +61,7 @@ namespace phpDocumentor\Reflection\Types {
         public function testReadsNamespaceFromProvidedNamespaceAndContent() : void
         {
             $fixture = new ContextFactory();
-            $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
+            $context = $fixture->createForNamespace(__NAMESPACE__, (string) file_get_contents(__FILE__));
 
             $this->assertSame(__NAMESPACE__, $context->getNamespace());
         }
@@ -73,7 +73,7 @@ namespace phpDocumentor\Reflection\Types {
         public function testReadsAliasesFromProvidedNamespaceAndContent() : void
         {
             $fixture = new ContextFactory();
-            $context = $fixture->createForNamespace(__NAMESPACE__, file_get_contents(__FILE__));
+            $context = $fixture->createForNamespace(__NAMESPACE__, (string) file_get_contents(__FILE__));
 
             $this->assertNamespaceAliasesFrom($context);
         }
@@ -198,7 +198,7 @@ PHP
             $this->assertSame([], $context->getNamespaceAliases());
         }
 
-        public function assertNamespaceAliasesFrom(Context $context)
+        public function assertNamespaceAliasesFrom(Context $context): void
         {
             $expected = [
                 'm' => m::class,

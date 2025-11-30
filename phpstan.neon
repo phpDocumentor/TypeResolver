@@ -7,6 +7,7 @@ parameters:
         - tests/benchmark/Assets/*
     paths:
         - src
+        - tests
     ignoreErrors:
         -
             message: "#^Parameter \\#1 \\$constExprParser of class PHPStan\\\\PhpDocParser\\\\Parser\\\\TypeParser constructor expects PHPStan\\\\PhpDocParser\\\\Parser\\\\ConstExprParser\\|null, PHPStan\\\\PhpDocParser\\\\ParserConfig given\\.$#"
@@ -24,3 +25,20 @@ parameters:
             message: "#^Parameter \\#2 \\$quoteAwareConstExprString of class PHPStan\\\\PhpDocParser\\\\Parser\\\\TypeParser constructor expects bool, PHPStan\\\\PhpDocParser\\\\Parser\\\\ConstExprParser given\\.$#"
             count: 1
             path: src/TypeResolver.php
+
+        # We are intentionally adding invalid parameters here
+        -
+            message: "#^Parameter \\#2 \\$typeClassName of method phpDocumentor\\\\Reflection\\\\TypeResolver\\:\\:addKeyword\\(\\) expects class\\-string\\<phpDocumentor\\\\Reflection\\\\Type\\>\\, string given\\.$#"
+            count: 2
+            path: tests/unit/TypeResolverTest.php
+
+        # We are intentionally adding invalid parameters here
+        -
+            message: "#^Parameter \\#1 \\$types of class phpDocumentor\\\\Reflection\\\\Types\\\\Compound constructor expects array\\<phpDocumentor\\\\Reflection\\\\Type\\>\\, array\\<int\\, string\\> given\\.$#"
+            count: 1
+            path: tests/unit/Types/CompoundTest.php
+
+        -
+            message: "#^Parameter \\#1 \\$argument of class ReflectionClass constructor expects class\\-string\\<Foo\\\\Bar\\>\\|Foo\\\\Bar\\, string given\\.$#"
+            count: 1
+            path: tests/unit/Types/ContextFactoryTest.php
