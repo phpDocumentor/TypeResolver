@@ -199,19 +199,6 @@ class CollectionResolverTest extends TestCase
      * @covers ::resolve
      * @covers ::createType
      */
-    public function testBadArrayCollectionKey(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('An array can have only integers or strings as keys');
-        $fixture = new TypeResolver();
-        $fixture->resolve('array<object,string>', new Context(''));
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     */
     public function testGoodArrayCollectionKey(): void
     {
         $fixture = new TypeResolver();

@@ -998,6 +998,43 @@ class TypeResolverTest extends TestCase
                 ),
             ],
             [
+                'array<key-of<Foo\\Bar::SOME_CONSTANT>, string>',
+                new Array_(
+                    new String_(),
+                    new KeyOf(new ConstExpression(
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                        'SOME_CONSTANT'
+                    ))
+                ),
+            ],
+            [
+                'array<value-of<Foo\\Bar::SOME_CONSTANT>, string>',
+                new Array_(
+                    new String_(),
+                    new ValueOf(new ConstExpression(
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
+                        'SOME_CONSTANT'
+                    ))
+                ),
+            ],
+            [
+                'array<Foo\\Bar::*, string>',
+                new Array_(
+                    new String_(),
+                    new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')), '*')
+                ),
+            ],
+            [
+                'array<self::SOME_CONSTANT_FIRST|self::SOME_CONSTANT_SECOND, string>',
+                new Array_(
+                    new String_(),
+                    new Compound([
+                        new ConstExpression(new Self_(), 'SOME_CONSTANT_FIRST'),
+                        new ConstExpression(new Self_(), 'SOME_CONSTANT_SECOND'),
+                    ])
+                ),
+            ],
+            [
                 'array<string|int, Foo\\Bar>',
                 new Array_(
                     new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar')),
