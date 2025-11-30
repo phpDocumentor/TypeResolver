@@ -116,56 +116,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses         \phpDocumentor\Reflection\Types\Context
      * @uses         \phpDocumentor\Reflection\Types\Object_
-     * @uses         \phpDocumentor\Reflection\Types\String_
-     *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     * @covers ::<private>
-     *
-     * @dataProvider provideClassStrings
-     */
-    public function testResolvingClassStrings(string $classString, bool $throwsException): void
-    {
-        $fixture = new TypeResolver();
-
-        if ($throwsException) {
-            $this->expectException(RuntimeException::class);
-        }
-
-        $resolvedType = $fixture->resolve($classString, new Context(''));
-
-        $this->assertInstanceOf(ClassString::class, $resolvedType);
-    }
-
-    /**
-     * @uses         \phpDocumentor\Reflection\Types\Context
-     * @uses         \phpDocumentor\Reflection\Types\Object_
-     * @uses         \phpDocumentor\Reflection\Types\String_
-     *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     * @covers ::<private>
-     *
-     * @dataProvider provideInterfaceStrings
-     */
-    public function testResolvingInterfaceStrings(string $interfaceString, bool $throwsException): void
-    {
-        $fixture = new TypeResolver();
-
-        if ($throwsException) {
-            $this->expectException(RuntimeException::class);
-        }
-
-        $resolvedType = $fixture->resolve($interfaceString, new Context(''));
-
-        $this->assertInstanceOf(InterfaceString::class, $resolvedType);
-    }
-
-    /**
-     * @uses         \phpDocumentor\Reflection\Types\Context
-     * @uses         \phpDocumentor\Reflection\Types\Object_
      * @uses         \phpDocumentor\Reflection\Fqsen
      * @uses         \phpDocumentor\Reflection\FqsenResolver
      *
@@ -832,36 +782,6 @@ class TypeResolverTest extends TestCase
     }
 
     /**
-     * Returns a list of class string types and whether they throw an exception.
-     *
-     * @return (string|bool)[][]
-     */
-    public function provideClassStrings(): array
-    {
-        return [
-            ['class-string<\phpDocumentor\Reflection>', false],
-            ['class-string<\phpDocumentor\Reflection\DocBlock>', false],
-            ['class-string<string>', true],
-            ['class-string<\Foo&\Bar>', true],
-        ];
-    }
-
-    /**
-     * Returns a list of interface string types and whether they throw an exception.
-     *
-     * @return (string|bool)[][]
-     */
-    public function provideInterfaceStrings(): array
-    {
-        return [
-            ['interface-string<\phpDocumentor\Reflection>', false],
-            ['interface-string<\phpDocumentor\Reflection\DocBlock>', false],
-            ['interface-string<string>', true],
-            ['interface-string<\Foo&\Bar>', true],
-        ];
-    }
-
-    /**
      * Provides a list of FQSENs to test the resolution patterns with.
      *
      * @return string[][]
@@ -1148,13 +1068,15 @@ class TypeResolverTest extends TestCase
             ],
             [
                 'class-string<Foo>',
-                new ClassString(new Fqsen('\\phpDocumentor\\Foo')),
+                new ClassString(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
             ],
             [
                 'class-string<Foo|Bar>',
                 new ClassString(
-                    new Fqsen('\\phpDocumentor\\Foo'),
-                    new Fqsen('\\phpDocumentor\\Bar')
+                    new Compound([
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo')),
+                        new Object_(new Fqsen('\\phpDocumentor\\Bar'))
+                    ])
                 ),
             ],
             [
@@ -1163,13 +1085,15 @@ class TypeResolverTest extends TestCase
             ],
             [
                 'interface-string<Foo>',
-                new InterfaceString(new Fqsen('\\phpDocumentor\\Foo')),
+                new InterfaceString(new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
             ],
             [
                 'interface-string<Foo|Bar>',
                 new InterfaceString(
-                    new Fqsen('\\phpDocumentor\\Foo'),
-                    new Fqsen('\\phpDocumentor\\Bar'),
+                    new Compound([
+                        new Object_(new Fqsen('\\phpDocumentor\\Foo')),
+                        new Object_(new Fqsen('\\phpDocumentor\\Bar')),
+                    ])
                 ),
             ],
             [

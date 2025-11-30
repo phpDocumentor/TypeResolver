@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
-use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\String_;
-
-use function implode;
 
 /**
  * Value Object representing the type `interface-string`.
@@ -27,12 +24,12 @@ use function implode;
  */
 final class InterfaceString extends String_ implements PseudoType
 {
-    /** @var Fqsen[] */
-    private $fqsens;
+    /** @var Type|null */
+    private $genericType;
 
-    public function __construct(Fqsen ...$fqsens)
+    public function __construct(?Type $genericType = null)
     {
-        $this->fqsens = $fqsens;
+        $this->genericType = $genericType;
     }
 
     public function underlyingType(): Type
@@ -40,12 +37,9 @@ final class InterfaceString extends String_ implements PseudoType
         return new String_();
     }
 
-    /**
-     * @return Fqsen[]
-     */
-    public function getFqsens(): array
+    public function getGenericType(): ?Type
     {
-        return $this->fqsens;
+        return $this->genericType;
     }
 
     /**
@@ -53,10 +47,10 @@ final class InterfaceString extends String_ implements PseudoType
      */
     public function __toString(): string
     {
-        if (!$this->fqsens) {
+        if ($this->genericType === null) {
             return 'interface-string';
         }
 
-        return 'interface-string<' . implode('|', $this->fqsens) . '>';
+        return 'interface-string<' . (string) $this->genericType . '>';
     }
 }
