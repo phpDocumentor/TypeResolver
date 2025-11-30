@@ -15,3 +15,5 @@ third party developers.
 
    index
    getting-started
+   generics
+   upgrade-v1-to-v2
