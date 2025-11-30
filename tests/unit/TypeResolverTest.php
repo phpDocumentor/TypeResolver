@@ -897,16 +897,28 @@ class TypeResolverTest extends TestCase
      * @dataProvider callableProvider
      * @dataProvider constExpressions
      * @dataProvider shapeStructures
-     * @dataProvider illegalLegacyFormatProvider
      * @testdox create type from $type
      */
     public function testTypeBuilding(string $type, Type $expected, bool $deprecation = false): void
     {
-        if ($deprecation) {
-            $this->expectDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
-        } else {
-            $this->expectNoDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
-        }
+        $this->expectNoDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
+
+        $fixture = new TypeResolver();
+        $actual = $fixture->resolve($type, new Context('phpDocumentor'));
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @covers ::__construct
+     * @covers ::resolve
+     * @covers ::createType
+     * @dataProvider illegalLegacyFormatProvider
+     * @testdox create type from $type
+     */
+    public function testTypeBuildingThrowsError(string $type, Type $expected): void
+    {
+        $this->expectDeprecationWithIdentifier('https://github.com/phpDocumentor/TypeResolver/issues/184');
 
         $fixture = new TypeResolver();
         $actual = $fixture->resolve($type, new Context('phpDocumentor'));
@@ -1361,52 +1373,31 @@ class TypeResolverTest extends TestCase
         return [
             [
                 '?string |bool',
-                new Compound([new Nullable(new String_()), new Boolean()]),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string|?bool',
-                new Compound([new Nullable(new String_()), new Nullable(new Boolean())]),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string|?bool|null',
-                new Compound([new Nullable(new String_()), new Nullable(new Boolean()), new Null_()]),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string|bool|Foo',
-                new Compound([
-                    new Nullable(new String_()),
-                    new Boolean(),
-                    new Object_(new Fqsen('\\phpDocumentor\\Foo')),
-                ]),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string&bool',
-                new Intersection([new Nullable(new String_()), new Boolean()]),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string&bool|Foo',
-                new Intersection(
-                    [
-                        new Nullable(new String_()),
-                        new Compound([new Boolean(), new Object_(new Fqsen('\\phpDocumentor\\Foo'))]),
-                    ]
-                ),
-                true,
+                new Nullable(new String_()),
             ],
             [
                 '?string&?bool|null',
-                new Compound(
-                    [
-                        new Intersection([new Nullable(new String_()), new Nullable(new Boolean())]),
-                        new Null_(),
-                    ]
-                ),
-                true,
+                new Nullable(new String_()),
             ],
         ];
     }
