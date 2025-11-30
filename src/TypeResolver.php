@@ -399,28 +399,10 @@ final class TypeResolver
                 return new NonEmptyArray(...$genericTypes);
 
             case 'class-string':
-                $subType = $this->createType($type->genericTypes[0], $context);
-                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
-                    throw new RuntimeException(
-                        $subType . ' is not a class string'
-                    );
-                }
-
-                return new ClassString(
-                    $subType->getFqsen()
-                );
+                return new ClassString($this->createType($type->genericTypes[0], $context));
 
             case 'interface-string':
-                $subType = $this->createType($type->genericTypes[0], $context);
-                if (!$subType instanceof Object_ || $subType->getFqsen() === null) {
-                    throw new RuntimeException(
-                        $subType . ' is not a class string'
-                    );
-                }
-
-                return new InterfaceString(
-                    $subType->getFqsen()
-                );
+                return new InterfaceString($this->createType($type->genericTypes[0], $context));
 
             case 'list':
                 return new List_(

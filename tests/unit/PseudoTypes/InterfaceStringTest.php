@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,19 +27,31 @@ class InterfaceStringTest extends TestCase
      * @dataProvider provideInterfaceStrings
      * @covers ::__toString
      */
-    public function testInterfaceStringStringifyCorrectly(InterfaceString $array, string $expectedString): void
+    public function testInterfaceStringStringifyCorrectly(InterfaceString $type, string $expectedString): void
     {
-        $this->assertSame($expectedString, (string) $array);
+        $this->assertSame($expectedString, (string) $type);
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{InterfaceString, string}>
      */
     public function provideInterfaceStrings(): array
     {
         return [
             'generic interface string' => [new InterfaceString(), 'interface-string'],
-            'typed interface string' => [new InterfaceString(new Fqsen('\Foo\Bar')), 'interface-string<\Foo\Bar>'],
+            'typed interface string' => [
+                new InterfaceString(new Object_(new Fqsen('\Foo\Bar'))),
+                'interface-string<\Foo\Bar>',
+            ],
+            'more than one class' => [
+                new InterfaceString(
+                    new Compound([
+                        new Object_(new Fqsen('\Foo\Bar')),
+                        new Object_(new Fqsen('\Foo\Barrr')),
+                    ])
+                ),
+                'interface-string<\Foo\Bar|\Foo\Barrr>',
+            ],
         ];
     }
 }
