@@ -26,7 +26,6 @@ use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\Generic;
-use phpDocumentor\Reflection\PseudoTypes\GenericTemplate;
 use phpDocumentor\Reflection\PseudoTypes\HtmlEscapedString;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
 use phpDocumentor\Reflection\PseudoTypes\IntegerValue;
@@ -472,17 +471,7 @@ final class TypeResolver
                     throw new RuntimeException(sprintf('%s is an unsupported generic', (string) $mainType));
                 }
 
-                $types = array_map(
-                    function (TypeNode $node) use ($context): Type {
-                        $innerType = $this->createType($node, $context);
-                        if ($innerType instanceof Object_ && $innerType instanceof Generic === false) {
-                            return new GenericTemplate($innerType);
-                        }
-
-                        return $innerType;
-                    },
-                    $type->genericTypes
-                );
+                $types = $this->createTypesByTypeNodes($type->genericTypes, $context);
 
                 return new Generic($mainType->getFqsen(), $types);
         }

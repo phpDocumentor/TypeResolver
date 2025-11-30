@@ -70,7 +70,7 @@ class GenericTest extends TestCase
                 new Generic(
                     new Fqsen('\\MyClass'),
                     [
-                        new GenericTemplate(new Object_(new Fqsen('\\T'))),
+                        new Object_(new Fqsen('\\T')),
                         new Object_(new Fqsen('\\SomeClassSecond')),
                         new Object_(new Fqsen('\\SomeClassThird')),
                     ]
