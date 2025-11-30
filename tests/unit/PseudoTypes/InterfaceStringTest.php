@@ -47,7 +47,7 @@ class InterfaceStringTest extends TestCase
                 new InterfaceString(
                     new Compound([
                         new Object_(new Fqsen('\Foo\Bar')),
-                        new Object_(new Fqsen('\Foo\Barrr'))
+                        new Object_(new Fqsen('\Foo\Barrr')),
                     ])
                 ),
                 'interface-string<\Foo\Bar|\Foo\Barrr>',

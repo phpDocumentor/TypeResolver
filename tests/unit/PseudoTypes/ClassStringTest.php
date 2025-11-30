@@ -47,7 +47,7 @@ class ClassStringTest extends TestCase
                 new ClassString(
                     new Compound([
                         new Object_(new Fqsen('\Foo\Bar')),
-                        new Object_(new Fqsen('\Foo\Barrr'))
+                        new Object_(new Fqsen('\Foo\Barrr')),
                     ])
                 ),
                 'class-string<\Foo\Bar|\Foo\Barrr>',

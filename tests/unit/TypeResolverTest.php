@@ -1057,7 +1057,7 @@ class TypeResolverTest extends TestCase
                 new ClassString(
                     new Compound([
                         new Object_(new Fqsen('\\phpDocumentor\\Foo')),
-                        new Object_(new Fqsen('\\phpDocumentor\\Bar'))
+                        new Object_(new Fqsen('\\phpDocumentor\\Bar')),
                     ])
                 ),
             ],
