@@ -131,7 +131,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingRelativeQSENsBasedOnNamespace(): void
     {
@@ -149,7 +148,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingRelativeQSENsBasedOnNamespaceAlias(): void
     {
@@ -169,7 +167,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingTypedArrays(): void
     {
@@ -187,7 +184,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingNullableTypes(): void
     {
@@ -204,7 +200,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingNestedTypedArrays(): void
     {
@@ -231,7 +226,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingCompoundTypes(): void
     {
@@ -258,7 +252,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingAmpersandCompoundTypes(): void
     {
@@ -292,7 +285,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingMixedCompoundTypes(): void
     {
@@ -339,7 +331,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingCompoundTypedArrayTypes(): void
     {
@@ -367,7 +358,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingArrayExpressionObjectsTypes(): void
     {
@@ -397,7 +387,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingArrayExpressionSimpleTypes(): void
     {
@@ -430,7 +419,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingArrayOfArrayExpressionTypes(): void
     {
@@ -462,7 +450,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
     {
@@ -478,7 +465,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingArrayExpressionOrCompoundTypes(): void
     {
@@ -516,7 +502,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Object_
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
-     *
      */
     public function testResolvingIterableExpressionSimpleTypes(): void
     {
@@ -555,7 +540,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingCompoundTypesWithTwoArrays(): void
     {
@@ -580,7 +564,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\TypeResolver::resolve
      * @uses \phpDocumentor\Reflection\TypeResolver::<private>
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testAddingAKeyword(): void
     {
@@ -599,7 +582,6 @@ class TypeResolverTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist(): void
     {
@@ -610,7 +592,6 @@ class TypeResolverTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface(): void
     {
@@ -621,7 +602,6 @@ class TypeResolverTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testExceptionIsThrownIfTypeIsEmpty(): void
     {
@@ -632,7 +612,6 @@ class TypeResolverTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testInvalidArrayOperator(): void
     {
@@ -710,7 +689,6 @@ class TypeResolverTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
-     *
      */
     public function testArrayKeyValueSpecification(): void
     {

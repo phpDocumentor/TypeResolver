@@ -34,7 +34,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingCollection(): void
     {
@@ -53,7 +52,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingCollectionWithKeyType(): void
     {
@@ -77,7 +75,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingArrayCollection(): void
     {
@@ -100,7 +97,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingArrayCollectionWithKey(): void
     {
@@ -147,7 +143,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingCollectionOfCollection(): void
     {
@@ -216,7 +211,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingCollectionAsArray(): void
     {
@@ -238,7 +232,6 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingList(): void
     {
@@ -260,7 +253,6 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingNonEmptyList(): void
     {
@@ -282,7 +274,6 @@ class CollectionResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
-     *
      */
     public function testResolvingNullableArray(): void
     {

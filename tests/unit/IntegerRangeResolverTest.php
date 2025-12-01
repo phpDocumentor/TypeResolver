@@ -24,7 +24,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRange(): void
     {
@@ -46,7 +45,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRangeWithKeywords(): void
     {
@@ -68,7 +66,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRangeErrorMissingMaxValue(): void
     {
@@ -83,7 +80,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRangeErrorMisingMinValue(): void
     {
@@ -98,7 +94,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRangeErrorMisingComma(): void
     {
@@ -113,7 +108,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
      */
     public function testResolvingIntRangeErrorMissingEnd(): void
     {

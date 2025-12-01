@@ -26,7 +26,6 @@ final class ArrayKeyTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\PseudoTypes\ArrayKey::__construct
-     *
      */
     public function testArrayKeyCanBeIterated(): void
     {
