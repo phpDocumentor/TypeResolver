@@ -15,6 +15,8 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
+use function implode;
+
 /**
  * Value Object representing a Callable type.
  *
@@ -63,6 +65,16 @@ final class Callable_ implements Type
      */
     public function __toString(): string
     {
-        return $this->identifier;
+        if (!$this->parameters && $this->returnType === null) {
+            return $this->identifier;
+        }
+
+        if ($this->returnType instanceof self) {
+            $returnType = '(' . (string) $this->returnType . ')';
+        } else {
+            $returnType = (string) $this->returnType;
+        }
+
+        return $this->identifier . '(' . implode(', ', $this->parameters) . '): ' . $returnType;
     }
 }

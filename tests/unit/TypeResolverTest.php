@@ -1192,6 +1192,34 @@ class TypeResolverTest extends TestCase
                     new Object_(new Fqsen('\\phpDocumentor\\Foo'))
                 ),
             ],
+            [
+                'Closure(mixed): (callable(mixed): mixed)',
+                new Callable_(
+                    'Closure',
+                    [
+                        new CallableParameter(
+                            new Mixed_(),
+                            null,
+                            false,
+                            false,
+                            false
+                        ),
+                    ],
+                    new Callable_(
+                        'callable',
+                        [
+                            new CallableParameter(
+                                new Mixed_(),
+                                null,
+                                false,
+                                false,
+                                false
+                            ),
+                        ],
+                        new Mixed_()
+                    )
+                ),
+            ],
         ];
     }
 
