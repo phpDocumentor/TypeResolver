@@ -22,6 +22,8 @@ use phpDocumentor\Reflection\Type;
  */
 final class Callable_ implements Type
 {
+    /** @var string */
+    private $identifier;
     /** @var Type|null */
     private $returnType;
     /** @var CallableParameter[] */
@@ -30,10 +32,19 @@ final class Callable_ implements Type
     /**
      * @param CallableParameter[] $parameters
      */
-    public function __construct(array $parameters = [], ?Type $returnType = null)
-    {
+    public function __construct(
+        string $identifier = 'callable',
+        array $parameters = [],
+        ?Type $returnType = null
+    ) {
+        $this->identifier = $identifier;
         $this->parameters = $parameters;
         $this->returnType = $returnType;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 
     /** @return CallableParameter[] */
@@ -52,6 +63,6 @@ final class Callable_ implements Type
      */
     public function __toString(): string
     {
-        return 'callable';
+        return $this->identifier;
     }
 }
