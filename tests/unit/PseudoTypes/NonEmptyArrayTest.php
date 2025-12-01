@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -21,18 +22,29 @@ use PHPUnit\Framework\TestCase;
 
 class NonEmptyArrayTest extends TestCase
 {
-    /**
-     * @dataProvider provideArrays
-     */
-    public function testArrayStringifyCorrectly(NonEmptyArray $array, string $expectedString): void
+    public function testCreateWithoutParams(): void
     {
-        $this->assertSame($expectedString, (string) $array);
+        $type = new NonEmptyArray();
+
+        $this->assertNull($type->getOriginalKeyType());
+        $this->assertNull($type->getOriginalValueType());
+        $this->assertEquals(new Compound([new String_(), new Integer()]), $type->getKeyType());
+        $this->assertEquals(new Mixed_(), $type->getValueType());
+        $this->assertEquals(new Array_(), $type->underlyingType());
     }
 
     /**
-     * @return mixed[]
+     * @dataProvider provideToStringData
      */
-    public function provideArrays(): array
+    public function testToString(NonEmptyArray $type, string $expectedString): void
+    {
+        $this->assertSame($expectedString, (string) $type);
+    }
+
+    /**
+     * @return array<string, array{NonEmptyArray, string}>
+     */
+    public function provideToStringData(): array
     {
         return [
             'simple non-empty-array' => [new NonEmptyArray(), 'non-empty-array'],

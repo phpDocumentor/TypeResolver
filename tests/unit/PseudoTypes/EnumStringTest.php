@@ -19,12 +19,12 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class ClassStringTest extends TestCase
+class EnumStringTest extends TestCase
 {
     public function testCreate(): void
     {
         $genericType = new Object_(new Fqsen('\Foo\Bar'));
-        $type = new ClassString($genericType);
+        $type = new EnumString($genericType);
 
         $this->assertSame($genericType, $type->getGenericType());
         $this->assertEquals(new String_(), $type->underlyingType());
@@ -33,30 +33,30 @@ class ClassStringTest extends TestCase
     /**
      * @dataProvider provideToStringData
      */
-    public function testToString(ClassString $type, string $expectedString): void
+    public function testToString(EnumString $type, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $type);
     }
 
     /**
-     * @return array<string, array{ClassString, string}>
+     * @return array<string, array{EnumString, string}>
      */
     public function provideToStringData(): array
     {
         return [
-            'generic class string' => [new ClassString(), 'class-string'],
-            'typed class string' => [
-                new ClassString(new Object_(new Fqsen('\Foo\Bar'))),
-                'class-string<\Foo\Bar>',
+            'basic' => [new EnumString(), 'enum-string'],
+            'with generics' => [
+                new EnumString(new Object_(new Fqsen('\Foo\Bar'))),
+                'enum-string<\Foo\Bar>',
             ],
-            'more than one class' => [
-                new ClassString(
+            'more than one enum' => [
+                new EnumString(
                     new Compound([
                         new Object_(new Fqsen('\Foo\Bar')),
                         new Object_(new Fqsen('\Foo\Barrr')),
                     ])
                 ),
-                'class-string<\Foo\Bar|\Foo\Barrr>',
+                'enum-string<\Foo\Bar|\Foo\Barrr>',
             ],
         ];
     }

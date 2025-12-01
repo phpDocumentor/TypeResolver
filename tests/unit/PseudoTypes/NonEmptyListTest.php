@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -21,18 +22,29 @@ use PHPUnit\Framework\TestCase;
 
 class NonEmptyListTest extends TestCase
 {
+    public function testCreateWithoutParams(): void
+    {
+        $type = new NonEmptyList();
+
+        $this->assertEquals(new Integer(), $type->getOriginalKeyType());
+        $this->assertNull($type->getOriginalValueType());
+        $this->assertEquals(new Integer(),  $type->getKeyType());
+        $this->assertEquals(new Mixed_(), $type->getValueType());
+        $this->assertEquals(new Array_(null, new Integer()), $type->underlyingType());
+    }
+
     /**
-     * @dataProvider provideArrays
+     * @dataProvider provideToStringData
      */
-    public function testArrayStringifyCorrectly(NonEmptyList $array, string $expectedString): void
+    public function testToString(NonEmptyList $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{NonEmptyList, string}>
      */
-    public function provideArrays(): array
+    public function provideToStringData(): array
     {
         return [
             'simple non-empty-list' => [new NonEmptyList(), 'non-empty-list'],

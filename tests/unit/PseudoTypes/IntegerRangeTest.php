@@ -13,22 +13,34 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
-class IntRangeTest extends TestCase
+class IntegerRangeTest extends TestCase
 {
-    /**
-     * @dataProvider provideArrays
-     */
-    public function testArrayStringifyCorrectly(IntegerRange $array, string $expectedString): void
+    public function testCreate(): void
     {
-        $this->assertSame($expectedString, (string) $array);
+        $minValue = '-5';
+        $maxValue = '5';
+        $type = new IntegerRange($minValue, $maxValue);
+
+        $this->assertSame($minValue, $type->getMinValue());
+        $this->assertSame($maxValue, $type->getMaxValue());
+        $this->assertEquals(new Integer(), $type->underlyingType());
     }
 
     /**
-     * @return mixed[]
+     * @dataProvider provideToStringData
      */
-    public function provideArrays(): array
+    public function testToString(IntegerRange $type, string $expectedString): void
+    {
+        $this->assertSame($expectedString, (string) $type);
+    }
+
+    /**
+     * @return array<string, array{IntegerRange, string}>
+     */
+    public function provideToStringData(): array
     {
         return [
             'simple int range' => [new IntegerRange('-5', '5'), 'int<-5, 5>'],

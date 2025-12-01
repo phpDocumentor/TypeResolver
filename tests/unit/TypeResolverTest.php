@@ -880,6 +880,10 @@ class TypeResolverTest extends TestCase
                     new StringValue('bar')
                 ),
             ],
+            [
+                '100.5',
+                new FloatValue(100.5),
+            ],
         ];
     }
 

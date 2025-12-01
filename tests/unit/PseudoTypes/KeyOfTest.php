@@ -16,6 +16,7 @@ class KeyOfTest extends TestCase
         $type = new KeyOf($childType);
 
         $this->assertSame($childType, $type->getType());
+        $this->assertEquals(new ArrayKey(), $type->underlyingType());
     }
 
     public function testToString(): void

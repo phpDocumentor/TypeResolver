@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Mixed_;
@@ -21,18 +22,29 @@ use PHPUnit\Framework\TestCase;
 
 class ListTest extends TestCase
 {
+    public function testCreateWithoutParams(): void
+    {
+        $type = new List_();
+
+        $this->assertEquals(new Integer(), $type->getOriginalKeyType());
+        $this->assertNull($type->getOriginalValueType());
+        $this->assertEquals(new Integer(),  $type->getKeyType());
+        $this->assertEquals(new Mixed_(), $type->getValueType());
+        $this->assertEquals(new Array_(), $type->underlyingType());
+    }
+
     /**
-     * @dataProvider provideArrays
+     * @dataProvider provideToStringData
      */
-    public function testArrayStringifyCorrectly(List_ $array, string $expectedString): void
+    public function testToString(List_ $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{List_, string}>
      */
-    public function provideArrays(): array
+    public function provideToStringData(): array
     {
         return [
             'simple list' => [new List_(), 'list'],

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
 class IntMaskTest extends TestCase
@@ -14,6 +15,7 @@ class IntMaskTest extends TestCase
         $type = new IntMask(...$childTypes);
 
         $this->assertSame($childTypes, $type->getTypes());
+        $this->assertEquals(new Integer(), $type->underlyingType());
     }
 
     public function testToString(): void

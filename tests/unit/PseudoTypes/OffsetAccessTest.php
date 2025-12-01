@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +19,7 @@ class OffsetAccessTest extends TestCase
 
         $this->assertSame($mainType, $type->getType());
         $this->assertSame($offset, $type->getOffset());
+        $this->assertEquals(new Mixed_(), $type->underlyingType());
     }
 
     /**
