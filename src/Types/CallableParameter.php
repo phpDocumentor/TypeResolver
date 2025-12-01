@@ -78,12 +78,12 @@ final class CallableParameter
     }
 
     public function __toString(): string
-	{
-		$reference = $this->isReference ? '&' : '';
-		$variadic = $this->isVariadic ? '...' : '';
-		$optional = $this->isOptional ? '=' : '';
+    {
+        $reference = $this->isReference ? '&' : '';
+        $variadic = $this->isVariadic ? '...' : '';
+        $optional = $this->isOptional ? '=' : '';
         $name = $this->name !== null ? '$' . $this->name : '';
 
-		return trim($this->type . ' ' . $reference . $variadic . $name . $optional);
-	}
+        return trim($this->type . ' ' . $reference . $variadic . $name . $optional);
+    }
 }
