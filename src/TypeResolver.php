@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\PseudoTypes\ClassString;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
 use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
+use phpDocumentor\Reflection\PseudoTypes\EnumString;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\Generic;
@@ -141,6 +142,7 @@ final class TypeResolver
         'numeric-string' => NumericString::class,
         'numeric' => Numeric_::class,
         'trait-string' => TraitString::class,
+        'enum-string' => EnumString::class,
         'int' => Integer::class,
         'integer' => Integer::class,
         'positive-int' => PositiveInteger::class,
@@ -408,6 +410,9 @@ final class TypeResolver
 
             case 'trait-string':
                 return new TraitString($this->createType($type->genericTypes[0], $context));
+
+            case 'enum-string':
+                return new EnumString($this->createType($type->genericTypes[0], $context));
 
             case 'list':
                 return new List_(
