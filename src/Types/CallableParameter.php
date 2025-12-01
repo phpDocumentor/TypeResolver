@@ -21,7 +21,7 @@ use function trim;
  *
  * @psalm-immutable
  */
-final class CallableParameter
+final class CallableParameter implements Type
 {
     /** @var Type */
     private $type;
