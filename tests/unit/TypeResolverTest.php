@@ -1135,11 +1135,20 @@ class TypeResolverTest extends TestCase
             ],
             [
                 'callable(): Foo',
-                new Callable_([], new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+                new Callable_('callable', [], new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                'Closure(): Foo',
+                new Callable_('Closure', [], new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
+            ],
+            [
+                '\Closure(): Foo',
+                new Callable_('\Closure', [], new Object_(new Fqsen('\\phpDocumentor\\Foo'))),
             ],
             [
                 'callable(): (Foo&Bar)',
                 new Callable_(
+                    'callable',
                     [],
                     new Intersection(
                         [
@@ -1152,6 +1161,7 @@ class TypeResolverTest extends TestCase
             [
                 'callable(A&...$a=, B&...=, C): Foo',
                 new Callable_(
+                    'callable',
                     [
                         new CallableParameter(
                             new Object_(new Fqsen('\\phpDocumentor\\A')),

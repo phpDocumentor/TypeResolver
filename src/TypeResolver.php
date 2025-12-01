@@ -466,18 +466,22 @@ final class TypeResolver
 
     private function createFromCallable(CallableTypeNode $type, Context $context): Callable_
     {
-        return new Callable_(array_map(
-            function (CallableTypeParameterNode $param) use ($context): CallableParameter {
-                return new CallableParameter(
-                    $this->createType($param->type, $context),
-                    $param->parameterName !== '' ? trim($param->parameterName, '$') : null,
-                    $param->isReference,
-                    $param->isVariadic,
-                    $param->isOptional
-                );
-            },
-            $type->parameters
-        ), $this->createType($type->returnType, $context));
+        return new Callable_(
+            (string) $type->identifier,
+            array_map(
+                function (CallableTypeParameterNode $param) use ($context): CallableParameter {
+                    return new CallableParameter(
+                        $this->createType($param->type, $context),
+                        $param->parameterName !== '' ? trim($param->parameterName, '$') : null,
+                        $param->isReference,
+                        $param->isVariadic,
+                        $param->isOptional
+                    );
+                },
+                $type->parameters
+            ),
+            $this->createType($type->returnType, $context)
+        );
     }
 
     private function createFromConst(ConstTypeNode $type, Context $context): Type
