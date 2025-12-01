@@ -8,14 +8,8 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\KeyOf
- */
 class KeyOfTest extends TestCase
 {
-    /**
-     * @covers ::getType
-     */
     public function testCreate(): void
     {
         $childType = new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Type')), 'ARRAY_CONST');
@@ -24,9 +18,6 @@ class KeyOfTest extends TestCase
         $this->assertSame($childType, $type->getType());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $type = new KeyOf(new ConstExpression(new Object_(new Fqsen('\\phpDocumentor\\Type')), 'ARRAY_CONST'));

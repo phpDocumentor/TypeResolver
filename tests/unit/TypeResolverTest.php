@@ -83,9 +83,6 @@ use stdClass;
 
 use function get_class;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
- */
 class TypeResolverTest extends TestCase
 {
     use VerifyDeprecations;
@@ -97,9 +94,6 @@ class TypeResolverTest extends TestCase
      *
      * @param class-string $expectedClass
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      *
      * @dataProvider provideKeywords
      */
@@ -118,9 +112,6 @@ class TypeResolverTest extends TestCase
      * @uses         \phpDocumentor\Reflection\Fqsen
      * @uses         \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      *
      * @dataProvider provideFqcn
      */
@@ -141,9 +132,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingRelativeQSENsBasedOnNamespace(): void
     {
@@ -162,9 +150,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingRelativeQSENsBasedOnNamespaceAlias(): void
     {
@@ -185,9 +170,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingTypedArrays(): void
     {
@@ -206,9 +188,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingNullableTypes(): void
     {
@@ -226,9 +205,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Array_
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingNestedTypedArrays(): void
     {
@@ -256,9 +232,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCompoundTypes(): void
     {
@@ -286,9 +259,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingAmpersandCompoundTypes(): void
     {
@@ -323,9 +293,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingMixedCompoundTypes(): void
     {
@@ -373,9 +340,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCompoundTypedArrayTypes(): void
     {
@@ -404,9 +368,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayExpressionObjectsTypes(): void
     {
@@ -437,9 +398,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayExpressionSimpleTypes(): void
     {
@@ -473,9 +431,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayOfArrayExpressionTypes(): void
     {
@@ -508,9 +463,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testReturnEmptyCompoundOnAnUnclosedArrayExpressionType(): void
     {
@@ -527,9 +479,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayExpressionOrCompoundTypes(): void
     {
@@ -568,9 +517,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\FqsenResolver
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIterableExpressionSimpleTypes(): void
     {
@@ -610,9 +556,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCompoundTypesWithTwoArrays(): void
     {
@@ -638,8 +581,6 @@ class TypeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\TypeResolver::<private>
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::addKeyword
      */
     public function testAddingAKeyword(): void
     {
@@ -659,8 +600,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::addKeyword
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist(): void
     {
@@ -672,8 +611,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::addKeyword
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface(): void
     {
@@ -685,9 +622,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testExceptionIsThrownIfTypeIsEmpty(): void
     {
@@ -699,9 +633,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testInvalidArrayOperator(): void
     {
@@ -780,9 +711,6 @@ class TypeResolverTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testArrayKeyValueSpecification(): void
     {
@@ -793,9 +721,6 @@ class TypeResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      * @dataProvider typeProvider
      * @dataProvider genericsProvider
      * @dataProvider callableProvider
@@ -814,9 +739,6 @@ class TypeResolverTest extends TestCase
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      * @dataProvider illegalLegacyFormatProvider
      * @testdox create type from $type
      */

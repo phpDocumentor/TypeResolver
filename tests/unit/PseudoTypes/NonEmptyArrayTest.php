@@ -19,14 +19,10 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\NonEmptyArray
- */
 class NonEmptyArrayTest extends TestCase
 {
     /**
      * @dataProvider provideArrays
-     * @covers ::__toString
      */
     public function testArrayStringifyCorrectly(NonEmptyArray $array, string $expectedString): void
     {

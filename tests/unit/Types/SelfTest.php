@@ -7,14 +7,8 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Self_
- */
 class SelfTest extends TestCase
 {
-    /**
-     * @covers ::getGenericTypes
-     */
     public function testCreate(): void
     {
         $genericTypes = [
@@ -30,7 +24,6 @@ class SelfTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, Self_ $type): void
     {

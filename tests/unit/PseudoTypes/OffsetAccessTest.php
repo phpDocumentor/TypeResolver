@@ -8,15 +8,8 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\OffsetAccess
- */
 class OffsetAccessTest extends TestCase
 {
-    /**
-     * @covers ::getType
-     * @covers ::getOffset
-     */
     public function testCreate(): void
     {
         $mainType = new Object_(new Fqsen('\\phpDocumentor\\MyArray'));
@@ -29,7 +22,6 @@ class OffsetAccessTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, OffsetAccess $type): void
     {

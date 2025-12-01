@@ -15,14 +15,10 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\List_
- */
 class IntRangeTest extends TestCase
 {
     /**
      * @dataProvider provideArrays
-     * @covers ::__toString
      */
     public function testArrayStringifyCorrectly(IntegerRange $array, string $expectedString): void
     {

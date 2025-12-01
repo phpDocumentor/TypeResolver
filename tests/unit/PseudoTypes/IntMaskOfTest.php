@@ -7,14 +7,8 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Compound;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\IntMaskOf
- */
 class IntMaskOfTest extends TestCase
 {
-    /**
-     * @covers ::getType
-     */
     public function testCreate(): void
     {
         $childType = new Compound([new IntegerValue(1), new IntegerValue(5), new IntegerValue(10)]);
@@ -23,9 +17,6 @@ class IntMaskOfTest extends TestCase
         $this->assertSame($childType, $type->getType());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $type = new IntMaskOf(new Compound([new IntegerValue(1), new IntegerValue(5), new IntegerValue(10)]));

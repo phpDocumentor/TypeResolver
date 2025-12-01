@@ -18,9 +18,6 @@ use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
- */
 class IntegerRangeResolverTest extends TestCase
 {
     /**
@@ -28,9 +25,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRange(): void
     {
@@ -53,9 +47,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRangeWithKeywords(): void
     {
@@ -78,9 +69,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMissingMaxValue(): void
     {
@@ -96,9 +84,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMisingMinValue(): void
     {
@@ -114,9 +99,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMisingComma(): void
     {
@@ -132,9 +114,6 @@ class IntegerRangeResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingIntRangeErrorMissingEnd(): void
     {

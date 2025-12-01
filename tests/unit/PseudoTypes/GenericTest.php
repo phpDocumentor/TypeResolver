@@ -11,15 +11,8 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\Generic
- */
 class GenericTest extends TestCase
 {
-    /**
-     * @covers ::getFqsen
-     * @covers ::getTypes
-     */
     public function testCreate(): void
     {
         $fqsen = new Fqsen('\\Foo\\Bar');
@@ -32,7 +25,6 @@ class GenericTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, Generic $type): void
     {

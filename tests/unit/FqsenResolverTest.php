@@ -17,14 +17,8 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\FqsenResolver
- */
 final class FqsenResolverTest extends TestCase
 {
-    /**
-     * @covers ::resolve
-     */
     public function testResolveFqsen(): void
     {
         $fqsenResolver = new FqsenResolver();
@@ -35,9 +29,6 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\DocBlock', (string) $result);
     }
 
-    /**
-     * @covers ::resolve
-     */
     public function testResolveFqsenWithEmoji(): void
     {
         $fqsenResolver = new FqsenResolver();
@@ -48,9 +39,6 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\My😁DocBlock', (string) $result);
     }
 
-    /**
-     * @covers ::resolve
-     */
     public function testResolveWithoutContext(): void
     {
         $fqsenResolver = new FqsenResolver();
@@ -59,9 +47,6 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\DocBlock', (string) $result);
     }
 
-    /**
-     * @covers ::resolve
-     */
     public function testResolveFromAlias(): void
     {
         $fqsenResolver = new FqsenResolver();
@@ -72,9 +57,6 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\some\other\ns', (string) $result);
     }
 
-    /**
-     * @covers ::resolve
-     */
     public function testResolveFromPartialAlias(): void
     {
         $fqsenResolver = new FqsenResolver();
@@ -85,9 +67,6 @@ final class FqsenResolverTest extends TestCase
         static::assertSame('\some\other\ns', (string) $result);
     }
 
-    /**
-     * @covers ::resolve
-     */
     public function testResolveThrowsExceptionWhenGarbageInputIsPassed(): void
     {
         $this->expectException(InvalidArgumentException::class);

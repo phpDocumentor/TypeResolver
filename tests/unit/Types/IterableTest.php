@@ -15,13 +15,9 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Iterable_
- */
 class IterableTest extends TestCase
 {
     /**
-     * @covers ::__toString
      * @dataProvider provideIterables
      */
     public function testIterableStringifyCorrectly(Iterable_ $iterable, string $expectedString): void

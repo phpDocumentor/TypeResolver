@@ -11,18 +11,8 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Static_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\Conditional
- */
 class ConditionalTest extends TestCase
 {
-    /**
-     * @covers ::isNegated
-     * @covers ::getSubjectType
-     * @covers ::getTargetType
-     * @covers ::getIf
-     * @covers ::getElse
-     */
     public function testCreate(): void
     {
         $subjectType = new Object_(new Fqsen('\\phpDocumentor\\T'));
@@ -40,7 +30,6 @@ class ConditionalTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, Conditional $type): void
     {

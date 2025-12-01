@@ -18,14 +18,8 @@ use TypeError;
 
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Compound
- */
 final class CompoundTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     */
     public function testCompoundCannotBeConstructedFromType(): void
     {
         $this->expectException(TypeError::class);
@@ -37,7 +31,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound::has
      * @uses \phpDocumentor\Reflection\Types\Integer
      *
-     * @covers ::get
      */
     public function testCompoundGetType(): void
     {
@@ -50,7 +43,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Compound::has
      *
-     * @covers ::get
      */
     public function testCompoundGetNotExistingType(): void
     {
@@ -61,7 +53,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Integer
      *
-     * @covers ::has
      */
     public function testCompoundHasIndex(): void
     {
@@ -71,7 +62,6 @@ final class CompoundTest extends TestCase
     /**
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      *
-     * @covers ::has
      */
     public function testCompoundDoesNotHasIndex(): void
     {
@@ -82,7 +72,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound::__construct
      * @uses \phpDocumentor\Reflection\Types\Integer
      *
-     * @covers ::contains
      */
     public function testCompoundContainsType(): void
     {
@@ -94,7 +83,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::contains
      */
     public function testCompoundDoesNotContainType(): void
     {
@@ -105,8 +93,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      *
-     * @covers ::__construct
-     * @covers ::__toString
      */
     public function testCompoundCanBeConstructedAndStringifiedCorrectly(): void
     {
@@ -117,8 +103,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      *
-     * @covers ::__construct
-     * @covers ::__toString
      */
     public function testCompoundDoesNotContainDuplicates(): void
     {
@@ -133,7 +117,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      *
-     * @covers ::getIterator
      */
     public function testCompoundCanBeIterated(): void
     {
@@ -148,8 +131,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      *
-     * @covers ::__construct
-     * @covers ::__toString
      */
     public function testCompoundIsMergedWithCompound(): void
     {
@@ -163,8 +144,6 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      *
-     * @covers ::__construct
-     * @covers ::__toString
      */
     public function testCompoundIsMergedOnMergedWithIntersection(): void
     {

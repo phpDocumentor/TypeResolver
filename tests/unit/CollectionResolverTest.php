@@ -27,9 +27,6 @@ use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
- */
 class CollectionResolverTest extends TestCase
 {
     /**
@@ -38,9 +35,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::resolve
-     * @covers ::createType
-     * @covers ::__construct
      */
     public function testResolvingCollection(): void
     {
@@ -60,9 +54,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCollectionWithKeyType(): void
     {
@@ -87,9 +78,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayCollection(): void
     {
@@ -113,9 +101,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayCollectionWithKey(): void
     {
@@ -139,9 +124,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
 
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingArrayCollectionWithKeyAndWhitespace(): void
     {
@@ -166,9 +148,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\PseudoTypes\Generic
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCollectionOfCollection(): void
     {
@@ -194,11 +173,6 @@ class CollectionResolverTest extends TestCase
         $this->assertEquals(new Object_(new Fqsen('\\DateTime')), $nestedGenericTypes[0]);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     */
     public function testGoodArrayCollectionKey(): void
     {
         $fixture = new TypeResolver();
@@ -214,11 +188,6 @@ class CollectionResolverTest extends TestCase
         $this->assertSame('array<class-string,string>', (string) $resolvedType);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     */
     public function testMissingStartCollection(): void
     {
         $this->expectException(RuntimeException::class);
@@ -227,11 +196,6 @@ class CollectionResolverTest extends TestCase
         $fixture->resolve('<string>', new Context(''));
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     */
     public function testMissingEndCollection(): void
     {
         $this->expectException(RuntimeException::class);
@@ -240,11 +204,6 @@ class CollectionResolverTest extends TestCase
         $fixture->resolve('ArrayObject<object|string', new Context(''));
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
-     */
     public function testBadCollectionClass(): void
     {
         $this->expectException(RuntimeException::class);
@@ -258,9 +217,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingCollectionAsArray(): void
     {
@@ -283,9 +239,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingList(): void
     {
@@ -308,9 +261,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\String_
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingNonEmptyList(): void
     {
@@ -333,9 +283,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
      *
-     * @covers ::__construct
-     * @covers ::resolve
-     * @covers ::createType
      */
     public function testResolvingNullableArray(): void
     {

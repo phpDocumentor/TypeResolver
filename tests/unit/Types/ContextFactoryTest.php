@@ -22,14 +22,9 @@ namespace phpDocumentor\Reflection\Types {
     use \ReflectionClass;
     use stdClass;
 
-    /**
-     * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
-     */
     class ContextFactoryTest extends TestCase
     {
         /**
-         * @covers ::createFromReflector
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsNamespaceFromClassReflection() : void
@@ -41,8 +36,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createFromReflector
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsAliasesFromClassReflection() : void
@@ -54,7 +47,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsNamespaceFromProvidedNamespaceAndContent() : void
@@ -66,7 +58,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testReadsAliasesFromProvidedNamespaceAndContent() : void
@@ -78,7 +69,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testTraitUseIsNotDetectedAsNamespaceUse() : void
@@ -100,7 +90,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testAllOpeningBracesAreCheckedWhenSearchingForEndOfClass() : void
@@ -139,7 +128,6 @@ namespace phpDocumentor\Reflection\Types {
         }
 
         /**
-         * @covers ::createForNamespace
          * @uses phpDocumentor\Reflection\Types\Context
          */
         public function testTraitContainsClosureWithUseStatement() : void
@@ -167,9 +155,6 @@ namespace phpDocumentor\Reflection\Types {
             $this->assertSame([], $context->getNamespaceAliases());
         }
 
-        /**
-         * @covers ::createFromReflector
-         */
         public function testEmptyFileName() : void
         {
             $fixture = new ContextFactory();
@@ -178,9 +163,6 @@ namespace phpDocumentor\Reflection\Types {
             $this->assertSame([], $context->getNamespaceAliases());
         }
 
-        /**
-         * @covers ::createFromReflector
-         */
         public function testEvalDClass() : void
         {
             eval(<<<PHP
