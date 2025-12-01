@@ -23,6 +23,7 @@ use phpDocumentor\Reflection\PseudoTypes\ClassString;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
 use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
+use phpDocumentor\Reflection\PseudoTypes\EnumString;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use phpDocumentor\Reflection\PseudoTypes\FloatValue;
 use phpDocumentor\Reflection\PseudoTypes\Generic;
@@ -1129,6 +1130,23 @@ class TypeResolverTest extends TestCase
                     new Compound([
                         new Object_(new Fqsen('\\phpDocumentor\\Foo')),
                         new Object_(new Fqsen('\\phpDocumentor\\Bar')),
+                    ])
+                ),
+            ],
+            [
+                'enum-string',
+                new EnumString(),
+            ],
+            [
+                'enum-string<MyEnum>',
+                new EnumString(new Object_(new Fqsen('\\phpDocumentor\\MyEnum'))),
+            ],
+            [
+                'enum-string<MyEnumFirst|MyEnumSecond>',
+                new EnumString(
+                    new Compound([
+                        new Object_(new Fqsen('\\phpDocumentor\\MyEnumFirst')),
+                        new Object_(new Fqsen('\\phpDocumentor\\MyEnumSecond')),
                     ])
                 ),
             ],
