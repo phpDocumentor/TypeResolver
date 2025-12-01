@@ -94,7 +94,6 @@ class TypeResolverTest extends TestCase
      *
      * @param class-string $expectedClass
      *
-     *
      * @dataProvider provideKeywords
      */
     public function testResolvingKeywords(string $keyword, string $expectedClass): void
@@ -111,7 +110,6 @@ class TypeResolverTest extends TestCase
      * @uses         \phpDocumentor\Reflection\Types\Object_
      * @uses         \phpDocumentor\Reflection\Fqsen
      * @uses         \phpDocumentor\Reflection\FqsenResolver
-     *
      *
      * @dataProvider provideFqcn
      */

@@ -119,7 +119,6 @@ class CollectionResolverTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-
      */
     public function testResolvingArrayCollectionWithKeyAndWhitespace(): void
     {
