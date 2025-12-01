@@ -28,7 +28,7 @@ class ListTest extends TestCase
 
         $this->assertEquals(new Integer(), $type->getOriginalKeyType());
         $this->assertNull($type->getOriginalValueType());
-        $this->assertEquals(new Integer(),  $type->getKeyType());
+        $this->assertEquals(new Integer(), $type->getKeyType());
         $this->assertEquals(new Mixed_(), $type->getValueType());
         $this->assertEquals(new Array_(), $type->underlyingType());
     }
