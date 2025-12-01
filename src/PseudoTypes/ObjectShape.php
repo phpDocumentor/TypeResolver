@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use function implode;
 
 /** @psalm-immutable */
-final class ObjectShape implements PseudoType
+final class ObjectShape extends Object_ implements PseudoType
 {
     /** @var ObjectShapeItem[] */
     private $items;

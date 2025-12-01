@@ -21,7 +21,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use function implode;
 
 /** @psalm-immutable */
-class ArrayShape implements PseudoType
+class ArrayShape extends Array_  implements PseudoType
 {
     /** @var ArrayShapeItem[] */
     private $items;
