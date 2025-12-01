@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Reflection\PseudoTypes;
 
+use phpDocumentor\Reflection\Types\Array_;
+use phpDocumentor\Reflection\Types\Mixed_;
 use PHPUnit\Framework\TestCase;
 
 class ArrayShapeTest extends TestCase
 {
-    public function testExposeItems(): void
+    public function testCreate(): void
     {
         $item1 = new ArrayShapeItem('foo', new True_(), false);
         $item2 = new ArrayShapeItem('bar', new False_(), true);
@@ -16,6 +18,7 @@ class ArrayShapeTest extends TestCase
         $arrayShape = new ArrayShape($item1, $item2);
 
         $this->assertSame([$item1, $item2], $arrayShape->getItems());
+        $this->assertEquals(new Array_(new Mixed_(), new ArrayKey()), $arrayShape->underlyingType());
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
@@ -16,6 +17,7 @@ class ValueOfTest extends TestCase
         $type = new ValueOf($childType);
 
         $this->assertSame($childType, $type->getType());
+        $this->assertEquals(new Mixed_(), $type->underlyingType());
     }
 
     public function testToString(): void

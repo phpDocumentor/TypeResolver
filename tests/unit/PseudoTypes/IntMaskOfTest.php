@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
 class IntMaskOfTest extends TestCase
@@ -15,6 +16,7 @@ class IntMaskOfTest extends TestCase
         $type = new IntMaskOf($childType);
 
         $this->assertSame($childType, $type->getType());
+        $this->assertEquals(new Integer(), $type->underlyingType());
     }
 
     public function testToString(): void

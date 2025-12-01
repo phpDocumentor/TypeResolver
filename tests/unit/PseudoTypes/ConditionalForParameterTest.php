@@ -6,6 +6,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Static_;
 use PHPUnit\Framework\TestCase;
 
@@ -24,6 +25,7 @@ class ConditionalForParameterTest extends TestCase
         $this->assertSame($targetType, $type->getTargetType());
         $this->assertSame($if, $type->getIf());
         $this->assertSame($else, $type->getElse());
+        $this->assertEquals(new Mixed_(), $type->underlyingType());
     }
 
     /**
