@@ -17,15 +17,8 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ArrayKey
- */
 final class ArrayKeyTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::__toString
-     */
     public function testArrayKeyCanBeConstructedAndStringifiedCorrectly(): void
     {
         $this->assertSame('array-key', (string) (new ArrayKey()));
@@ -33,8 +26,6 @@ final class ArrayKeyTest extends TestCase
 
     /**
      * @uses \phpDocumentor\Reflection\PseudoTypes\ArrayKey::__construct
-     *
-     * @covers ::getIterator
      */
     public function testArrayKeyCanBeIterated(): void
     {

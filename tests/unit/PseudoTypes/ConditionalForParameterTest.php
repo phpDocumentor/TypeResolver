@@ -9,18 +9,8 @@ use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Static_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter
- */
 class ConditionalForParameterTest extends TestCase
 {
-    /**
-     * @covers ::isNegated
-     * @covers ::getParameterName
-     * @covers ::getTargetType
-     * @covers ::getIf
-     * @covers ::getElse
-     */
     public function testCreate(): void
     {
         $parameterName = 'some';
@@ -38,7 +28,6 @@ class ConditionalForParameterTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, ConditionalForParameter $type): void
     {

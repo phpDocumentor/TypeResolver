@@ -18,14 +18,10 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ClassString
- */
 class ClassStringTest extends TestCase
 {
     /**
      * @dataProvider provideClassStrings
-     * @covers ::__toString
      */
     public function testClassStringStringifyCorrectly(ClassString $type, string $expectedString): void
     {

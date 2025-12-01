@@ -6,14 +6,8 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\ArrayShape
- */
 class ArrayShapeTest extends TestCase
 {
-    /**
-     * @covers ::getItems
-     */
     public function testExposeItems(): void
     {
         $item1 = new ArrayShapeItem('foo', new True_(), false);
@@ -26,7 +20,6 @@ class ArrayShapeTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, ArrayShape $arrayShape): void
     {

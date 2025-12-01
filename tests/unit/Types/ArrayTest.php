@@ -16,17 +16,8 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Array_
- */
 class ArrayTest extends TestCase
 {
-    /**
-     * @covers ::getOriginalKeyType
-     * @covers ::getOriginalValueType
-     * @covers ::getKeyType
-     * @covers ::getValueType
-     */
     public function testCreateWithoutParams(): void
     {
         $type = new Array_();
@@ -37,12 +28,6 @@ class ArrayTest extends TestCase
         $this->assertEquals(new Mixed_(), $type->getValueType());
     }
 
-    /**
-     * @covers ::getOriginalKeyType
-     * @covers ::getOriginalValueType
-     * @covers ::getKeyType
-     * @covers ::getValueType
-     */
     public function testCreateWithParams(): void
     {
         $valueType = new Object_(new Fqsen('\\phpDocumentor\\Foo\\Bar'));
@@ -63,7 +48,6 @@ class ArrayTest extends TestCase
 
     /**
      * @dataProvider provideArrays
-     * @covers ::__toString
      */
     public function testArrayStringifyCorrectly(Array_ $array, string $expectedString): void
     {

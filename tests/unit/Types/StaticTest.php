@@ -7,14 +7,8 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Static_
- */
 class StaticTest extends TestCase
 {
-    /**
-     * @covers ::getGenericTypes
-     */
     public function testCreate(): void
     {
         $genericTypes = [
@@ -30,7 +24,6 @@ class StaticTest extends TestCase
 
     /**
      * @dataProvider provideToStringData
-     * @covers ::__toString
      */
     public function testToString(string $expectedResult, Static_ $type): void
     {

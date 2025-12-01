@@ -16,14 +16,8 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\False_
- */
 final class FalseTest extends TestCase
 {
-    /**
-     * @covers ::underlyingType
-     */
     public function testExposesUnderlyingType(): void
     {
         $false = new False_();
@@ -31,9 +25,6 @@ final class FalseTest extends TestCase
         $this->assertInstanceOf(Boolean::class, $false->underlyingType());
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testFalseStringifyCorrectly(): void
     {
         $false = new False_();

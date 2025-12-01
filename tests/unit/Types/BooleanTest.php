@@ -15,14 +15,8 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\Types\Boolean
- */
 final class BooleanTest extends TestCase
 {
-    /**
-     * @covers ::__toString
-     */
     public function testBooleanStringifyCorrectly(): void
     {
         $type = new Boolean();

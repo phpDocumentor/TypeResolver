@@ -18,14 +18,10 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\PseudoTypes\InterfaceString
- */
 class InterfaceStringTest extends TestCase
 {
     /**
      * @dataProvider provideInterfaceStrings
-     * @covers ::__toString
      */
     public function testInterfaceStringStringifyCorrectly(InterfaceString $type, string $expectedString): void
     {

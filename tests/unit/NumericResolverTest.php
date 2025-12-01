@@ -20,17 +20,12 @@ use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \phpDocumentor\Reflection\TypeResolver
- */
 class NumericResolverTest extends TestCase
 {
     /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Compound
      * @uses \phpDocumentor\Reflection\Types\String_
-     *
-     * @covers ::__construct
      */
     public function testResolvingIntRange(): void
     {
