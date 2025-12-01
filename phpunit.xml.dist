@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
-    colors="true" verbose="true" convertDeprecationsToExceptions="false"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    verbose="true"
+    convertDeprecationsToExceptions="false"
+>
     <coverage>
         <include>
             <directory suffix=".php">src</directory>
