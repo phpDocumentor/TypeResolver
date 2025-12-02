@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-class ConstExpressionTest extends TestCase
+final class ConstExpressionTest extends TestCase
 {
     public function testCreate(): void
     {

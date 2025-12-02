@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
-class PositiveIntegerTest extends TestCase
+final class PositiveIntegerTest extends TestCase
 {
     public function testCreate(): void
     {

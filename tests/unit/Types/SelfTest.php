@@ -7,7 +7,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-class SelfTest extends TestCase
+final class SelfTest extends TestCase
 {
     public function testCreate(): void
     {

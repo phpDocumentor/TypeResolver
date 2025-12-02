@@ -102,7 +102,9 @@ class TypeResolverTest extends TestCase
         $fixture = new TypeResolver();
 
         $resolvedType = $fixture->resolve($keyword, new Context(''));
+        $this->assertInstanceOf($expectedClass, $resolvedType);
 
+        $resolvedType = $fixture->resolve($keyword);
         $this->assertInstanceOf($expectedClass, $resolvedType);
     }
 
@@ -1338,5 +1340,12 @@ class TypeResolverTest extends TestCase
                 new Nullable(new String_()),
             ],
         ];
+    }
+
+    public function testCreateTypeFromNull(): void
+    {
+        $fixture = new TypeResolver();
+
+        $this->assertEquals(new Mixed_(), $fixture->createType(null, new Context('')));
     }
 }

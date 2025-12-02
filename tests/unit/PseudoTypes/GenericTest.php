@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class GenericTest extends TestCase
+final class GenericTest extends TestCase
 {
     public function testCreate(): void
     {

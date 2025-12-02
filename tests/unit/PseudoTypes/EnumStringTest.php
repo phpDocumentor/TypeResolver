@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class EnumStringTest extends TestCase
+final class EnumStringTest extends TestCase
 {
     public function testCreate(): void
     {

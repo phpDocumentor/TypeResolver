@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
-class IntMaskOfTest extends TestCase
+final class IntMaskOfTest extends TestCase
 {
     public function testCreate(): void
     {

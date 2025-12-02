@@ -15,9 +15,9 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-class NullableTest extends TestCase
+final class NullableTest extends TestCase
 {
-    public function testNullableTypeWrapsCorrectly(): void
+    public function testCreate(): void
     {
         $realType = new String_();
 
@@ -26,7 +26,7 @@ class NullableTest extends TestCase
         $this->assertSame($realType, $nullableString->getActualType());
     }
 
-    public function testNullableStringifyCorrectly(): void
+    public function testToString(): void
     {
         $this->assertSame('?string', (string) new Nullable(new String_()));
     }

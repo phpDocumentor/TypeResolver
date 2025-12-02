@@ -7,7 +7,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-class ObjectShapeTest extends TestCase
+final class ObjectShapeTest extends TestCase
 {
     public function testCreate(): void
     {

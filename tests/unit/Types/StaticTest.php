@@ -7,7 +7,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-class StaticTest extends TestCase
+final class StaticTest extends TestCase
 {
     public function testCreate(): void
     {

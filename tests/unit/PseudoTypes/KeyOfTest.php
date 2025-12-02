@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-class KeyOfTest extends TestCase
+final class KeyOfTest extends TestCase
 {
     public function testCreate(): void
     {

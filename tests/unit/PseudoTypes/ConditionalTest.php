@@ -12,7 +12,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Static_;
 use PHPUnit\Framework\TestCase;
 
-class ConditionalTest extends TestCase
+final class ConditionalTest extends TestCase
 {
     public function testCreate(): void
     {

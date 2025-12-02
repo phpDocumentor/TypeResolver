@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BooleanTest extends TestCase
 {
-    public function testBooleanStringifyCorrectly(): void
+    public function testToString(): void
     {
         $type = new Boolean();
 

@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class NonEmptyLowercaseStringTest extends TestCase
+final class NonEmptyLowercaseStringTest extends TestCase
 {
     public function testCreate(): void
     {

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection\PseudoTypes;
+namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-final class ListShapeTest extends TestCase
+final class ScalarTest extends TestCase
 {
     public function testToString(): void
     {
-        $type = new ListShape(new ListShapeItem(null, new IntegerValue(1), false));
+        $type = new Scalar();
 
-        $this->assertSame('list{1}', (string) $type);
+        $this->assertSame('scalar', (string) $type);
     }
 }

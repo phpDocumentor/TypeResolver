@@ -10,7 +10,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Static_;
 use PHPUnit\Framework\TestCase;
 
-class ConditionalForParameterTest extends TestCase
+final class ConditionalForParameterTest extends TestCase
 {
     public function testCreate(): void
     {

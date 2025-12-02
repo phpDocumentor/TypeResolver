@@ -15,7 +15,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use PHPUnit\Framework\TestCase;
 
-class ArrayShapeItemTest extends TestCase
+final class ArrayShapeItemTest extends TestCase
 {
     public function testCreate(): void
     {

@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
-class IntegerRangeTest extends TestCase
+final class IntegerRangeTest extends TestCase
 {
     public function testCreate(): void
     {

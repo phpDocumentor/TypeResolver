@@ -7,7 +7,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Integer;
 use PHPUnit\Framework\TestCase;
 
-class IntMaskTest extends TestCase
+final class IntMaskTest extends TestCase
 {
     public function testCreate(): void
     {

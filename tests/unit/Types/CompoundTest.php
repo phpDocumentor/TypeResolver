@@ -87,7 +87,7 @@ final class CompoundTest extends TestCase
      * @uses \phpDocumentor\Reflection\Types\Integer
      * @uses \phpDocumentor\Reflection\Types\Boolean
      */
-    public function testCompoundCanBeConstructedAndStringifiedCorrectly(): void
+    public function testToString(): void
     {
         $this->assertSame('int|bool', (string) (new Compound([new Integer(), new Boolean()])));
     }
