@@ -15,20 +15,20 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-class IterableTest extends TestCase
+final class IterableTest extends TestCase
 {
     /**
-     * @dataProvider provideIterables
+     * @dataProvider provideToStringData
      */
-    public function testIterableStringifyCorrectly(Iterable_ $iterable, string $expectedString): void
+    public function testToString(Iterable_ $iterable, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $iterable);
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{Iterable_, string}>
      */
-    public function provideIterables(): array
+    public function provideToStringData(): array
     {
         return [
             'simple iterable' => [new Iterable_(), 'iterable'],

@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use PHPUnit\Framework\TestCase;
 
-class ValueOfTest extends TestCase
+final class ValueOfTest extends TestCase
 {
     public function testCreate(): void
     {

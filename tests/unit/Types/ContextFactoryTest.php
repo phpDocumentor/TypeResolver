@@ -20,29 +20,75 @@ namespace phpDocumentor\Reflection\Types {
         Exception as e
     };
     use \ReflectionClass;
+    use ReflectionClassConstant;
+    use ReflectionMethod;
+    use ReflectionParameter;
+    use ReflectionProperty;
     use stdClass;
 
     class ContextFactoryTest extends TestCase
     {
+        public const TEST_CONSTANT = '';
+
+        public string $testProperty = '';
+
         /**
          * @uses phpDocumentor\Reflection\Types\Context
          */
-        public function testReadsNamespaceFromClassReflection() : void
+        public function testCreateFromClassReflection() : void
         {
             $fixture = new ContextFactory();
             $context = $fixture->createFromReflector(new ReflectionClass($this));
 
             $this->assertSame(__NAMESPACE__, $context->getNamespace());
+            $this->assertNamespaceAliasesFrom($context);
         }
 
         /**
          * @uses phpDocumentor\Reflection\Types\Context
          */
-        public function testReadsAliasesFromClassReflection() : void
+        public function testCreateFromMethodReflection() : void
         {
             $fixture = new ContextFactory();
-            $context = $fixture->createFromReflector(new ReflectionClass($this));
+            $context = $fixture->createFromReflector(new ReflectionMethod($this, 'testCreateFromMethodReflection'));
 
+            $this->assertSame(__NAMESPACE__, $context->getNamespace());
+            $this->assertNamespaceAliasesFrom($context);
+        }
+
+        /**
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
+        public function testCreateFromPropertyReflection() : void
+        {
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new ReflectionProperty($this, 'testProperty'));
+
+            $this->assertSame(__NAMESPACE__, $context->getNamespace());
+            $this->assertNamespaceAliasesFrom($context);
+        }
+
+        /**
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
+        public function testCreateFromClassConstantReflection() : void
+        {
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new ReflectionClassConstant($this, 'TEST_CONSTANT'));
+
+            $this->assertSame(__NAMESPACE__, $context->getNamespace());
+            $this->assertNamespaceAliasesFrom($context);
+        }
+
+        /**
+         * @uses phpDocumentor\Reflection\Types\Context
+         */
+        public function testCreateFromParameterReflection(): void
+        {
+            $fixture = new ContextFactory();
+            $context = $fixture->createFromReflector(new ReflectionParameter(fn($param) => $param, 'param'));
+
+            $this->assertSame(__NAMESPACE__, $context->getNamespace());
             $this->assertNamespaceAliasesFrom($context);
         }
 
@@ -168,7 +214,7 @@ namespace phpDocumentor\Reflection\Types {
             eval(<<<PHP
 namespace Foo;
 
-class Bar
+final class Bar
 {
 }
 PHP
@@ -190,6 +236,10 @@ PHP
                 'Assert' => Assert::class,
                 'e' => e::class,
                 ReflectionClass::class => ReflectionClass::class,
+                ReflectionMethod::class => ReflectionMethod::class,
+                ReflectionProperty::class => ReflectionProperty::class,
+                ReflectionClassConstant::class => ReflectionClassConstant::class,
+                ReflectionParameter::class => ReflectionParameter::class,
                 \stdClass::class => \stdClass::class,
             ];
 

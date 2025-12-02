@@ -15,7 +15,7 @@ namespace phpDocumentor\Reflection\Types;
 
 use PHPUnit\Framework\TestCase;
 
-class ContextTest extends TestCase
+final class ContextTest extends TestCase
 {
     public function testProvidesANormalizedNamespace(): void
     {
@@ -38,6 +38,9 @@ class ContextTest extends TestCase
     public function testProvidesNormalizedNamespaceAliases(): void
     {
         $fixture = new Context('', ['Space' => '\My\Space']);
+        $this->assertSame(['Space' => 'My\Space'], $fixture->getNamespaceAliases());
+
+        $fixture = new Context('', ['Space' => '\My\Space\\']);
         $this->assertSame(['Space' => 'My\Space'], $fixture->getNamespaceAliases());
     }
 }

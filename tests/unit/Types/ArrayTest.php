@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\Types;
 use phpDocumentor\Reflection\Fqsen;
 use PHPUnit\Framework\TestCase;
 
-class ArrayTest extends TestCase
+final class ArrayTest extends TestCase
 {
     public function testCreateWithoutParams(): void
     {
@@ -47,17 +47,17 @@ class ArrayTest extends TestCase
     }
 
     /**
-     * @dataProvider provideArrays
+     * @dataProvider provideToStringData
      */
-    public function testArrayStringifyCorrectly(Array_ $array, string $expectedString): void
+    public function testToString(Array_ $array, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $array);
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, array{Array_, string}>
      */
-    public function provideArrays(): array
+    public function provideToStringData(): array
     {
         return [
             'simple array' => [new Array_(), 'array'],

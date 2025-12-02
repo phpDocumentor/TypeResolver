@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class NumericStringTest extends TestCase
+final class NumericStringTest extends TestCase
 {
     public function testCreate(): void
     {

@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Mixed_;
 use PHPUnit\Framework\TestCase;
 
-class ArrayShapeTest extends TestCase
+final class ArrayShapeTest extends TestCase
 {
     public function testCreate(): void
     {

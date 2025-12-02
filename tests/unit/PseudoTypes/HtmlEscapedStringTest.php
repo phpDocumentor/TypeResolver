@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class HtmlEscapedStringTest extends TestCase
+final class HtmlEscapedStringTest extends TestCase
 {
     public function testCreate(): void
     {

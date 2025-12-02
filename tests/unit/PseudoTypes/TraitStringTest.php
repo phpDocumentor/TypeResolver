@@ -19,7 +19,7 @@ use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class TraitStringTest extends TestCase
+final class TraitStringTest extends TestCase
 {
     public function testCreate(): void
     {

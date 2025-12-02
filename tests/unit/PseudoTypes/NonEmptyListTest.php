@@ -20,7 +20,7 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\String_;
 use PHPUnit\Framework\TestCase;
 
-class NonEmptyListTest extends TestCase
+final class NonEmptyListTest extends TestCase
 {
     public function testCreateWithoutParams(): void
     {

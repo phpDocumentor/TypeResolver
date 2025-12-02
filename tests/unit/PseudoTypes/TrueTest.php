@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Boolean;
 use PHPUnit\Framework\TestCase;
 
-class TrueTest extends TestCase
+final class TrueTest extends TestCase
 {
     public function testExposesUnderlyingType(): void
     {

@@ -16,7 +16,7 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 use phpDocumentor\Reflection\Types\Float_;
 use PHPUnit\Framework\TestCase;
 
-class FloatValueTest extends TestCase
+final class FloatValueTest extends TestCase
 {
     public function testCreate(): void
     {
