@@ -76,6 +76,65 @@ final class CallableTest extends TestCase
                 '\Closure',
                 new Callable_('\Closure'),
             ],
+            'with different types' => [
+                'callable(\\phpDocumentor\\C, \\phpDocumentor\\A &...$a=, \\phpDocumentor\\B &...=): '
+                    . '\\phpDocumentor\\Foo',
+                new Callable_(
+                    'callable',
+                    [
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\C')),
+                            null,
+                            false,
+                            false,
+                            false
+                        ),
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\A')),
+                            'a',
+                            true,
+                            true,
+                            true
+                        ),
+                        new CallableParameter(
+                            new Object_(new Fqsen('\\phpDocumentor\\B')),
+                            null,
+                            true,
+                            true,
+                            true
+                        ),
+                    ],
+                    new Object_(new Fqsen('\\phpDocumentor\\Foo'))
+                ),
+            ],
+            'return callable' => [
+                'Closure(mixed): (callable(mixed): mixed)',
+                new Callable_(
+                    'Closure',
+                    [
+                        new CallableParameter(
+                            new Mixed_(),
+                            null,
+                            false,
+                            false,
+                            false
+                        ),
+                    ],
+                    new Callable_(
+                        'callable',
+                        [
+                            new CallableParameter(
+                                new Mixed_(),
+                                null,
+                                false,
+                                false,
+                                false
+                            ),
+                        ],
+                        new Mixed_()
+                    )
+                ),
+            ],
         ];
     }
 }

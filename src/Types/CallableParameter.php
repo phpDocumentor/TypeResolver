@@ -14,6 +14,8 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
+use function trim;
+
 /**
  * Value Object representing a Callable parameters.
  *
@@ -73,5 +75,15 @@ final class CallableParameter
     public function isOptional(): bool
     {
         return $this->isOptional;
+    }
+
+    public function __toString(): string
+    {
+        $reference = $this->isReference ? '&' : '';
+        $variadic = $this->isVariadic ? '...' : '';
+        $optional = $this->isOptional ? '=' : '';
+        $name = $this->name !== null ? '$' . $this->name : '';
+
+        return trim($this->type . ' ' . $reference . $variadic . $name . $optional);
     }
 }
