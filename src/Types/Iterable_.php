@@ -30,7 +30,7 @@ final class Iterable_ extends AbstractList
         }
 
         if ($this->keyType) {
-            return 'iterable<' . $this->keyType . ',' . $this->valueType . '>';
+            return 'iterable<' . $this->keyType . ', ' . $this->valueType . '>';
         }
 
         return 'iterable<' . $this->valueType . '>';
