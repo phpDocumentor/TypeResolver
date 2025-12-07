@@ -84,8 +84,16 @@ abstract class AbstractList implements Type
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
+        // the "(...)[]" syntax is less common
+        // and not visually distinctive from conditional types and callables
+        // additionally, it significantly differs from PHP native type hint
         if ($this->valueType instanceof Compound) {
-            return '(' . $this->valueType . ')[]';
+            return 'array<' . $this->valueType . '>';
+        }
+
+        // 'foo bar'[] or array{a: int}[] is not readable
+        if (preg_match('/[^\w\\\\]/', (string) $this->valueType)) {
+            return 'array<' . $this->valueType . '>';
         }
 
         return $this->valueType . '[]';
