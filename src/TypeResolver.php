@@ -643,10 +643,16 @@ final class TypeResolver
             return new Array_(...$types);
         }
 
-        if ($types[1] instanceof Compound && $types[1]->getIterator()->count() === 2) {
-            if ($this->validArrayKeyType($types[1]->get(0)) && $this->validArrayKeyType($types[1]->get(1))) {
-                return new Array_(...$types);
-            }
+        if ($types[1] instanceof Compound) {
+			for ($i = 0; $i < $types[1]->getIterator()->count(); $i++) {
+				if ($this->validArrayKeyType($types[1]->get($i))) {
+					continue;
+				}
+				
+				throw new RuntimeException('An array can have only integers or strings as keys');
+			}
+		
+			return new Array_(...$types);
         }
 
         throw new RuntimeException('An array can have only integers or strings as keys');
@@ -654,7 +660,25 @@ final class TypeResolver
 
     private function validArrayKeyType(?Type $type): bool
     {
-        return $type instanceof String_ || $type instanceof Integer;
+        return $type instanceof String_ ||
+			$type instanceof CallableString ||
+			$type instanceof HtmlEscapedString ||
+			$type instanceof IntegerRange ||
+			$type instanceof IntegerValue ||
+			$type instanceof IntMask ||
+			$type instanceof IntMaskOf ||
+			$type instanceof KeyOf ||
+			$type instanceof LiteralString ||
+			$type instanceof LowercaseString ||
+			$type instanceof NegativeInteger ||
+			$type instanceof NonEmptyLowercaseString ||
+			$type instanceof NonEmptyString ||
+			$type instanceof PositiveInteger ||
+			$type instanceof StringValue ||
+			$type instanceof ClassString ||
+			$type instanceof InterfaceString ||
+			$type instanceof TraitString ||
+			$type instanceof Integer;
     }
 
     private function parse(TokenIterator $tokenIterator): TypeNode
