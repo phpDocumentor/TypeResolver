@@ -50,6 +50,10 @@ use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\PrivatePropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\ProtectedPropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PublicPropertiesOf;
 use phpDocumentor\Reflection\PseudoTypes\Scalar;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
@@ -1121,6 +1125,22 @@ class TypeResolverTest extends TestCase
             [
                 'non-empty-list<mixed>',
                 new NonEmptyList(new Mixed_()),
+            ],
+            [
+                'properties-of<self>',
+                new PropertiesOf(new Self_()),
+            ],
+            [
+                'public-properties-of<self>',
+                new PublicPropertiesOf(new Self_()),
+            ],
+            [
+                'protected-properties-of<self>',
+                new ProtectedPropertiesOf(new Self_()),
+            ],
+            [
+                'private-properties-of<self>',
+                new PrivatePropertiesOf(new Self_()),
             ],
         ];
     }

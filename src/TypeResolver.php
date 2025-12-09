@@ -50,6 +50,10 @@ use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\PrivatePropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\ProtectedPropertiesOf;
+use phpDocumentor\Reflection\PseudoTypes\PublicPropertiesOf;
 use phpDocumentor\Reflection\PseudoTypes\Scalar;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
@@ -439,6 +443,18 @@ final class TypeResolver
 
             case 'value-of':
                 return new ValueOf($this->createType($type->genericTypes[0], $context));
+
+            case 'properties-of':
+                return new PropertiesOf($this->createType($type->genericTypes[0], $context));
+
+            case 'public-properties-of':
+                return new PublicPropertiesOf($this->createType($type->genericTypes[0], $context));
+
+            case 'protected-properties-of':
+                return new ProtectedPropertiesOf($this->createType($type->genericTypes[0], $context));
+
+            case 'private-properties-of':
+                return new PrivatePropertiesOf($this->createType($type->genericTypes[0], $context));
 
             case 'int-mask':
                 return new IntMask(...$this->createTypesByTypeNodes($type->genericTypes, $context));
