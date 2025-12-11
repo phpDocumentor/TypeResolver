@@ -47,6 +47,7 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\NonFalsyString;
 use phpDocumentor\Reflection\PseudoTypes\NonNegativeInteger;
 use phpDocumentor\Reflection\PseudoTypes\NonPositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonZeroInteger;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
@@ -683,6 +684,7 @@ class TypeResolverTest extends TestCase
             ['truthy-string', TruthyString::class],
             ['non-positive-int', NonPositiveInteger::class],
             ['non-negative-int', NonNegativeInteger::class],
+            ['non-zero-int', NonZeroInteger::class],
         ];
     }
 
