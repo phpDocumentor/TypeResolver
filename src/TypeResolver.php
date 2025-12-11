@@ -45,6 +45,7 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
 use phpDocumentor\Reflection\PseudoTypes\NonFalsyString;
+use phpDocumentor\Reflection\PseudoTypes\NonNegativeInteger;
 use phpDocumentor\Reflection\PseudoTypes\NonPositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
@@ -185,6 +186,7 @@ final class TypeResolver
         'non-falsy-string' => NonFalsyString::class,
         'truthy-string' => TruthyString::class,
         'non-positive-int' => NonPositiveInteger::class,
+        'non-negative-int' => NonNegativeInteger::class,
     ];
 
     /**
