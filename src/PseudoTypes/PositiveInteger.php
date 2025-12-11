@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * Value Object representing the type 'int'.
+ * Value Object representing the type 'positive-int'.
  *
  * @psalm-immutable
  */
