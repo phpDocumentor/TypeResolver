@@ -59,6 +59,7 @@ use phpDocumentor\Reflection\PseudoTypes\Scalar;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\TruthyString;
 use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
@@ -181,6 +182,7 @@ final class TypeResolver
         'list' => List_::class,
         'non-empty-list' => NonEmptyList::class,
         'non-falsy-string' => NonFalsyString::class,
+        'truthy-string' => TruthyString::class,
     ];
 
     /**

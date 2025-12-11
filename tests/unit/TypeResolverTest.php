@@ -59,6 +59,7 @@ use phpDocumentor\Reflection\PseudoTypes\Scalar;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\TruthyString;
 use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -677,6 +678,7 @@ class TypeResolverTest extends TestCase
             ['non-empty-list', NonEmptyList::class],
             ['non-empty-array', NonEmptyArray::class],
             ['non-falsy-string', NonFalsyString::class],
+            ['truthy-string', TruthyString::class],
         ];
     }
 
