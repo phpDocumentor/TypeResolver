@@ -72,6 +72,10 @@ final class CallableTest extends TestCase
                 'callable',
                 new Callable_(),
             ],
+            'pure' => [
+                'pure-callable',
+                new Callable_('pure-callable'),
+            ],
             'closure' => [
                 '\Closure',
                 new Callable_('\Closure'),
