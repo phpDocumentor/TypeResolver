@@ -1166,6 +1166,14 @@ class TypeResolverTest extends TestCase
                 new Callable_(),
             ],
             [
+                'pure-callable(int): int',
+                new Callable_(
+                    'pure-callable',
+                    [new CallableParameter(new Integer())],
+                    new Integer()
+                ),
+            ],
+            [
                 'callable()',
                 new Callable_(),
             ],
