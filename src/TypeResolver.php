@@ -44,6 +44,7 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\NonFalsyString;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
@@ -179,6 +180,7 @@ final class TypeResolver
         'never' => Never_::class,
         'list' => List_::class,
         'non-empty-list' => NonEmptyList::class,
+        'non-falsy-string' => NonFalsyString::class,
     ];
 
     /**
