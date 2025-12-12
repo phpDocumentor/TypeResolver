@@ -50,6 +50,7 @@ use phpDocumentor\Reflection\PseudoTypes\NonFalsyString;
 use phpDocumentor\Reflection\PseudoTypes\NonNegativeInteger;
 use phpDocumentor\Reflection\PseudoTypes\NonPositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\NonZeroInteger;
+use phpDocumentor\Reflection\PseudoTypes\NoReturn;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
@@ -680,6 +681,7 @@ class TypeResolverTest extends TestCase
             ['never', Never_::class],
             ['never-return', NeverReturn::class],
             ['never-returns', NeverReturns::class],
+            ['no-return', NoReturn::class],
             ['literal-string', LiteralString::class],
             ['list', List_::class],
             ['non-empty-list', NonEmptyList::class],
