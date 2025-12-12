@@ -64,7 +64,7 @@ final class ArrayTest extends TestCase
             'array of mixed' => [new Array_(new Mixed_()), 'mixed[]'],
             'array of single type' => [new Array_(new String_()), 'string[]'],
             'array of compound type' => [new Array_(new Compound([new Integer(), new String_()])), '(int|string)[]'],
-            'array with key type' => [new Array_(new String_(), new Integer()), 'array<int,string>'],
+            'array with key type' => [new Array_(new String_(), new Integer()), 'array<int, string>'],
         ];
     }
 }
