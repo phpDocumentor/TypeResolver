@@ -41,6 +41,7 @@ use phpDocumentor\Reflection\PseudoTypes\LiteralString;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NegativeInteger;
 use phpDocumentor\Reflection\PseudoTypes\NeverReturn;
+use phpDocumentor\Reflection\PseudoTypes\NeverReturns;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
@@ -678,6 +679,7 @@ class TypeResolverTest extends TestCase
             ['iterable', Iterable_::class],
             ['never', Never_::class],
             ['never-return', NeverReturn::class],
+            ['never-returns', NeverReturns::class],
             ['literal-string', LiteralString::class],
             ['list', List_::class],
             ['non-empty-list', NonEmptyList::class],
