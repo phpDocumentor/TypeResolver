@@ -44,6 +44,10 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\NonFalsyString;
+use phpDocumentor\Reflection\PseudoTypes\NonNegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonPositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonZeroInteger;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
@@ -58,6 +62,7 @@ use phpDocumentor\Reflection\PseudoTypes\Scalar;
 use phpDocumentor\Reflection\PseudoTypes\StringValue;
 use phpDocumentor\Reflection\PseudoTypes\TraitString;
 use phpDocumentor\Reflection\PseudoTypes\True_;
+use phpDocumentor\Reflection\PseudoTypes\TruthyString;
 use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Types\AggregatedType;
 use phpDocumentor\Reflection\Types\Array_;
@@ -179,6 +184,11 @@ final class TypeResolver
         'never' => Never_::class,
         'list' => List_::class,
         'non-empty-list' => NonEmptyList::class,
+        'non-falsy-string' => NonFalsyString::class,
+        'truthy-string' => TruthyString::class,
+        'non-positive-int' => NonPositiveInteger::class,
+        'non-negative-int' => NonNegativeInteger::class,
+        'non-zero-int' => NonZeroInteger::class,
     ];
 
     /**

@@ -18,22 +18,19 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * Value Object representing the type 'positive-int'.
+ * Value Object representing the type 'non-positive-int'.
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class NonPositiveInteger extends Integer implements PseudoType
 {
     public function underlyingType(): Type
     {
         return new Integer();
     }
 
-    /**
-     * Returns a rendered output of the Type as it would be used in a DocBlock.
-     */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'non-positive-int';
     }
 }

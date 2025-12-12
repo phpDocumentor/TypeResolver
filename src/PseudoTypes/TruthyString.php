@@ -15,25 +15,22 @@ namespace phpDocumentor\Reflection\PseudoTypes;
 
 use phpDocumentor\Reflection\PseudoType;
 use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
- * Value Object representing the type 'positive-int'.
+ * Value Object representing the type 'truthy-string'.
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class TruthyString extends String_ implements PseudoType
 {
     public function underlyingType(): Type
     {
-        return new Integer();
+        return new String_();
     }
 
-    /**
-     * Returns a rendered output of the Type as it would be used in a DocBlock.
-     */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'truthy-string';
     }
 }

@@ -18,11 +18,11 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
- * Value Object representing the type 'positive-int'.
+ * Value Object representing the type 'non-zero-int'.
  *
  * @psalm-immutable
  */
-final class PositiveInteger extends Integer implements PseudoType
+final class NonZeroInteger extends Integer implements PseudoType
 {
     public function underlyingType(): Type
     {
@@ -34,6 +34,6 @@ final class PositiveInteger extends Integer implements PseudoType
      */
     public function __toString(): string
     {
-        return 'positive-int';
+        return 'non-zero-int';
     }
 }
