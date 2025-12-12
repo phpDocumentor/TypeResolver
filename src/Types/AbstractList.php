@@ -15,6 +15,9 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
+use function preg_match;
+use function substr;
+
 /**
  * Represents a list of values. This is an abstract class for Array_ and List_.
  *
@@ -84,10 +87,13 @@ abstract class AbstractList implements Type
             return 'array<' . $this->keyType . ',' . $this->valueType . '>';
         }
 
-        if ($this->valueType instanceof Compound) {
-            return '(' . $this->valueType . ')[]';
+        if (
+            !preg_match('/[^\w\\\\]/', (string) $this->valueType) ||
+            substr((string) $this->valueType, -2, 2) === '[]'
+        ) {
+            return $this->valueType . '[]';
         }
 
-        return $this->valueType . '[]';
+        return 'array<' . $this->valueType . '>';
     }
 }

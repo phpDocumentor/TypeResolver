@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
+use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use PHPUnit\Framework\TestCase;
 
 final class ArrayTest extends TestCase
@@ -63,8 +67,27 @@ final class ArrayTest extends TestCase
             'simple array' => [new Array_(), 'array'],
             'array of mixed' => [new Array_(new Mixed_()), 'mixed[]'],
             'array of single type' => [new Array_(new String_()), 'string[]'],
-            'array of compound type' => [new Array_(new Compound([new Integer(), new String_()])), '(int|string)[]'],
+            'multidimensional array' => [new Array_(new Array_(new String_())), 'string[][]'],
+            'array of compound type' => [new Array_(new Compound([new Integer(), new String_()])), 'array<int|string>'],
             'array with key type' => [new Array_(new String_(), new Integer()), 'array<int,string>'],
+            'array of array shapes' => [
+                new Array_(
+                    new ArrayShape(
+                        new ArrayShapeItem('foo', new String_(), false),
+                        new ArrayShapeItem('bar', new Integer(), false)
+                    )
+                ),
+                'array<array{foo: string, bar: int}>',
+            ],
+            'array of object shapes' => [
+                new Array_(
+                    new ObjectShape(
+                        new ObjectShapeItem('foo', new String_(), false),
+                        new ObjectShapeItem('bar', new Integer(), false)
+                    )
+                ),
+                'array<object{foo: string, bar: int}>',
+            ],
         ];
     }
 }
