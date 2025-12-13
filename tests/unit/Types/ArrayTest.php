@@ -69,7 +69,7 @@ final class ArrayTest extends TestCase
             'array of single type' => [new Array_(new String_()), 'string[]'],
             'multidimensional array' => [new Array_(new Array_(new String_())), 'string[][]'],
             'array of compound type' => [new Array_(new Compound([new Integer(), new String_()])), 'array<int|string>'],
-            'array with key type' => [new Array_(new String_(), new Integer()), 'array<int,string>'],
+            'array with key type' => [new Array_(new String_(), new Integer()), 'array<int, string>'],
             'array of array shapes' => [
                 new Array_(
                     new ArrayShape(

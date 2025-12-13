@@ -84,7 +84,7 @@ abstract class AbstractList implements Type
         }
 
         if ($this->keyType) {
-            return 'array<' . $this->keyType . ',' . $this->valueType . '>';
+            return 'array<' . $this->keyType . ', ' . $this->valueType . '>';
         }
 
         if (

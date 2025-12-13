@@ -56,7 +56,7 @@ final class NonEmptyArrayTest extends TestCase
                         new Compound([new Integer(), new String_()]),
                         new String_()
                     ),
-                    'non-empty-array<string,int|string>',
+                    'non-empty-array<string, int|string>',
                 ],
         ];
     }
