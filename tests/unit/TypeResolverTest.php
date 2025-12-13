@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayKey;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\CallableArray;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
 use phpDocumentor\Reflection\PseudoTypes\ClassString;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
@@ -668,6 +669,7 @@ class TypeResolverTest extends TestCase
             ['callable-string', CallableString::class],
             ['callback', Callable_::class],
             ['array', Array_::class],
+            ['callable-array', CallableArray::class],
             ['array-key', ArrayKey::class],
             ['scalar', Scalar::class],
             ['object', Object_::class],
