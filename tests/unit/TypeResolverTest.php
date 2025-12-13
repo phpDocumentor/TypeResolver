@@ -20,6 +20,7 @@ use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
 use phpDocumentor\Reflection\PseudoTypes\ClassString;
+use phpDocumentor\Reflection\PseudoTypes\ClosedResource;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
 use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\ConstExpression;
@@ -56,6 +57,7 @@ use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
+use phpDocumentor\Reflection\PseudoTypes\OpenResource;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\PrivatePropertiesOf;
 use phpDocumentor\Reflection\PseudoTypes\PropertiesOf;
@@ -663,6 +665,8 @@ class TypeResolverTest extends TestCase
             ['false', Boolean::class],
             ['false', False_::class],
             ['resource', Resource_::class],
+            ['open-resource', OpenResource::class],
+            ['closed-resource', ClosedResource::class],
             ['null', Null_::class],
             ['callable', Callable_::class],
             ['callable-string', CallableString::class],
