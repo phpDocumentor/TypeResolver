@@ -26,6 +26,11 @@ use phpDocumentor\Reflection\Types\Mixed_;
  */
 final class CallableArray extends Array_ implements PseudoType
 {
+    public function __construct()
+    {
+        parent::__construct(new Mixed_(), new Integer());
+    }
+
     public function underlyingType(): Type
     {
         return new Array_(new Mixed_(), new Integer());

@@ -25,6 +25,8 @@ final class CallableArrayTest extends TestCase
         $type = new CallableArray();
 
         $this->assertEquals(new Array_(new Mixed_(), new Integer()), $type->underlyingType());
+        $this->assertEquals(new Mixed_(), $type->getValueType());
+        $this->assertEquals(new Integer(), $type->getKeyType());
     }
 
     public function testToString(): void
