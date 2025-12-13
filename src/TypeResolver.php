@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use phpDocumentor\Reflection\PseudoTypes\ArrayKey;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShapeItem;
+use phpDocumentor\Reflection\PseudoTypes\CallableArray;
 use phpDocumentor\Reflection\PseudoTypes\CallableString;
 use phpDocumentor\Reflection\PseudoTypes\ClassString;
 use phpDocumentor\Reflection\PseudoTypes\ClosedResource;
@@ -169,6 +170,7 @@ final class TypeResolver
         'object' => Object_::class,
         'mixed' => Mixed_::class,
         'array' => Array_::class,
+        'callable-array' => CallableArray::class,
         'array-key' => ArrayKey::class,
         'non-empty-array' => NonEmptyArray::class,
         'resource' => Resource_::class,
