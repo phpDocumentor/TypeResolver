@@ -15,9 +15,6 @@ namespace phpDocumentor\Reflection\Types;
 
 use phpDocumentor\Reflection\Type;
 
-use function preg_match;
-use function substr;
-
 /**
  * Represents a list of values. This is an abstract class for Array_ and List_.
  *
@@ -48,6 +45,11 @@ abstract class AbstractList implements Type
         $this->keyType        = $keyType;
     }
 
+    /**
+     * Returns a rendered output of the Type as it would be used in a DocBlock.
+     */
+    abstract public function __toString(): string;
+
     public function getOriginalKeyType(): ?Type
     {
         return $this->keyType;
@@ -72,27 +74,5 @@ abstract class AbstractList implements Type
     public function getValueType(): Type
     {
         return $this->valueType ?? $this->defaultValueType;
-    }
-
-    /**
-     * Returns a rendered output of the Type as it would be used in a DocBlock.
-     */
-    public function __toString(): string
-    {
-        if ($this->valueType === null) {
-            return 'array';
-        }
-
-        $valueTypeString = (string) $this->valueType;
-
-        if ($this->keyType) {
-            return 'array<' . $this->keyType . ', ' . $valueTypeString . '>';
-        }
-
-        if (!preg_match('/[^\w\\\\]/', $valueTypeString) || substr($valueTypeString, -2, 2) === '[]') {
-            return $valueTypeString . '[]';
-        }
-
-        return 'array<' . $valueTypeString . '>';
     }
 }
