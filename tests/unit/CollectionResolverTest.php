@@ -102,10 +102,10 @@ class CollectionResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
-        $resolvedType = $fixture->resolve('array<string,object|array>', new Context(''));
+        $resolvedType = $fixture->resolve('array<string, object|array>', new Context(''));
 
         $this->assertInstanceOf(Array_::class, $resolvedType);
-        $this->assertSame('array<string,object|array>', (string) $resolvedType);
+        $this->assertSame('array<string, object|array>', (string) $resolvedType);
 
         $valueType = $resolvedType->getValueType();
 
@@ -127,7 +127,7 @@ class CollectionResolverTest extends TestCase
         $resolvedType = $fixture->resolve('array<string, object|array>', new Context(''));
 
         $this->assertInstanceOf(Array_::class, $resolvedType);
-        $this->assertSame('array<string,object|array>', (string) $resolvedType);
+        $this->assertSame('array<string, object|array>', (string) $resolvedType);
 
         $valueType = $resolvedType->getValueType();
 
@@ -170,16 +170,16 @@ class CollectionResolverTest extends TestCase
     public function testGoodArrayCollectionKey(): void
     {
         $fixture = new TypeResolver();
-        $resolvedType = $fixture->resolve('array<array-key,string>', new Context(''));
+        $resolvedType = $fixture->resolve('array<array-key, string>', new Context(''));
 
         $this->assertInstanceOf(Array_::class, $resolvedType);
-        $this->assertSame('array<array-key,string>', (string) $resolvedType);
+        $this->assertSame('array<array-key, string>', (string) $resolvedType);
 
         $fixture = new TypeResolver();
-        $resolvedType = $fixture->resolve('array<class-string,string>', new Context(''));
+        $resolvedType = $fixture->resolve('array<class-string, string>', new Context(''));
 
         $this->assertInstanceOf(Array_::class, $resolvedType);
-        $this->assertSame('array<class-string,string>', (string) $resolvedType);
+        $this->assertSame('array<class-string, string>', (string) $resolvedType);
     }
 
     public function testMissingStartCollection(): void
@@ -218,7 +218,7 @@ class CollectionResolverTest extends TestCase
         $resolvedType = $fixture->resolve('array<string,float>', new Context(''));
 
         $this->assertInstanceOf(Array_::class, $resolvedType);
-        $this->assertSame('array<string,float>', (string) $resolvedType);
+        $this->assertSame('array<string, float>', (string) $resolvedType);
 
         $valueType = $resolvedType->getValueType();
 

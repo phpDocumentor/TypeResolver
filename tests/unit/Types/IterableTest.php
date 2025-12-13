@@ -38,7 +38,7 @@ final class IterableTest extends TestCase
                 new Iterable_(new Compound([new Integer(), new String_()])),
                 'iterable<int|string>',
             ],
-            'iterable with key type' => [new Iterable_(new String_(), new Integer()), 'iterable<int,string>'],
+            'iterable with key type' => [new Iterable_(new String_(), new Integer()), 'iterable<int, string>'],
         ];
     }
 }

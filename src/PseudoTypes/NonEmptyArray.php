@@ -39,7 +39,7 @@ final class NonEmptyArray extends Array_ implements PseudoType
         }
 
         if ($this->keyType) {
-            return 'non-empty-array<' . $this->keyType . ',' . $this->valueType . '>';
+            return 'non-empty-array<' . $this->keyType . ', ' . $this->valueType . '>';
         }
 
         return 'non-empty-array<' . $this->valueType . '>';
