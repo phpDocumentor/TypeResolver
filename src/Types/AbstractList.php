@@ -83,17 +83,16 @@ abstract class AbstractList implements Type
             return 'array';
         }
 
+        $valueTypeString = (string) $this->valueType;
+
         if ($this->keyType) {
-            return 'array<' . $this->keyType . ', ' . $this->valueType . '>';
+            return 'array<' . $this->keyType . ', ' . $valueTypeString . '>';
         }
 
-        if (
-            !preg_match('/[^\w\\\\]/', (string) $this->valueType) ||
-            substr((string) $this->valueType, -2, 2) === '[]'
-        ) {
-            return $this->valueType . '[]';
+        if (!preg_match('/[^\w\\\\]/', $valueTypeString) || substr($valueTypeString, -2, 2) === '[]') {
+            return $valueTypeString . '[]';
         }
 
-        return 'array<' . $this->valueType . '>';
+        return 'array<' . $valueTypeString . '>';
     }
 }
