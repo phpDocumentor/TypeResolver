@@ -56,6 +56,7 @@ use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
+use phpDocumentor\Reflection\PseudoTypes\OpenResource;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use phpDocumentor\Reflection\PseudoTypes\PrivatePropertiesOf;
 use phpDocumentor\Reflection\PseudoTypes\PropertiesOf;
@@ -663,6 +664,7 @@ class TypeResolverTest extends TestCase
             ['false', Boolean::class],
             ['false', False_::class],
             ['resource', Resource_::class],
+            ['open-resource', OpenResource::class],
             ['null', Null_::class],
             ['callable', Callable_::class],
             ['callable-string', CallableString::class],
