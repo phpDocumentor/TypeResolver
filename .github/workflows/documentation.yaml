@@ -39,7 +39,7 @@ jobs:
           path: "docs"
 
       - name: "Download"
-        uses: "actions/download-artifact@v6"
+        uses: "actions/download-artifact@v7"
         with:
           name: "documentation"
           path: "build/docs"
