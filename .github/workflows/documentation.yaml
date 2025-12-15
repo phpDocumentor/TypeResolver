@@ -19,7 +19,7 @@ jobs:
 
       - name: "Deploy"
         if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/1.x' }}"
-        uses: "actions/upload-artifact@v5"
+        uses: "actions/upload-artifact@v6"
         with:
           name: "documentation"
           path: "build/docs"
