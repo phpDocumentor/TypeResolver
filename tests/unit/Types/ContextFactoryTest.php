@@ -262,5 +262,10 @@ namespace phpDocumentor\Reflection\Types\Mock {
     class Foo extends AbstractList
     {
         // dummy class
+
+        public function __toString(): string
+        {
+            return '';
+        }
     }
 }

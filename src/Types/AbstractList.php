@@ -70,24 +70,4 @@ abstract class AbstractList implements Type
     {
         return $this->valueType ?? $this->defaultValueType;
     }
-
-    /**
-     * Returns a rendered output of the Type as it would be used in a DocBlock.
-     */
-    public function __toString(): string
-    {
-        if ($this->valueType === null) {
-            return 'array';
-        }
-
-        if ($this->keyType) {
-            return 'array<' . $this->keyType . ', ' . $this->valueType . '>';
-        }
-
-        if ($this->valueType instanceof Compound) {
-            return '(' . $this->valueType . ')[]';
-        }
-
-        return $this->valueType . '[]';
-    }
 }
