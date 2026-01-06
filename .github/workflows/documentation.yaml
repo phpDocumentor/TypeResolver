@@ -1,61 +1,19 @@
+# https://docs.github.com/en/actions
+
 name: "Documentation"
 
 on: # yamllint disable-line rule:truthy
-  push:
-    branches:
-      - "1.x"
-  pull_request: null
+    push:
+        branches:
+            - "2.x"
+    workflow_dispatch: null
 
 jobs:
-  documentation:
-    name: "Documentation"
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v6"
-
-      - name: "Build"
-        uses: "phpDocumentor/phpDocumentor@master"
-
-      - name: "Deploy"
-        if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/1.x' }}"
-        uses: "actions/upload-artifact@v6"
+    run:
+        name: "Documentation"
+        uses: "phpDocumentor/.github/.github/workflows/documentation.yml@main"
         with:
-          name: "documentation"
-          path: "build/docs"
-          retention-days: 1
-
-  deploy:
-    name: "Deploy"
-    if: "${{ github.event_name == 'push' && github.ref == 'refs/heads/1.x' }}"
-    runs-on: "ubuntu-latest"
-    needs: "documentation"
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v6"
-        with:
-          repository: "phpDocumentor/docs"
-          token: "${{ secrets.BOT_TOKEN }}"
-          path: "docs"
-
-      - name: "Download"
-        uses: "actions/download-artifact@v7"
-        with:
-          name: "documentation"
-          path: "build/docs"
-
-      - name: "Copy files"
-        run: "rsync -r --delete build/docs/* docs/docs/components/type-resolver"
-
-      - name: "Commit"
-        uses: "stefanzweifel/git-auto-commit-action@v7"
-        with:
-          repository: "docs"
-          commit_message: "Update type-resolver documentation"
-
-      - name: "Push"
-        uses: "ad-m/github-push-action@master"
-        with:
-          directory: "docs"
-          github_token: "${{ secrets.BOT_TOKEN }}"
-          repository: "phpDocumentor/docs"
+            deploy: true
+            component: "reflection-docblock"
+        secrets:
+            token: "${{ secrets.BOT_TOKEN }}"
