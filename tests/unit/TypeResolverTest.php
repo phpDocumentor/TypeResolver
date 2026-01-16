@@ -44,6 +44,9 @@ use phpDocumentor\Reflection\PseudoTypes\NonEmptyArray;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyString;
+use phpDocumentor\Reflection\PseudoTypes\NonNegativeInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonPositiveInteger;
+use phpDocumentor\Reflection\PseudoTypes\NonZeroInteger;
 use phpDocumentor\Reflection\PseudoTypes\Numeric_;
 use phpDocumentor\Reflection\PseudoTypes\NumericString;
 use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
@@ -642,6 +645,9 @@ class TypeResolverTest extends TestCase
             ['integer', Integer::class],
             ['positive-int', PositiveInteger::class],
             ['negative-int', NegativeInteger::class],
+            ['non-positive-int', NonPositiveInteger::class],
+            ['non-negative-int', NonNegativeInteger::class],
+            ['non-zero-int', NonZeroInteger::class],
             ['float', Float_::class],
             ['double', Float_::class],
             ['bool', Boolean::class],
