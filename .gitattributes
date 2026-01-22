@@ -15,5 +15,5 @@
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
 /psalm.xml export-ignore
-/phpdoc.xml.dist export-ignore
+/phpdoc.dist.xml export-ignore
 /.phpdoc/ export-ignore
