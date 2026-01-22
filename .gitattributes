@@ -1,5 +1,6 @@
 /.github/ export-ignore
 /examples/ export-ignore
+/docs/ export-ignore
 /tests/ export-ignore
 /.editorconfig export-ignore
 /.git-blame-ignore-revs export-ignore
@@ -14,3 +15,5 @@
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
 /psalm.xml export-ignore
+/phpdoc.dist.xml export-ignore
+/.phpdoc/ export-ignore
