@@ -227,6 +227,32 @@ class TypeResolverTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     * @uses \phpDocumentor\Reflection\PseudoTypes\List_
+     */
+    public function testResolvingNestedClassStringMap(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('list<class-string-map<T of \\Foo, T>>', new Context(''));
+
+        $this->assertSame('list<array<class-string<\Foo>, \Foo>>', (string) $resolvedType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     */
+    public function testMalformedClassStringMapFallsThroughToParserError(): void
+    {
+        $fixture = new TypeResolver();
+
+        $this->expectException(\RuntimeException::class);
+        $fixture->resolve('class-string-map<T of \\Foo>', new Context(''));
+    }
+
+    /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
