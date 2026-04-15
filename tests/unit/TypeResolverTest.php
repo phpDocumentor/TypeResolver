@@ -248,7 +248,9 @@ class TypeResolverTest extends TestCase
     {
         $fixture = new TypeResolver();
 
+        // TypeResolver wraps the underlying PHPStan ParserException into a RuntimeException.
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Unexpected token/');
         $fixture->resolve('class-string-map<T of \\Foo>', new Context(''));
     }
 
