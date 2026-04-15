@@ -131,7 +131,12 @@ use function class_exists;
 use function class_implements;
 use function get_class;
 use function in_array;
+use function preg_match;
+use function preg_quote;
+use function preg_replace;
 use function sprintf;
+use function strlen;
+use function stripos;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -255,6 +260,8 @@ final class TypeResolver
         if ($context === null) {
             $context = new Context('');
         }
+
+        $type = $this->expandClassStringMap($type);
 
         $tokens = $this->lexer->tokenize($type);
         $tokenIterator = new TokenIterator($tokens);
@@ -688,5 +695,80 @@ final class TypeResolver
             },
             $nodes
         );
+    }
+
+    /**
+     * Rewrites the psalm-specific `class-string-map<T of Foo, T>` utility type into the equivalent
+     * `array<class-string<Foo>, <value-with-T-substituted>>` so the underlying phpstan parser can handle it.
+     * Nested occurrences are expanded repeatedly from the innermost outwards.
+     *
+     * @psalm-mutation-free
+     */
+    private function expandClassStringMap(string $type): string
+    {
+        while (($start = stripos($type, 'class-string-map<')) !== false) {
+            $contentStart = $start + strlen('class-string-map<');
+            $depth = 1;
+            $end = null;
+            for ($i = $contentStart, $length = strlen($type); $i < $length; $i++) {
+                $char = $type[$i];
+                if ($char === '<') {
+                    $depth++;
+                } elseif ($char === '>') {
+                    $depth--;
+                    if ($depth === 0) {
+                        $end = $i;
+                        break;
+                    }
+                }
+            }
+
+            if ($end === null) {
+                break;
+            }
+
+            $inner = substr($type, $contentStart, $end - $contentStart);
+            $commaAt = $this->findTopLevelComma($inner);
+            if ($commaAt === null) {
+                break;
+            }
+
+            $binding = trim(substr($inner, 0, $commaAt));
+            $value = trim(substr($inner, $commaAt + 1));
+            if (!preg_match('/^(\w+)\s+of\s+(.+)$/su', $binding, $matches)) {
+                break;
+            }
+
+            $template = $matches[1];
+            $bound = trim($matches[2]);
+            $substituted = (string) preg_replace(
+                '/\b' . preg_quote($template, '/') . '\b/u',
+                $bound,
+                $value
+            );
+
+            $replacement = sprintf('array<class-string<%s>, %s>', $bound, $substituted);
+            $type = substr($type, 0, $start) . $replacement . substr($type, $end + 1);
+        }
+
+        return $type;
+    }
+
+    /** @psalm-mutation-free */
+    private function findTopLevelComma(string $inner): ?int
+    {
+        $depth = 0;
+        for ($i = 0, $length = strlen($inner); $i < $length; $i++) {
+            $char = $inner[$i];
+            if ($char === '<') {
+                $depth++;
+            } elseif ($char === '>') {
+                $depth--;
+            } elseif ($char === ',' && $depth === 0) {
+                return $i;
+            }
+        }
+
+        return null;
     }
 }
