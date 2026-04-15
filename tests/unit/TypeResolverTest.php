@@ -197,6 +197,36 @@ class TypeResolverTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     */
+    public function testResolvingClassStringMap(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('class-string-map<T of \\Foo, T>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<class-string<\Foo>, \Foo>', (string) $resolvedType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     */
+    public function testResolvingClassStringMapWithNullableValue(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('class-string-map<T of \\Foo, T|null>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<class-string<\Foo>, \Foo|null>', (string) $resolvedType);
+    }
+
+    /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
