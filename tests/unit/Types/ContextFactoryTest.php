@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection\Types {
+use PHPUnit\Framework\TestCase;
 
 // Added imports on purpose as mock for the unit tests, please do not remove.
     use Mockery as m;
@@ -23,7 +24,7 @@ namespace phpDocumentor\Reflection\Types {
      * @coversDefaultClass \phpDocumentor\Reflection\Types\ContextFactory
      * @covers ::<private>
      */
-    class ContextFactoryTest extends \PHPUnit_Framework_TestCase
+    class ContextFactoryTest extends TestCase
     {
         /**
          * @covers ::createFromReflector
@@ -47,6 +48,7 @@ namespace phpDocumentor\Reflection\Types {
         {
             $fixture = new ContextFactory();
             $expected = [
+                'TestCase' => TestCase::class,
                 'm' => m::class,
                 'DocBlock' => DocBlock::class,
                 'Tag' => Tag::class,
@@ -78,6 +80,7 @@ namespace phpDocumentor\Reflection\Types {
         {
             $fixture = new ContextFactory();
             $expected = [
+                'TestCase'        => TestCase::class,
                 'm'               => m::class,
                 'DocBlock'        => DocBlock::class,
                 'Tag'             => Tag::class,
@@ -168,6 +171,7 @@ namespace phpDocumentor\Reflection\Types {
         {
             eval(<<<PHP
 namespace Foo;
+use PHPUnit\Framework\TestCase;
 
 class Bar
 {
@@ -183,6 +187,7 @@ PHP
 }
 
 namespace phpDocumentor\Reflection\Types\Mock {
+use PHPUnit\Framework\TestCase;
     // the following import should not show in the tests above
     use phpDocumentor\Reflection\DocBlock\Description;
 }

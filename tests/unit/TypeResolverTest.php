@@ -11,6 +11,7 @@
  */
 
 namespace phpDocumentor\Reflection;
+use PHPUnit\Framework\TestCase;
 
 use Mockery as m;
 use phpDocumentor\Reflection\Types\Array_;
@@ -25,7 +26,7 @@ use phpDocumentor\Reflection\Types\String_;
 /**
  * @coversDefaultClass phpDocumentor\Reflection\TypeResolver
  */
-class TypeResolverTest extends \PHPUnit_Framework_TestCase
+class TypeResolverTest extends TestCase
 {
     /**
      * @param string $keyword
@@ -333,6 +334,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotExist()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', 'IDoNotExist');
     }
@@ -345,6 +347,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddingAKeywordFailsIfTypeClassDoesNotImplementTypeInterface()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->addKeyword('mock', \stdClass::class);
     }
@@ -358,6 +361,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownIfTypeIsEmpty()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->resolve(' ', new Context(''));
     }
@@ -371,6 +375,7 @@ class TypeResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownIfTypeIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $fixture = new TypeResolver();
         $fixture->resolve(['a'], new Context(''));
     }

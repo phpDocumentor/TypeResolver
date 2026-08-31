@@ -6,8 +6,8 @@
         {"name": "Mike van Riel", "email": "me@mikevanriel.com"}
     ],
     "require": {
-        "php": "^5.5 || ^7.0",
-        "phpdocumentor/reflection-common": "^1.0"
+        "php": ">=8.3",
+        "phpdocumentor/reflection-common": "^1.0|^2.0"
     },
     "autoload": {
         "psr-4": {"phpDocumentor\\Reflection\\": ["src/"]}
@@ -16,8 +16,8 @@
         "psr-4": {"phpDocumentor\\Reflection\\": ["tests/unit"]}
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.2||^4.8.24",
-        "mockery/mockery": "^0.9.4"
+        "mockery/mockery": "^1.6",
+        "phpunit/phpunit": "^10.5"
     },
     "extra": {
         "branch-alias": {

@@ -117,15 +117,29 @@ final class ContextFactory
      *
      * @return string
      */
+    private function isNameToken($token)
+    {
+        if (!is_array($token)) {
+            return false;
+        }
+
+        return in_array($token[0], [
+            T_STRING,
+            T_NS_SEPARATOR,
+            T_NAME_QUALIFIED,
+            T_NAME_FULLY_QUALIFIED,
+            T_NAME_RELATIVE,
+        ], true);
+    }
+
     private function parseNamespace(\ArrayIterator $tokens)
     {
         // skip to the first string or namespace separator
         $this->skipToNextStringOrNamespaceSeparator($tokens);
 
         $name = '';
-        while ($tokens->valid() && ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR)
-        ) {
-            $name .= $tokens->current()[1];
+        while ($tokens->valid() && $this->isNameToken($tokens->current())) {
+            $name .= is_array($tokens->current()) ? $tokens->current()[1] : $tokens->current();
             $tokens->next();
         }
 
@@ -166,7 +180,7 @@ final class ContextFactory
      */
     private function skipToNextStringOrNamespaceSeparator(\ArrayIterator $tokens)
     {
-        while ($tokens->valid() && ($tokens->current()[0] !== T_STRING) && ($tokens->current()[0] !== T_NS_SEPARATOR)) {
+        while ($tokens->valid() && !$this->isNameToken($tokens->current())) {
             $tokens->next();
         }
     }
@@ -189,7 +203,7 @@ final class ContextFactory
             if ($tokens->current()[0] === T_AS) {
                 $result[] = '';
             }
-            if ($tokens->current()[0] === T_STRING || $tokens->current()[0] === T_NS_SEPARATOR) {
+            if ($this->isNameToken($tokens->current())) {
                 $result[count($result) - 1] .= $tokens->current()[1];
             }
             $tokens->next();
