@@ -197,6 +197,64 @@ class TypeResolverTest extends TestCase
     }
 
     /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     */
+    public function testResolvingClassStringMap(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('class-string-map<T of \\Foo, T>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<class-string<\Foo>, \Foo>', (string) $resolvedType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     */
+    public function testResolvingClassStringMapWithNullableValue(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('class-string-map<T of \\Foo, T|null>', new Context(''));
+
+        $this->assertInstanceOf(Array_::class, $resolvedType);
+        $this->assertSame('array<class-string<\Foo>, \Foo|null>', (string) $resolvedType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Array_
+     * @uses \phpDocumentor\Reflection\Types\Context
+     * @uses \phpDocumentor\Reflection\PseudoTypes\ClassString
+     * @uses \phpDocumentor\Reflection\PseudoTypes\List_
+     */
+    public function testResolvingNestedClassStringMap(): void
+    {
+        $fixture = new TypeResolver();
+
+        $resolvedType = $fixture->resolve('list<class-string-map<T of \\Foo, T>>', new Context(''));
+
+        $this->assertSame('list<array<class-string<\Foo>, \Foo>>', (string) $resolvedType);
+    }
+
+    /**
+     * @uses \phpDocumentor\Reflection\Types\Context
+     */
+    public function testMalformedClassStringMapFallsThroughToParserError(): void
+    {
+        $fixture = new TypeResolver();
+
+        // TypeResolver wraps the underlying PHPStan ParserException into a RuntimeException.
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Unexpected token/');
+        $fixture->resolve('class-string-map<T of \\Foo>', new Context(''));
+    }
+
+    /**
      * @uses \phpDocumentor\Reflection\Types\Context
      * @uses \phpDocumentor\Reflection\Types\Nullable
      * @uses \phpDocumentor\Reflection\Types\String_
